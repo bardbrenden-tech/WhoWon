@@ -100,4 +100,5 @@ export interface GameComponentProps {
   players: SessionPlayer[]
   onScoreUpdate: (playerId: string, scoreData: Record<string, unknown>) => void
   onComplete: (results: Array<{ id: string; finalScore: number; rank: number }>) => void
+  onAbandon: () => void
 }

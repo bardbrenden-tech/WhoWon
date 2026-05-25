@@ -38,6 +38,12 @@ export default function GamePlay({ game, session, userId }: Props) {
     await supabase.from('session_players').update({ score_data: scoreData }).eq('id', playerId)
   }
 
+  async function handleAbandon() {
+    const supabase = createClient()
+    await supabase.from('sessions').update({ status: 'abandoned' }).eq('id', session.id)
+    router.push(`/games/${game.id}`)
+  }
+
   async function handleComplete(finalResults: FinalResult[]) {
     const supabase = createClient()
 
@@ -160,6 +166,7 @@ export default function GamePlay({ game, session, userId }: Props) {
         players={session.session_players}
         onScoreUpdate={handleScoreUpdate}
         onComplete={handleComplete}
+        onAbandon={handleAbandon}
       />
     </div>
   )

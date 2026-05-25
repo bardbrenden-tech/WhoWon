@@ -76,7 +76,7 @@ function ScoreCell({ config, value, onChange }: { config: CellConfig; value: str
   )
 }
 
-export default function MaxiYatzy({ players, onScoreUpdate, onComplete }: GameComponentProps) {
+export default function MaxiYatzy({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
   const [scores, setScores] = useState<Record<string, Record<ScoreKey, string>>>(() =>
     Object.fromEntries(players.map(p => {
       const saved = p.score_data as Record<string, string> | null | undefined
@@ -181,7 +181,7 @@ export default function MaxiYatzy({ players, onScoreUpdate, onComplete }: GameCo
         </div>
         <div className="p-4 border-t border-gray-200">
           <button
-            onClick={() => { if(!allDone && !confirm('Game not finished — complete anyway?')) return; handleFinish() }}
+            onClick={() => { if (!allDone) { if (confirm('Abandon game? No ratings will change.')) onAbandon(); return } handleFinish() }}
             className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors"
           >
             {allDone ? 'Complete Game' : 'Finish Early'}

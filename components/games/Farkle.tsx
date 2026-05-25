@@ -6,7 +6,7 @@ interface FarkleState { total: number; rounds: number[]; inFinalRound: boolean; 
 
 const WIN_SCORE = 10000
 
-export default function Farkle({ players, onScoreUpdate, onComplete }: GameComponentProps) {
+export default function Farkle({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
   const [state, setState] = useState<Record<string, FarkleState>>(() =>
     Object.fromEntries(players.map(p => {
       const saved = p.score_data as Partial<FarkleState>
@@ -145,7 +145,7 @@ export default function Farkle({ players, onScoreUpdate, onComplete }: GameCompo
       )}
 
       <button
-        onClick={() => { if (!isGameOver && !confirm('Game not finished — complete anyway?')) return; handleFinish() }}
+        onClick={() => { if (!isGameOver) { if (confirm('Abandon game? No ratings will change.')) onAbandon(); return } handleFinish() }}
         className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors"
       >
         {isGameOver ? 'Complete Game' : 'Finish Early'}

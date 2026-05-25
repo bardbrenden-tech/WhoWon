@@ -4,7 +4,7 @@ import type { GameComponentProps } from '@/lib/types'
 
 interface HeartsState { total: number; rounds: number[] }
 
-export default function Hearts({ players, onScoreUpdate, onComplete }: GameComponentProps) {
+export default function Hearts({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
   const [state, setState] = useState<Record<string, HeartsState>>(() =>
     Object.fromEntries(players.map(p => {
       const saved = p.score_data as Partial<HeartsState>
@@ -133,7 +133,7 @@ export default function Hearts({ players, onScoreUpdate, onComplete }: GameCompo
       )}
 
       <button
-        onClick={() => { if (!isGameOver && !confirm('Game not finished — complete anyway?')) return; handleFinish() }}
+        onClick={() => { if (!isGameOver) { if (confirm('Abandon game? No ratings will change.')) onAbandon(); return } handleFinish() }}
         className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors"
       >
         {isGameOver ? 'Complete Game' : 'Finish Early'}

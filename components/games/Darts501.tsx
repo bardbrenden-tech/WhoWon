@@ -4,7 +4,7 @@ import type { GameComponentProps } from '@/lib/types'
 
 interface DartsState { score: number; history: number[]; finished: boolean }
 
-export default function Darts501({ players, onScoreUpdate, onComplete }: GameComponentProps) {
+export default function Darts501({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
   const [state, setState] = useState<Record<string, DartsState>>(() =>
     Object.fromEntries(players.map(p => {
       const saved = p.score_data as Partial<DartsState>
@@ -128,7 +128,7 @@ export default function Darts501({ players, onScoreUpdate, onComplete }: GameCom
       </div>
 
       <button
-        onClick={() => { if (!allDone && !confirm('Game not finished — complete anyway?')) return; handleFinish() }}
+        onClick={() => { if (!allDone) { if (confirm('Abandon game? No ratings will change.')) onAbandon(); return } handleFinish() }}
         className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors"
       >
         {allDone ? 'Complete Game' : 'Finish Early'}
