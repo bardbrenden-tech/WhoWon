@@ -56,6 +56,16 @@ export default async function ChallengePage({ params }: Props) {
 
   const sortedGames = [...challenge.challenge_games].sort((a, b) => a.order_index - b.order_index)
 
+  // Auto-complete challenge when all started tournaments are done
+  const allTournamentsCompleted =
+    sortedGames.length > 0 &&
+    sortedGames.every(cg => cg.tournaments?.status === 'completed')
+
+  if (allTournamentsCompleted && challenge.status !== 'completed') {
+    await supabase.from('challenges').update({ status: 'completed' }).eq('id', id)
+    challenge.status = 'completed'
+  }
+
   const tournaments = sortedGames
     .filter(cg => cg.tournaments !== null)
     .map(cg => ({
