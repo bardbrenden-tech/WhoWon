@@ -31,7 +31,7 @@ export default async function HomePage() {
             <Link
               href="/games"
               className="font-bold px-8 py-3.5 rounded-xl transition-colors text-lg shadow-lg"
-              style={{ backgroundColor: '#F5C518', color: '#1a1a1a' }}
+              style={{ background: 'linear-gradient(180deg, #FFE566 0%, #F5C518 45%, #CC7A00 100%)', color: '#1a1a1a' }}
             >
               {t.hero.browseGames}
             </Link>
