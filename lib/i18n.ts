@@ -31,6 +31,7 @@ export type Messages = {
   }
   category: { dice: string; card: string; darts: string; board: string; outdoor: string; party: string }
   login: { subtitle: string; terms: string; error: string }
+  gameDesc: Record<string, string>
 }
 
 const en: Messages = {
@@ -62,6 +63,13 @@ const en: Messages = {
   },
   category: { dice: 'Dice Games', card: 'Card Games', darts: 'Darts', board: 'Board Games', outdoor: 'Outdoor', party: 'Party Games' },
   login: { subtitle: 'Track scores, build your rating, and see who the real champion is.', terms: 'By signing in you agree to our terms of service. Always free.', error: 'Something went wrong. Please try again.' },
+  gameDesc: {
+    'maxi-yatzy': 'The classic dice game with 6 dice and expanded categories including House, Tower, and Maxi Yatzy bonus.',
+    'yatzy': 'The original 5-dice version. Score in 15 categories and earn a 50-point bonus for 63+ in the upper section.',
+    'darts-501': 'Start at 501, count down to exactly zero. Must finish on a double. First to zero wins.',
+    'hearts': 'Avoid taking hearts and the Queen of Spades. Hearts 10pts, Ace 20pts, Queen of Spades 100pts, Jack of Diamonds −100pts. Lowest score wins.',
+    'farkle': 'Roll dice, score points, and decide when to bank or risk it all. First to reach 10 000 points wins.',
+  },
 }
 
 const no: Messages = {
@@ -93,6 +101,13 @@ const no: Messages = {
   },
   category: { dice: 'Terningspill', card: 'Kortspill', darts: 'Darts', board: 'Brettspill', outdoor: 'Utendørs', party: 'Festspill' },
   login: { subtitle: 'Spor poeng, bygg ratingen din og se hvem som er den virkelige mesteren.', terms: 'Ved å logge inn godtar du våre vilkår. Alltid gratis.', error: 'Noe gikk galt. Prøv igjen.' },
+  gameDesc: {
+    'maxi-yatzy': 'Det klassiske terningspillet med 6 terninger og utvidede kategorier inkludert Hytte, Tårn og Maxi Yatzy-bonus.',
+    'yatzy': 'Den originale 5-terningsversjonen. Poengscor i 15 kategorier og tjen 50 bonuspoeng for 63+ i øvre seksjon.',
+    'darts-501': 'Start på 501 og tell ned til nøyaktig null. Må avslutte med dobling. Første til null vinner.',
+    'hearts': 'Unngå å ta hjerter og Spardam. Hjerter 10 poeng, Hjerteress 20 poeng, Spardam 100 poeng, Ruterknekt −100 poeng. Lavest poeng vinner.',
+    'farkle': 'Kast terninger, samle poeng og bestem når du banker eller risikerer alt. Første til 10 000 poeng vinner.',
+  },
 }
 
 const de: Messages = {
@@ -124,6 +139,13 @@ const de: Messages = {
   },
   category: { dice: 'Würfelspiele', card: 'Kartenspiele', darts: 'Darts', board: 'Brettspiele', outdoor: 'Outdoor', party: 'Partyspiele' },
   login: { subtitle: 'Verfolge Punkte, baue deine Wertung auf und sieh, wer der wahre Champion ist.', terms: 'Durch die Anmeldung stimmst du unseren Nutzungsbedingungen zu. Immer kostenlos.', error: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.' },
+  gameDesc: {
+    'maxi-yatzy': 'Das klassische Würfelspiel mit 6 Würfeln und erweiterten Kategorien wie Haus, Turm und Maxi-Yatzy-Bonus.',
+    'yatzy': 'Die originale 5-Würfel-Version. Wertung in 15 Kategorien und 50 Bonuspunkte bei 63+ im oberen Bereich.',
+    'darts-501': 'Starte bei 501 und zähle auf genau null herunter. Muss auf einem Doppel enden. Wer zuerst null erreicht, gewinnt.',
+    'hearts': 'Vermeide Herzen und die Pik-Dame. Herz 10 Pkt., Herz-As 20 Pkt., Pik-Dame 100 Pkt., Karo-Bube −100 Pkt. Niedrigste Punktzahl gewinnt.',
+    'farkle': 'Würfle, sammle Punkte und entscheide, wann du bankst oder alles riskierst. Wer zuerst 10 000 Punkte erreicht, gewinnt.',
+  },
 }
 
 const fr: Messages = {
@@ -155,6 +177,13 @@ const fr: Messages = {
   },
   category: { dice: 'Jeux de dés', card: 'Jeux de cartes', darts: 'Fléchettes', board: 'Jeux de plateau', outdoor: 'Plein air', party: 'Jeux de société' },
   login: { subtitle: 'Suivez les scores, construisez votre classement et voyez qui est le vrai champion.', terms: 'En vous connectant, vous acceptez nos conditions d\'utilisation. Toujours gratuit.', error: 'Quelque chose s\'est mal passé. Veuillez réessayer.' },
+  gameDesc: {
+    'maxi-yatzy': 'Le jeu de dés classique avec 6 dés et des catégories étendues : Maison, Tour et bonus Maxi Yatzy.',
+    'yatzy': 'La version originale à 5 dés. Marquez dans 15 catégories et gagnez 50 points de bonus si la section supérieure atteint 63+.',
+    'darts-501': 'Commencez à 501 et descendez à zéro exactement. Terminez sur un double. Le premier à zéro gagne.',
+    'hearts': 'Évitez les cœurs et la Dame de pique. Cœurs 10 pts, As de cœur 20 pts, Dame de pique 100 pts, Valet de carreau −100 pts. Le score le plus bas gagne.',
+    'farkle': 'Lancez les dés, marquez des points et décidez quand encaisser ou tout risquer. Le premier à 10 000 points gagne.',
+  },
 }
 
 const es: Messages = {
@@ -186,6 +215,13 @@ const es: Messages = {
   },
   category: { dice: 'Juegos de dados', card: 'Juegos de cartas', darts: 'Dardos', board: 'Juegos de mesa', outdoor: 'Exterior', party: 'Juegos de fiesta' },
   login: { subtitle: 'Sigue los puntos, construye tu clasificación y descubre quién es el verdadero campeón.', terms: 'Al iniciar sesión aceptas nuestros términos de servicio. Siempre gratis.', error: 'Algo salió mal. Por favor, inténtalo de nuevo.' },
+  gameDesc: {
+    'maxi-yatzy': 'El clásico juego de dados con 6 dados y categorías ampliadas: Casa, Torre y bono Maxi Yatzy.',
+    'yatzy': 'La versión original con 5 dados. Puntúa en 15 categorías y gana 50 puntos de bonificación con 63+ en la sección superior.',
+    'darts-501': 'Empieza en 501 y cuenta hasta llegar a cero exactamente. Debes terminar en un doble. El primero en llegar a cero gana.',
+    'hearts': 'Evita los corazones y la Reina de picas. Corazones 10 pts, As de corazones 20 pts, Reina de picas 100 pts, Jota de diamantes −100 pts. Gana la puntuación más baja.',
+    'farkle': 'Lanza los dados, acumula puntos y decide cuándo guardar o arriesgar todo. El primero en alcanzar 10 000 puntos gana.',
+  },
 }
 
 export const MESSAGES: Record<Locale, Messages> = { en, no, de, fr, es }

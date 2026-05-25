@@ -56,11 +56,11 @@ export default async function GamesPage({ searchParams }: Props) {
                 href={`/games/${game.id}`}
                 className="block bg-white border border-gray-200 rounded-xl p-5 hover:border-indigo-300 hover:shadow-sm transition-all group"
               >
-                <GameCard game={game} soonLabel={t.games.soon} playersLabel={t.game.players} />
+                <GameCard game={game} description={t.gameDesc[game.id] ?? game.description} soonLabel={t.games.soon} playersLabel={t.game.players} />
               </Link>
             ) : (
               <div className="bg-white border border-gray-200 rounded-xl p-5 opacity-60 cursor-not-allowed">
-                <GameCard game={game} comingSoon soonLabel={t.games.soon} playersLabel={t.game.players} />
+                <GameCard game={game} description={t.gameDesc[game.id] ?? game.description} comingSoon soonLabel={t.games.soon} playersLabel={t.game.players} />
               </div>
             )}
           </div>
@@ -78,7 +78,7 @@ export default async function GamesPage({ searchParams }: Props) {
   )
 }
 
-function GameCard({ game, comingSoon, soonLabel, playersLabel }: { game: (typeof GAMES)[0]; comingSoon?: boolean; soonLabel: string; playersLabel: string }) {
+function GameCard({ game, description, comingSoon, soonLabel, playersLabel }: { game: (typeof GAMES)[0]; description: string; comingSoon?: boolean; soonLabel: string; playersLabel: string }) {
   return (
     <div className="flex items-start gap-4">
       <div className="text-3xl">{game.icon}</div>
@@ -92,7 +92,7 @@ function GameCard({ game, comingSoon, soonLabel, playersLabel }: { game: (typeof
           )}
         </div>
         {game.name_alt && <p className="text-xs text-gray-400 mb-1">{game.name_alt}</p>}
-        <p className="text-sm text-gray-500 line-clamp-2">{game.description}</p>
+        <p className="text-sm text-gray-500 line-clamp-2">{description}</p>
         <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
           <span>{game.min_players}–{game.max_players} {playersLabel}</span>
           <span className="capitalize">{game.category}</span>

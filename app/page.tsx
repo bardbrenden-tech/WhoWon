@@ -85,7 +85,7 @@ export default async function HomePage() {
                       <span className="text-xs text-gray-400 shrink-0">{game.name_alt}</span>
                     )}
                   </div>
-                  <p className="text-sm text-gray-500 line-clamp-2">{game.description}</p>
+                  <p className="text-sm text-gray-500 line-clamp-2">{t.gameDesc[game.id] ?? game.description}</p>
                   <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
                     <span>{game.min_players}–{game.max_players} {t.game.players}</span>
                     <span>{t.category[game.category as keyof typeof t.category] ?? game.category}</span>

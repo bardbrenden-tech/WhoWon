@@ -64,7 +64,7 @@ export default async function GamePage({ params }: Props) {
                 <span className="bg-gray-100 text-gray-500 text-xs font-medium px-2 py-0.5 rounded-full">{t.games.comingSoon}</span>
               )}
             </div>
-            <p className="text-gray-600 mb-4">{game.description}</p>
+            <p className="text-gray-600 mb-4">{t.gameDesc[game.id] ?? game.description}</p>
             <div className="flex items-center gap-4 text-sm text-gray-500 flex-wrap">
               <span>👥 {game.min_players}–{game.max_players} {t.game.players}</span>
               <span className="capitalize">📂 {game.category}</span>
