@@ -1,7 +1,6 @@
 'use client'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 
 interface FeedbackButtonProps {
   gameId?: string
@@ -19,14 +18,10 @@ export default function FeedbackButton({ gameId }: FeedbackButtonProps) {
     e.preventDefault()
     if (!message.trim()) return
     setLoading(true)
-    const supabase = createClient()
-    const { data: { user } } = await supabase.auth.getUser()
-    await supabase.from('feedback').insert({
-      profile_id: user?.id ?? null,
-      game_id: gameId ?? null,
-      page_path: pathname,
-      category,
-      message: message.trim(),
+    await fetch('/api/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ category, message, gameId, pagePath: pathname }),
     })
     setSent(true)
     setLoading(false)
