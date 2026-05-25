@@ -30,8 +30,11 @@ export default function Navbar({ user }: NavbarProps) {
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="text-xl font-black tracking-tight text-indigo-600">
-          Who Won?
+        <Link href="/" className="flex items-center gap-1.5 group">
+          <span className="text-xl">🏆</span>
+          <span className="text-xl font-black tracking-tight bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
+            Who Won?
+          </span>
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
@@ -57,7 +60,7 @@ export default function Navbar({ user }: NavbarProps) {
             <div className="relative">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="w-8 h-8 rounded-full bg-indigo-600 text-white text-sm font-bold flex items-center justify-center hover:bg-indigo-700 transition-colors"
+                className="w-9 h-9 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 text-white text-sm font-bold flex items-center justify-center ring-2 ring-offset-1 ring-indigo-200 hover:ring-purple-300 hover:scale-105 transition-all shadow-md shadow-indigo-200"
               >
                 {user.user_metadata?.full_name?.[0]?.toUpperCase() ?? 'U'}
               </button>
