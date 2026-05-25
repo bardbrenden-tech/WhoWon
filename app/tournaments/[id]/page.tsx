@@ -18,7 +18,7 @@ export default async function TournamentPage({ params }: Props) {
     .from('tournaments')
     .select(`
       id, game_id, status, created_by, created_at,
-      tournament_players ( id, display_name, seed, profile_id, guest_player_id ),
+      tournament_players ( id, tournament_id, display_name, seed, profile_id, guest_player_id ),
       tournament_matches ( id, round, match_index, player1_id, player2_id, winner_id, score, status )
     `)
     .eq('id', id)
@@ -46,7 +46,7 @@ export default async function TournamentPage({ params }: Props) {
         </nav>
 
         <TournamentView
-          tournament={tournament as Parameters<typeof TournamentView>[0]['tournament']}
+          tournament={tournament as unknown as Parameters<typeof TournamentView>[0]['tournament']}
           userId={user?.id ?? null}
         />
       </div>
