@@ -33,7 +33,7 @@ export default function Navbar({ user }: NavbarProps) {
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href="/">
           <Image
-            src="/images/Logo.png"
+            src="/images/Logo.jpg"
             alt="Who Won?"
             width={88}
             height={56}
