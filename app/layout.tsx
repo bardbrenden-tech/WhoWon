@@ -6,6 +6,7 @@ import { getLocale } from '@/lib/i18n-server'
 import Navbar from '@/components/Navbar'
 import FeedbackButton from '@/components/FeedbackButton'
 import { LanguageProvider } from '@/components/LanguageProvider'
+import { Analytics } from '@vercel/analytics/next'
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
 
@@ -38,6 +39,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <main>{children}</main>
           <FeedbackButton />
         </LanguageProvider>
+        <Analytics />
       </body>
     </html>
   )
