@@ -28,11 +28,10 @@ export default function LanguageSwitcher() {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 px-2 py-1 rounded-lg hover:bg-gray-100 transition-colors"
+        className="flex items-center gap-1 text-sm font-medium text-gray-600 hover:text-gray-900 px-2 py-1 rounded-lg hover:bg-gray-100 transition-colors"
         aria-label="Select language"
       >
-        <span>{FLAGS[locale]}</span>
-        <span className="hidden sm:inline">{LOCALES[locale]}</span>
+        <span className="text-base leading-none">{FLAGS[locale]}</span>
         <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
