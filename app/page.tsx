@@ -21,16 +21,9 @@ export default async function HomePage() {
         />
         <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 max-w-2xl mx-auto">
-          <div className="flex justify-center mb-6">
-            <Image
-              src="/images/Logo.jpg"
-              alt="Who Won?"
-              width={280}
-              height={180}
-              className="rounded-xl drop-shadow-2xl"
-              priority
-            />
-          </div>
+          <h1 className="text-5xl sm:text-6xl font-black text-white drop-shadow-2xl mb-4 tracking-tight">
+            Who Won?
+          </h1>
           <p className="text-lg sm:text-xl text-gray-200 mb-10 max-w-xl mx-auto leading-relaxed">
             {t.hero.subtitle}
           </p>
