@@ -88,9 +88,19 @@ insert into games (id, name, name_alt, category, description, min_players, max_p
   ('scrabble', 'Scrabble', null, 'board', 'Score points by placing words on the board, using high-value letters strategically.', 2, 4, true, false, 33, '🔤'),
   ('backgammon', 'Backgammon', null, 'board', 'Race your pieces home and bear them off before your opponent.', 2, 2, true, false, 34, '🎲'),
   ('sequence', 'Sequence', null, 'board', 'Play cards to place chips on the board and form sequences of five.', 2, 12, true, false, 35, '🃏'),
-  ('petanque', 'Pétanque / Boule', null, 'outdoor', 'Throw metal balls to get closest to the jack. Most points after agreed rounds wins.', 2, 8, true, false, 40, '🎳'),
-  ('bowling', 'Bowling', null, 'outdoor', 'Track your bowling scores including strikes, spares, and frames.', 1, 8, true, false, 41, '🎳'),
-  ('croquet', 'Croquet', null, 'outdoor', 'Track points as players hit balls through hoops in the correct order.', 2, 6, true, false, 42, '🔨');
+  ('petanque',      'Pétanque / Boule', null,          'outdoor', 'Throw metal balls to get closest to the jack. Most points after agreed rounds wins.', 2, 8,  true,  true, 40, '🎳'),
+  ('bowling',       'Bowling',          null,          'outdoor', 'Track your bowling scores including strikes, spares, and frames.',                       1, 8,  true,  true, 41, '🎳'),
+  ('croquet',       'Croquet',          null,          'outdoor', 'Track points as players hit balls through hoops in the correct order.',                  2, 6,  true,  true, 42, '🔨'),
+  ('kubb',          'Kubb',             'Vikingkubb',  'outdoor', 'Knock over the opponent''s kubbs, then topple the king to win.',                        2, 12, true,  true, 43, '🪵'),
+  ('molkky',        'Mölkky',           null,          'outdoor', 'Throw the skittle to knock numbered pins. First to exactly 50 wins.',                   2, 12, true,  true, 44, '🎯'),
+  ('disc-golf',     'Disc Golf',        'Frisbeegolf', 'outdoor', 'Throw discs into baskets in as few throws as possible. Lowest score wins.',             1, 8,  false, true, 45, '🥏'),
+  ('cornhole',      'Cornhole',         'Bønneposs',   'outdoor', 'Toss bags into the hole (3pts) or board (1pt). First to 21 wins.',                     2, 4,  true,  true, 46, '🎯'),
+  ('golf',          'Golf',             null,          'outdoor', 'Track strokes per hole vs par. Lowest total score wins.',                               1, 8,  false, true, 47, '⛳'),
+  ('tennis',        'Tennis',           null,          'outdoor', 'Track sets in a tennis match. Most sets won wins.',                                     2, 4,  true,  true, 48, '🎾'),
+  ('table-tennis',  'Bordtennis',       'Ping Pong',   'sport',   'Track sets of table tennis. Most sets won wins.',                                       2, 4,  true,  true, 50, '🏓'),
+  ('billiards',     'Biljard',          'Pool',        'sport',   'Track frames of pool or billiards. Most frames won wins.',                              2, 4,  true,  true, 51, '🎱'),
+  ('badminton',     'Badminton',        null,          'sport',   'Track sets of badminton. First to 2 sets wins.',                                        2, 4,  true,  true, 52, '🏸'),
+  ('foosball',      'Fotballbord',      'Foosball',    'sport',   'Track goals and games of table football.',                                              2, 4,  true,  true, 53, '⚽');
 
 -- Sessions (a game being played)
 create table sessions (
