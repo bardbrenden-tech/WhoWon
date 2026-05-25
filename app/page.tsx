@@ -21,7 +21,7 @@ export default async function HomePage() {
         />
         <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 max-w-2xl mx-auto">
-          <h1 className="text-5xl sm:text-6xl font-black text-white drop-shadow-2xl mb-4 tracking-tight">
+          <h1 className="text-5xl sm:text-6xl font-black drop-shadow-2xl mb-4 tracking-tight" style={{ color: '#F5C518' }}>
             Who Won?
           </h1>
           <p className="text-lg sm:text-xl text-gray-200 mb-10 max-w-xl mx-auto leading-relaxed">
