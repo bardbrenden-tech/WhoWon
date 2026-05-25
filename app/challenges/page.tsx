@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getServerT } from '@/lib/i18n-server'
 import PageBanner from '@/components/PageBanner'
+import DeleteChallengeButton from './DeleteChallengeButton'
 
 export default async function ChallengesPage() {
   const supabase = await createClient()
@@ -49,27 +50,28 @@ export default async function ChallengesPage() {
               const gameCount = Array.isArray(c.challenge_games) ? c.challenge_games.length : 0
               const playerCount = Array.isArray(c.challenge_players) ? c.challenge_players.length : 0
               return (
-                <Link
-                  key={c.id}
-                  href={`/challenges/${c.id}`}
-                  className="block bg-white border border-gray-200 rounded-2xl p-5 hover:border-indigo-300 hover:shadow-sm transition-all"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <h3 className="font-bold text-gray-900">{c.name}</h3>
-                      <p className="text-sm text-gray-400 mt-0.5">
-                        {gameCount} {tc.pickGames.toLowerCase()} · {playerCount} {t.tournament.players}
-                      </p>
+                <div key={c.id} className="relative bg-white border border-gray-200 rounded-2xl hover:border-indigo-300 hover:shadow-sm transition-all group">
+                  <Link href={`/challenges/${c.id}`} className="block p-5">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h3 className="font-bold text-gray-900">{c.name}</h3>
+                        <p className="text-sm text-gray-400 mt-0.5">
+                          {gameCount} {tc.pickGames.toLowerCase()} · {playerCount} {t.tournament.players}
+                        </p>
+                      </div>
+                      <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${
+                        c.status === 'completed'
+                          ? 'bg-green-100 text-green-700'
+                          : 'bg-indigo-100 text-indigo-700'
+                      }`}>
+                        {c.status === 'completed' ? tc.done : tc.ongoing}
+                      </span>
                     </div>
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 ${
-                      c.status === 'completed'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-indigo-100 text-indigo-700'
-                    }`}>
-                      {c.status === 'completed' ? tc.done : tc.ongoing}
-                    </span>
+                  </Link>
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <DeleteChallengeButton challengeId={c.id} challengeName={c.name} />
                   </div>
-                </Link>
+                </div>
               )
             })}
           </div>
