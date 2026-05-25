@@ -2,7 +2,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { GAMES, CATEGORIES } from '@/lib/games'
 import { getServerT } from '@/lib/i18n-server'
-import type { GameCategory } from '@/lib/types'
 
 export default async function HomePage() {
   const { t } = await getServerT()
@@ -22,9 +21,16 @@ export default async function HomePage() {
         />
         <div className="absolute inset-0 bg-black/65" />
         <div className="relative z-10 max-w-2xl mx-auto">
-          <h1 className="text-5xl sm:text-6xl font-black text-white mb-4 tracking-tight drop-shadow-lg">
-            Who Won?
-          </h1>
+          <div className="flex justify-center mb-6">
+            <Image
+              src="/images/Logo.png"
+              alt="Who Won?"
+              width={280}
+              height={180}
+              className="rounded-xl drop-shadow-2xl"
+              priority
+            />
+          </div>
           <p className="text-lg sm:text-xl text-gray-200 mb-10 max-w-xl mx-auto leading-relaxed">
             {t.hero.subtitle}
           </p>
@@ -119,7 +125,9 @@ export default async function HomePage() {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-8 px-4 text-center text-sm">
-        <p className="font-bold text-white mb-1">Who Won?</p>
+        <div className="flex justify-center mb-3">
+          <Image src="/images/Logo.png" alt="Who Won?" width={80} height={52} className="rounded-md opacity-90" />
+        </div>
         <p>{t.home.footer}</p>
       </footer>
     </div>

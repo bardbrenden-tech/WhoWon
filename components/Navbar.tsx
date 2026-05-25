@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
@@ -30,11 +31,15 @@ export default function Navbar({ user }: NavbarProps) {
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-40">
       <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-1.5 group">
-          <span className="text-xl">🏆</span>
-          <span className="text-xl font-black tracking-tight bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600 bg-clip-text text-transparent">
-            Who Won?
-          </span>
+        <Link href="/">
+          <Image
+            src="/images/Logo.png"
+            alt="Who Won?"
+            width={88}
+            height={56}
+            className="rounded-lg object-contain h-10 w-auto"
+            priority
+          />
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
