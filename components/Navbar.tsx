@@ -30,10 +30,10 @@ export default function Navbar({ user }: NavbarProps) {
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-40">
-      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+      <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between overflow-visible">
         <Link href="/">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/Logo.png" alt="Who Won?" style={{ height: '60px', width: 'auto' }} />
+          <img src="/images/Logo.png" alt="Who Won?" style={{ height: '80px', width: 'auto', display: 'block' }} />
         </Link>
 
         <div className="hidden md:flex items-center gap-6">
