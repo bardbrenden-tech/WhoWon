@@ -48,7 +48,7 @@ export type Messages = {
     pickGames: string; pickPlayers: string
     start: string; starting: string; cancel: string
     notStarted: string; ongoing: string; done: string
-    startTournament: string; viewBracket: string; standings: string
+    startTournament: string; startAll: string; viewBracket: string; copyLink: string; standings: string
     points: string; minGames: string; minPlayers: string
     backToChallenge: string; champion: string; complete: string
   }
@@ -103,7 +103,7 @@ const en: Messages = {
     pickGames: 'Pick events', pickPlayers: 'Add players',
     start: 'Start challenge', starting: 'Creating...', cancel: 'Cancel',
     notStarted: 'Not started', ongoing: 'Ongoing', done: 'Done',
-    startTournament: 'Start tournament', viewBracket: 'View bracket', standings: 'Standings',
+    startTournament: 'Start tournament', startAll: 'Start all events', viewBracket: 'View bracket', copyLink: 'Copy link', standings: 'Standings',
     points: 'pts', minGames: 'Pick at least 2 events', minPlayers: 'Add at least 4 players',
     backToChallenge: '← Back to challenge', champion: '🏆 Challenge Champion!', complete: 'Challenge complete!',
   },
@@ -193,7 +193,7 @@ const no: Messages = {
     pickGames: 'Velg grener', pickPlayers: 'Legg til spillere',
     start: 'Start utfordring', starting: 'Oppretter...', cancel: 'Avbryt',
     notStarted: 'Ikke startet', ongoing: 'Pågår', done: 'Ferdig',
-    startTournament: 'Start turnering', viewBracket: 'Se bracket', standings: 'Stilling',
+    startTournament: 'Start turnering', startAll: 'Start alle grener', viewBracket: 'Se bracket', copyLink: 'Kopier lenke', standings: 'Stilling',
     points: 'poeng', minGames: 'Velg minst 2 grener', minPlayers: 'Legg til minst 4 spillere',
     backToChallenge: '← Tilbake til utfordringen', champion: '🏆 Utfordringsvinner!', complete: 'Utfordringen er ferdig!',
   },
@@ -283,7 +283,7 @@ const de: Messages = {
     pickGames: 'Disziplinen wählen', pickPlayers: 'Spieler hinzufügen',
     start: 'Challenge starten', starting: 'Wird erstellt...', cancel: 'Abbrechen',
     notStarted: 'Nicht gestartet', ongoing: 'Laufend', done: 'Fertig',
-    startTournament: 'Turnier starten', viewBracket: 'Turnierbaum', standings: 'Rangliste',
+    startTournament: 'Turnier starten', startAll: 'Alle Disziplinen starten', viewBracket: 'Turnierbaum', copyLink: 'Link kopieren', standings: 'Rangliste',
     points: 'Pkt', minGames: 'Mindestens 2 Disziplinen wählen', minPlayers: 'Mindestens 4 Spieler hinzufügen',
     backToChallenge: '← Zurück zur Challenge', champion: '🏆 Challenge-Champion!', complete: 'Challenge beendet!',
   },
@@ -373,7 +373,7 @@ const fr: Messages = {
     pickGames: 'Choisir les épreuves', pickPlayers: 'Ajouter des joueurs',
     start: 'Démarrer le défi', starting: 'Création...', cancel: 'Annuler',
     notStarted: 'Non commencé', ongoing: 'En cours', done: 'Terminé',
-    startTournament: 'Démarrer un tournoi', viewBracket: 'Voir le tableau', standings: 'Classement',
+    startTournament: 'Démarrer un tournoi', startAll: 'Démarrer toutes les épreuves', viewBracket: 'Voir le tableau', copyLink: 'Copier le lien', standings: 'Classement',
     points: 'pts', minGames: 'Choisir au moins 2 épreuves', minPlayers: 'Ajouter au moins 4 joueurs',
     backToChallenge: '← Retour au défi', champion: '🏆 Champion du défi !', complete: 'Défi terminé !',
   },
@@ -463,7 +463,7 @@ const es: Messages = {
     pickGames: 'Elegir disciplinas', pickPlayers: 'Añadir jugadores',
     start: 'Iniciar reto', starting: 'Creando...', cancel: 'Cancelar',
     notStarted: 'No iniciado', ongoing: 'En curso', done: 'Terminado',
-    startTournament: 'Iniciar torneo', viewBracket: 'Ver cuadro', standings: 'Clasificación',
+    startTournament: 'Iniciar torneo', startAll: 'Iniciar todas las disciplinas', viewBracket: 'Ver cuadro', copyLink: 'Copiar enlace', standings: 'Clasificación',
     points: 'pts', minGames: 'Elige al menos 2 disciplinas', minPlayers: 'Añade al menos 4 jugadores',
     backToChallenge: '← Volver al reto', champion: '🏆 ¡Campeón del reto!', complete: '¡Reto completado!',
   },
