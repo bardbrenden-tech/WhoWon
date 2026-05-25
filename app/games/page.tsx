@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { GAMES, CATEGORIES } from '@/lib/games'
 import type { GameCategory } from '@/lib/types'
+import PageBanner from '@/components/PageBanner'
 
 interface Props {
   searchParams: Promise<{ category?: string; q?: string }>
@@ -17,8 +18,9 @@ export default async function GamesPage({ searchParams }: Props) {
   }).sort((a, b) => a.sort_order - b.sort_order)
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-black text-gray-900 mb-6">Games</h1>
+    <div>
+      <PageBanner title="Games" subtitle="Choose a game and start tracking" />
+      <div className="max-w-6xl mx-auto px-4 py-8">
 
       {/* Category filter */}
       <div className="flex gap-2 flex-wrap mb-6">
@@ -69,6 +71,7 @@ export default async function GamesPage({ searchParams }: Props) {
           <p>No games found. <Link href="/games" className="text-indigo-600 hover:underline">Clear filters</Link></p>
         </div>
       )}
+      </div>
     </div>
   )
 }

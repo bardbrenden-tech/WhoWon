@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { getActiveGames, getGame } from '@/lib/games'
 import Link from 'next/link'
+import PageBanner from '@/components/PageBanner'
 
 interface Props {
   searchParams: Promise<{ game?: string }>
@@ -20,8 +21,9 @@ export default async function LeaderboardPage({ searchParams }: Props) {
     .limit(100)
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-black text-gray-900 mb-6">🏆 Global Leaderboard</h1>
+    <div>
+      <PageBanner title="Global Leaderboard" subtitle="Ranked by Elo rating across all games" />
+      <div className="max-w-3xl mx-auto px-4 py-8">
 
       {/* Game selector */}
       <div className="flex gap-2 flex-wrap mb-6">
@@ -77,6 +79,7 @@ export default async function LeaderboardPage({ searchParams }: Props) {
           )}
         </div>
       )}
+      </div>
     </div>
   )
 }

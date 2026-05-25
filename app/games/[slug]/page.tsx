@@ -5,6 +5,7 @@ import { RULES } from '@/lib/rules'
 import { createClient } from '@/lib/supabase/server'
 import StartGameButton from './StartGameButton'
 import RulesAccordion from './RulesAccordion'
+import PageBanner from '@/components/PageBanner'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -39,7 +40,9 @@ export default async function GamePage({ params }: Props) {
   const related = GAMES.filter(g => g.active && g.category === game.category && g.id !== game.id).slice(0, 3)
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div>
+      <PageBanner title={`${game.icon} ${game.name}`} subtitle={`${game.min_players}–${game.max_players} players · ${game.category}`} />
+      <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-400 mb-6 flex items-center gap-2">
         <Link href="/games" className="hover:text-gray-600">Games</Link>
@@ -123,6 +126,7 @@ export default async function GamePage({ params }: Props) {
             </div>
           )}
         </div>
+      </div>
       </div>
     </div>
   )
