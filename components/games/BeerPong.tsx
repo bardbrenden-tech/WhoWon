@@ -8,12 +8,56 @@ const CUP_FORMATIONS: Record<number, number[][]> = {
   3:  [[0,1],[2]],
 }
 
+interface CupRackProps {
+  playerId: string
+  label: string
+  cups: Record<string, boolean[]>
+  cupCount: number
+  onHit: (playerId: string, idx: number) => void
+}
+
+function CupRack({ playerId, label, cups, cupCount, onHit }: CupRackProps) {
+  const state     = cups[playerId] ?? []
+  const rows      = CUP_FORMATIONS[cupCount] ?? CUP_FORMATIONS[10]
+  const remaining = state.filter(Boolean).length
+
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <p className="text-sm font-bold text-gray-700 truncate max-w-[120px] text-center">{label}</p>
+      <p className="text-xs text-gray-400">{remaining}/{cupCount} kopper</p>
+      <div className="flex flex-col items-center gap-1.5">
+        {rows.map((row, ri) => (
+          <div key={ri} className="flex gap-1.5">
+            {row.map(idx => {
+              const standing = state[idx] ?? true
+              return (
+                <button
+                  key={idx}
+                  disabled={!standing}
+                  onClick={() => onHit(playerId, idx)}
+                  className={`w-10 h-10 rounded-full border-2 text-lg transition-all font-bold
+                    ${standing
+                      ? 'bg-amber-400 border-amber-500 hover:bg-amber-300 hover:scale-110 active:scale-95 shadow-md'
+                      : 'bg-gray-100 border-gray-200 text-gray-300 cursor-default'
+                    }`}
+                >
+                  {standing ? '🍺' : '✕'}
+                </button>
+              )
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 type Phase = 'setup' | 'playing'
 
 export default function BeerPong({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
-  const [phase, setPhase]     = useState<Phase>('setup')
+  const [phase, setPhase]       = useState<Phase>('setup')
   const [cupCount, setCupCount] = useState(10)
-  const [cups, setCups]       = useState<Record<string, boolean[]>>({})
+  const [cups, setCups]         = useState<Record<string, boolean[]>>({})
 
   const p0 = players[0]
   const p1 = players[1]
@@ -37,50 +81,12 @@ export default function BeerPong({ players, onScoreUpdate, onComplete, onAbandon
 
     const remaining = updated.filter(Boolean).length
     if (remaining === 0) {
-      // playerId lost — the other player wins
       const winnerId = playerId === p0.id ? p1.id : p0.id
-      const loserId  = playerId
       onComplete([
         { id: winnerId, finalScore: cupCount, rank: 1 },
-        { id: loserId,  finalScore: 0,        rank: 2 },
+        { id: playerId, finalScore: 0,        rank: 2 },
       ])
     }
-  }
-
-  function CupRack({ playerId, label }: { playerId: string; label: string }) {
-    const state    = cups[playerId] ?? []
-    const rows     = CUP_FORMATIONS[cupCount] ?? CUP_FORMATIONS[10]
-    const remaining = state.filter(Boolean).length
-
-    return (
-      <div className="flex flex-col items-center gap-2">
-        <p className="text-sm font-bold text-gray-700 truncate max-w-[120px] text-center">{label}</p>
-        <p className="text-xs text-gray-400">{remaining}/{cupCount} kopper</p>
-        <div className="flex flex-col items-center gap-1.5">
-          {rows.map((row, ri) => (
-            <div key={ri} className="flex gap-1.5">
-              {row.map(idx => {
-                const standing = state[idx] ?? true
-                return (
-                  <button
-                    key={idx}
-                    disabled={!standing}
-                    onClick={() => hitCup(playerId, idx)}
-                    className={`w-10 h-10 rounded-full border-2 text-lg transition-all font-bold
-                      ${standing
-                        ? 'bg-amber-400 border-amber-500 hover:bg-amber-300 hover:scale-110 active:scale-95 shadow-md'
-                        : 'bg-gray-100 border-gray-200 text-gray-300 cursor-default'
-                      }`}
-                  >
-                    {standing ? '🍺' : '✕'}
-                  </button>
-                )
-              })}
-            </div>
-          ))}
-        </div>
-      </div>
-    )
   }
 
   if (phase === 'setup') {
@@ -89,9 +95,7 @@ export default function BeerPong({ players, onScoreUpdate, onComplete, onAbandon
         <div className="text-center">
           <div className="text-5xl mb-2">🍺</div>
           <h2 className="text-xl font-black text-gray-900">Beer Pong</h2>
-          <p className="text-sm text-gray-500 mt-1">
-            {p0.display_name} vs {p1.display_name}
-          </p>
+          <p className="text-sm text-gray-500 mt-1">{p0.display_name} vs {p1.display_name}</p>
         </div>
 
         <div className="w-full bg-white border border-gray-200 rounded-2xl p-5">
@@ -135,12 +139,12 @@ export default function BeerPong({ players, onScoreUpdate, onComplete, onAbandon
   return (
     <div className="max-w-md mx-auto py-8 px-4">
       <div className="flex justify-between items-start gap-6">
-        <CupRack playerId={p0.id} label={p0.display_name} />
+        <CupRack playerId={p0.id} label={p0.display_name} cups={cups} cupCount={cupCount} onHit={hitCup} />
         <div className="flex flex-col items-center justify-center pt-8 gap-2">
           <span className="text-2xl font-black text-gray-300">VS</span>
-          <span className="text-xs text-gray-400">Trykk på en kopp for å markere treff</span>
+          <span className="text-xs text-gray-400 text-center">Trykk på en kopp for å markere treff</span>
         </div>
-        <CupRack playerId={p1.id} label={p1.display_name} />
+        <CupRack playerId={p1.id} label={p1.display_name} cups={cups} cupCount={cupCount} onHit={hitCup} />
       </div>
 
       <div className="mt-10">
