@@ -12,6 +12,17 @@ const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
 export const metadata: Metadata = {
   title: 'Who Won? — Track scores for any game',
   description: 'The social scoreboard for physical games. Track scores, compete with friends, and see how you rank globally.',
+  metadataBase: new URL('https://who-won.com'),
+  openGraph: {
+    title: 'Who Won? — Track scores for any game',
+    description: 'The social scoreboard for physical games. Track scores, compete with friends, and see how you rank globally.',
+    url: 'https://who-won.com',
+    siteName: 'Who Won?',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://who-won.com',
+  },
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
