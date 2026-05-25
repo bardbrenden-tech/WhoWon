@@ -30,7 +30,8 @@ export default async function HomePage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/games"
-              className="bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-8 py-3.5 rounded-xl transition-colors text-lg shadow-lg shadow-indigo-900/40"
+              className="font-bold px-8 py-3.5 rounded-xl transition-colors text-lg shadow-lg"
+              style={{ backgroundColor: '#F5C518', color: '#1a1a1a' }}
             >
               {t.hero.browseGames}
             </Link>
