@@ -147,7 +147,7 @@ const en: Messages = {
 }
 
 const no: Messages = {
-  nav: { games: 'Spill', leaderboard: 'Toppliste', myProfile: 'Min profil', signOut: 'Logg ut', signIn: 'Logg inn', challenges: 'Utfordringer' },
+  nav: { games: 'Spill', leaderboard: 'Toppliste', myProfile: 'Min profil', signOut: 'Logg ut', signIn: 'Logg inn', challenges: 'Turnering' },
   hero: {
     subtitle: 'Det sosiale poengtavlen for fysiske spill. Spor poeng, konkurrér med gruppen din og bygg din globale rating.',
     browseGames: 'Se alle spill',
@@ -188,14 +188,14 @@ const no: Messages = {
     starting: 'Oppretter...', cancel: 'Avbryt',
   },
   challenge: {
-    newChallenge: 'Ny utfordring', myChallenges: 'Utfordringer', noChallenge: 'Ingen utfordringer ennå — lag en for å arrangere en flergrens-turnering!',
-    name: 'Navn på utfordringen', namePlaceholder: 'F.eks. Firmafest 3-kamp',
+    newChallenge: 'Ny turnering', myChallenges: 'Turneringer', noChallenge: 'Ingen turneringer ennå — lag en for å arrangere en flergrens-turnering!',
+    name: 'Navn på turneringen', namePlaceholder: 'F.eks. Firmafest 3-kamp',
     pickGames: 'Velg grener', pickPlayers: 'Legg til spillere',
-    start: 'Start utfordring', starting: 'Oppretter...', cancel: 'Avbryt',
+    start: 'Start turnering', starting: 'Oppretter...', cancel: 'Avbryt',
     notStarted: 'Ikke startet', ongoing: 'Pågår', done: 'Ferdig',
-    startTournament: 'Start turnering', startAll: 'Start alle grener', viewBracket: 'Se bracket', copyLink: 'Kopier lenke', standings: 'Stilling',
+    startTournament: 'Start gren', startAll: 'Start alle grener', viewBracket: 'Se bracket', copyLink: 'Kopier lenke', standings: 'Stilling',
     points: 'poeng', minGames: 'Velg minst 2 grener', minPlayers: 'Legg til minst 4 spillere',
-    backToChallenge: '← Tilbake til utfordringen', champion: '🏆 Utfordringsvinner!', complete: 'Utfordringen er ferdig!',
+    backToChallenge: '← Tilbake til turneringen', champion: '🏆 Turneringsvinner!', complete: 'Turneringen er ferdig!',
   },
   login: { subtitle: 'Spor poeng, bygg ratingen din og se hvem som er den virkelige mesteren.', terms: 'Ved å logge inn godtar du våre vilkår. Alltid gratis.', error: 'Noe gikk galt. Prøv igjen.' },
   gameDesc: {
