@@ -19,7 +19,9 @@ const GAME_COMPONENTS: Record<string, DynamicGameComponent> = {
   'hearts':         dynamic<GameComponentProps>(() => import('@/components/games/Hearts')),
   'farkle':         dynamic<GameComponentProps>(() => import('@/components/games/Farkle')),
   'poker':          dynamic<GameComponentProps>(() => import('@/components/games/Poker')),
+  'beer-pong':      dynamic<GameComponentProps>(() => import('@/components/games/BeerPong')),
   // Generic round-by-round scorecard
+  'bezzerwizzer': Generic, 'alias': Generic, 'pictionary': Generic,
   'spades': Generic, 'rummy': Generic, 'gin-rummy': Generic, 'canasta': Generic,
   'phase-10': Generic, 'uno': Generic, 'cabo': Generic, 'cribbage': Generic,
   'doppelkopf': Generic, 'skat': Generic, 'catan': Generic, 'ticket-to-ride': Generic,
