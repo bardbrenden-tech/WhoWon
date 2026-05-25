@@ -18,6 +18,7 @@ interface PlayerEntry {
   name: string
   type: 'user' | 'guest' | 'new'
   guestPlayerId?: string
+  email?: string
 }
 
 export default function StartGameButton({ game, user }: Props) {
@@ -27,6 +28,7 @@ export default function StartGameButton({ game, user }: Props) {
   const [players, setPlayers] = useState<PlayerEntry[]>([])
   const [guestPlayers, setGuestPlayers] = useState<Array<{ id: string; name: string }>>([])
   const [newName, setNewName] = useState('')
+  const [newEmail, setNewEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [loadedGuests, setLoadedGuests] = useState(false)
   const gameOptionDefs = GAME_OPTIONS[game.id] ?? []
@@ -54,8 +56,9 @@ export default function StartGameButton({ game, user }: Props) {
 
   function addNew() {
     if (!newName.trim()) return
-    setPlayers(prev => [...prev, { id: crypto.randomUUID(), name: newName.trim(), type: 'new' }])
+    setPlayers(prev => [...prev, { id: crypto.randomUUID(), name: newName.trim(), type: 'new', email: newEmail.trim() || undefined }])
     setNewName('')
+    setNewEmail('')
   }
 
   function removePlayer(id: string) {
@@ -71,7 +74,7 @@ export default function StartGameButton({ game, user }: Props) {
     const newGuests = players.filter(p => p.type === 'new')
     const guestIds: Record<string, string> = {}
     for (const ng of newGuests) {
-      const { data } = await supabase.from('guest_players').insert({ owner_id: user!.id, name: ng.name }).select('id').single()
+      const { data } = await supabase.from('guest_players').insert({ owner_id: user!.id, name: ng.name, ...(ng.email ? { email: ng.email } : {}) }).select('id').single()
       if (data) guestIds[ng.id] = data.id
     }
 
@@ -145,18 +148,28 @@ export default function StartGameButton({ game, user }: Props) {
 
             {/* Add new player */}
             {players.length < game.max_players && (
-              <div className="flex gap-2 mb-5">
+              <div className="mb-5 space-y-1.5">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newName}
+                    onChange={e => setNewName(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && addNew()}
+                    placeholder={t.game.addPlayerName}
+                    className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  />
+                  <button onClick={addNew} disabled={!newName.trim()} className="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-200 disabled:opacity-40 transition-colors">
+                    {t.game.add}
+                  </button>
+                </div>
                 <input
-                  type="text"
-                  value={newName}
-                  onChange={e => setNewName(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && addNew()}
-                  placeholder={t.game.addPlayerName}
-                  className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  type="email"
+                  value={newEmail}
+                  onChange={e => setNewEmail(e.target.value)}
+                  placeholder={t.game.emailOptional}
+                  title={t.game.emailHint}
+                  className="w-full border border-gray-200 bg-gray-50 rounded-lg px-3 py-1.5 text-xs text-gray-500 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-400 focus:border-indigo-300"
                 />
-                <button onClick={addNew} disabled={!newName.trim()} className="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-200 disabled:opacity-40 transition-colors">
-                  {t.game.add}
-                </button>
               </div>
             )}
 

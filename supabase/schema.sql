@@ -34,6 +34,7 @@ create table guest_players (
   id uuid primary key default gen_random_uuid(),
   owner_id uuid references profiles(id) on delete cascade not null,
   name text not null,
+  email text,
   avatar_color text default '#6366f1',
   created_at timestamptz default now()
 );

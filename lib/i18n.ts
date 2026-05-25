@@ -28,6 +28,12 @@ export type Messages = {
     abandoning: string; finishEarly: string; completeGame: string
     yourTurn: string; round: string; rounds: string; addRound: string
     gameOver: string; lowestWins: string; shootTheMoon: string; moonShot: string; rulesOption: string
+    emailOptional: string; emailHint: string
+  }
+  profile: {
+    yourRatings: string; yourPlayers: string; noPlayers: string; recentGames: string
+    memberSince: string; addEmail: string; emailPlaceholder: string; save: string
+    games: string; wins: string; elo: string; removeConfirm: string
   }
   category: { dice: string; card: string; darts: string; board: string; outdoor: string; party: string }
   login: { subtitle: string; terms: string; error: string }
@@ -60,6 +66,12 @@ const en: Messages = {
     yourTurn: 'your turn', round: 'Round', rounds: 'rounds', addRound: 'Add Round',
     gameOver: 'Game over! Someone reached {n} points.', lowestWins: 'Lowest score wins.',
     shootTheMoon: 'Shoot the moon?', moonShot: '{name} shot the moon — everyone else gets {pts} pts', rulesOption: 'Rules',
+    emailOptional: 'Email (optional)', emailHint: 'So they can log in and claim their scores later',
+  },
+  profile: {
+    yourRatings: 'Your Ratings', yourPlayers: 'Your Players', noPlayers: 'No saved players yet. They are saved automatically when you start a game.',
+    recentGames: 'Recent Games', memberSince: 'Member since', addEmail: '+ Add email', emailPlaceholder: 'Email address',
+    save: 'Save', games: 'games', wins: 'wins', elo: 'Elo', removeConfirm: 'Remove this player?',
   },
   category: { dice: 'Dice Games', card: 'Card Games', darts: 'Darts', board: 'Board Games', outdoor: 'Outdoor', party: 'Party Games' },
   login: { subtitle: 'Track scores, build your rating, and see who the real champion is.', terms: 'By signing in you agree to our terms of service. Always free.', error: 'Something went wrong. Please try again.' },
@@ -98,6 +110,12 @@ const no: Messages = {
     yourTurn: 'din tur', round: 'Runde', rounds: 'runder', addRound: 'Legg til runde',
     gameOver: 'Spillet er over! Noen nådde {n} poeng.', lowestWins: 'Lavest poeng vinner.',
     shootTheMoon: 'Skyt månen?', moonShot: '{name} skøyt månen — alle andre får {pts} poeng', rulesOption: 'Regler',
+    emailOptional: 'E-post (valgfritt)', emailHint: 'Slik kan de logge inn og hente poengene sine senere',
+  },
+  profile: {
+    yourRatings: 'Dine rangeringer', yourPlayers: 'Dine spillere', noPlayers: 'Ingen lagrede spillere ennå. De lagres automatisk når du starter et spill.',
+    recentGames: 'Nylige spill', memberSince: 'Medlem siden', addEmail: '+ Legg til e-post', emailPlaceholder: 'E-postadresse',
+    save: 'Lagre', games: 'spill', wins: 'seire', elo: 'Elo', removeConfirm: 'Fjerne denne spilleren?',
   },
   category: { dice: 'Terningspill', card: 'Kortspill', darts: 'Darts', board: 'Brettspill', outdoor: 'Utendørs', party: 'Festspill' },
   login: { subtitle: 'Spor poeng, bygg ratingen din og se hvem som er den virkelige mesteren.', terms: 'Ved å logge inn godtar du våre vilkår. Alltid gratis.', error: 'Noe gikk galt. Prøv igjen.' },
@@ -136,6 +154,12 @@ const de: Messages = {
     yourTurn: 'du bist dran', round: 'Runde', rounds: 'Runden', addRound: 'Runde hinzufügen',
     gameOver: 'Spiel vorbei! Jemand hat {n} Punkte erreicht.', lowestWins: 'Die niedrigste Punktzahl gewinnt.',
     shootTheMoon: 'Shoot the Moon?', moonShot: '{name} hat den Mond geschossen — alle anderen bekommen {pts} Punkte', rulesOption: 'Regeln',
+    emailOptional: 'E-Mail (optional)', emailHint: 'Damit können sie sich anmelden und ihre Punkte später abrufen',
+  },
+  profile: {
+    yourRatings: 'Deine Wertungen', yourPlayers: 'Deine Spieler', noPlayers: 'Noch keine gespeicherten Spieler. Sie werden automatisch beim Spielstart gespeichert.',
+    recentGames: 'Letzte Spiele', memberSince: 'Mitglied seit', addEmail: '+ E-Mail hinzufügen', emailPlaceholder: 'E-Mail-Adresse',
+    save: 'Speichern', games: 'Spiele', wins: 'Siege', elo: 'Elo', removeConfirm: 'Diesen Spieler entfernen?',
   },
   category: { dice: 'Würfelspiele', card: 'Kartenspiele', darts: 'Darts', board: 'Brettspiele', outdoor: 'Outdoor', party: 'Partyspiele' },
   login: { subtitle: 'Verfolge Punkte, baue deine Wertung auf und sieh, wer der wahre Champion ist.', terms: 'Durch die Anmeldung stimmst du unseren Nutzungsbedingungen zu. Immer kostenlos.', error: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.' },
@@ -174,6 +198,12 @@ const fr: Messages = {
     yourTurn: 'à vous', round: 'Manche', rounds: 'manches', addRound: 'Ajouter une manche',
     gameOver: 'Partie terminée ! Quelqu\'un a atteint {n} points.', lowestWins: 'Le score le plus bas gagne.',
     shootTheMoon: 'Shoot the Moon ?', moonShot: '{name} a tiré la lune — tous les autres reçoivent {pts} pts', rulesOption: 'Règles',
+    emailOptional: 'E-mail (optionnel)', emailHint: 'Pour qu\'ils puissent se connecter et récupérer leurs scores plus tard',
+  },
+  profile: {
+    yourRatings: 'Vos classements', yourPlayers: 'Vos joueurs', noPlayers: 'Aucun joueur enregistré. Ils sont sauvegardés automatiquement au démarrage d\'une partie.',
+    recentGames: 'Parties récentes', memberSince: 'Membre depuis', addEmail: '+ Ajouter un e-mail', emailPlaceholder: 'Adresse e-mail',
+    save: 'Enregistrer', games: 'parties', wins: 'victoires', elo: 'Elo', removeConfirm: 'Supprimer ce joueur ?',
   },
   category: { dice: 'Jeux de dés', card: 'Jeux de cartes', darts: 'Fléchettes', board: 'Jeux de plateau', outdoor: 'Plein air', party: 'Jeux de société' },
   login: { subtitle: 'Suivez les scores, construisez votre classement et voyez qui est le vrai champion.', terms: 'En vous connectant, vous acceptez nos conditions d\'utilisation. Toujours gratuit.', error: 'Quelque chose s\'est mal passé. Veuillez réessayer.' },
@@ -212,6 +242,12 @@ const es: Messages = {
     yourTurn: 'tu turno', round: 'Ronda', rounds: 'rondas', addRound: 'Añadir ronda',
     gameOver: '¡Juego terminado! Alguien alcanzó {n} puntos.', lowestWins: 'La puntuación más baja gana.',
     shootTheMoon: '¿Shoot the Moon?', moonShot: '{name} disparó a la luna — todos los demás reciben {pts} pts', rulesOption: 'Reglas',
+    emailOptional: 'Correo (opcional)', emailHint: 'Para que puedan iniciar sesión y reclamar sus puntos más tarde',
+  },
+  profile: {
+    yourRatings: 'Tus clasificaciones', yourPlayers: 'Tus jugadores', noPlayers: 'Sin jugadores guardados. Se guardan automáticamente al iniciar una partida.',
+    recentGames: 'Partidas recientes', memberSince: 'Miembro desde', addEmail: '+ Añadir correo', emailPlaceholder: 'Correo electrónico',
+    save: 'Guardar', games: 'partidas', wins: 'victorias', elo: 'Elo', removeConfirm: '¿Eliminar este jugador?',
   },
   category: { dice: 'Juegos de dados', card: 'Juegos de cartas', darts: 'Dardos', board: 'Juegos de mesa', outdoor: 'Exterior', party: 'Juegos de fiesta' },
   login: { subtitle: 'Sigue los puntos, construye tu clasificación y descubre quién es el verdadero campeón.', terms: 'Al iniciar sesión aceptas nuestros términos de servicio. Siempre gratis.', error: 'Algo salió mal. Por favor, inténtalo de nuevo.' },
