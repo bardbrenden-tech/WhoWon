@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { GAMES, CATEGORIES } from '@/lib/games'
 
 export default function HomePage() {
@@ -7,25 +8,33 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="bg-white border-b border-gray-200 py-20 px-4 text-center">
-        <div className="max-w-2xl mx-auto">
-          <div className="text-6xl mb-6">🏆</div>
-          <h1 className="text-4xl sm:text-5xl font-black text-gray-900 mb-4 tracking-tight">
+      <section className="relative overflow-hidden min-h-[520px] flex items-center justify-center py-24 px-4 text-center">
+        <Image
+          src="/images/Background.jpg"
+          alt=""
+          fill
+          className="object-cover object-center"
+          priority
+          quality={90}
+        />
+        <div className="absolute inset-0 bg-black/65" />
+        <div className="relative z-10 max-w-2xl mx-auto">
+          <h1 className="text-5xl sm:text-6xl font-black text-white mb-4 tracking-tight drop-shadow-lg">
             Who Won?
           </h1>
-          <p className="text-lg text-gray-500 mb-8 max-w-xl mx-auto">
-            The social scoreboard for physical games. No more paper. Track scores, compete with your group, and build your global rating.
+          <p className="text-lg sm:text-xl text-gray-200 mb-10 max-w-xl mx-auto leading-relaxed">
+            The social scoreboard for physical games. Track scores, compete with your group, and build your global rating.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/games"
-              className="bg-indigo-600 text-white font-semibold px-8 py-3 rounded-xl hover:bg-indigo-700 transition-colors text-lg"
+              className="bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-8 py-3.5 rounded-xl transition-colors text-lg shadow-lg shadow-indigo-900/40"
             >
               Browse Games
             </Link>
             <Link
               href="/login"
-              className="border border-gray-300 text-gray-700 font-semibold px-8 py-3 rounded-xl hover:bg-gray-50 transition-colors text-lg"
+              className="border-2 border-white/40 hover:border-white/70 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-lg backdrop-blur-sm"
             >
               Sign in free
             </Link>
