@@ -79,7 +79,7 @@ export default function StartGameButton({ game, user }: Props) {
     }
 
     // Create session
-    const { data: session, error } = await supabase.from('sessions').insert({ game_id: game.id, created_by: user!.id, options: gameOptions }).select('id').single()
+    const { data: session, error } = await supabase.from('sessions').insert({ game_id: game.id, created_by: user!.id, options: { higher_is_better: game.higher_is_better, ...gameOptions } }).select('id').single()
     if (error || !session) { setLoading(false); return }
 
     // Add session players

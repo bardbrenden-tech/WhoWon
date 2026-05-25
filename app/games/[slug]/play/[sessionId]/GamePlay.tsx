@@ -8,12 +8,22 @@ import type { GameMeta, Session, SessionPlayer, GameComponentProps } from '@/lib
 
 type DynamicGameComponent = React.ComponentType<GameComponentProps>
 
+const Generic = dynamic<GameComponentProps>(() => import('@/components/games/GenericScorecard'))
+
 const GAME_COMPONENTS: Record<string, DynamicGameComponent> = {
-  'maxi-yatzy': dynamic<GameComponentProps>(() => import('@/components/games/MaxiYatzy')),
-  'yatzy':       dynamic<GameComponentProps>(() => import('@/components/games/Yatzy')),
-  'darts-501':   dynamic<GameComponentProps>(() => import('@/components/games/Darts501')),
-  'hearts':      dynamic<GameComponentProps>(() => import('@/components/games/Hearts')),
-  'farkle':      dynamic<GameComponentProps>(() => import('@/components/games/Farkle')),
+  'maxi-yatzy':     dynamic<GameComponentProps>(() => import('@/components/games/MaxiYatzy')),
+  'yatzy':          dynamic<GameComponentProps>(() => import('@/components/games/Yatzy')),
+  'darts-501':      dynamic<GameComponentProps>(() => import('@/components/games/Darts501')),
+  'darts-301':      dynamic<GameComponentProps>(() => import('@/components/games/Darts301')),
+  'darts-cricket':  dynamic<GameComponentProps>(() => import('@/components/games/DartsCricket')),
+  'hearts':         dynamic<GameComponentProps>(() => import('@/components/games/Hearts')),
+  'farkle':         dynamic<GameComponentProps>(() => import('@/components/games/Farkle')),
+  // Generic round-by-round scorecard
+  'spades': Generic, 'rummy': Generic, 'gin-rummy': Generic, 'canasta': Generic,
+  'phase-10': Generic, 'uno': Generic, 'cabo': Generic, 'cribbage': Generic,
+  'doppelkopf': Generic, 'skat': Generic, 'catan': Generic, 'ticket-to-ride': Generic,
+  'carcassonne': Generic, 'scrabble': Generic, 'backgammon': Generic,
+  'sequence': Generic, 'petanque': Generic, 'croquet': Generic, 'bowling': Generic,
 }
 
 interface Props {
