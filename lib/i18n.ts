@@ -9,7 +9,7 @@ export const LOCALES = {
 export type Locale = keyof typeof LOCALES
 
 export type Messages = {
-  nav: { games: string; leaderboard: string; myProfile: string; signOut: string; signIn: string }
+  nav: { games: string; leaderboard: string; myProfile: string; signOut: string; signIn: string; challenges: string }
   hero: { subtitle: string; browseGames: string; signInFree: string }
   home: {
     browseByCategory: string; playNow: string; howItWorks: string; footer: string
@@ -42,12 +42,22 @@ export type Messages = {
     confirm: string; players: string; minPlayers: string; vs: string; complete: string
     yourTurn: string; addPlayer: string; startWith: string; starting: string; cancel: string
   }
+  challenge: {
+    newChallenge: string; myChallenges: string; noChallenge: string
+    name: string; namePlaceholder: string
+    pickGames: string; pickPlayers: string
+    start: string; starting: string; cancel: string
+    notStarted: string; ongoing: string; done: string
+    startTournament: string; viewBracket: string; standings: string
+    points: string; minGames: string; minPlayers: string
+    backToChallenge: string; champion: string; complete: string
+  }
   login: { subtitle: string; terms: string; error: string }
   gameDesc: Record<string, string>
 }
 
 const en: Messages = {
-  nav: { games: 'Games', leaderboard: 'Leaderboard', myProfile: 'My Profile', signOut: 'Sign out', signIn: 'Sign in' },
+  nav: { games: 'Games', leaderboard: 'Leaderboard', myProfile: 'My Profile', signOut: 'Sign out', signIn: 'Sign in', challenges: 'Challenges' },
   hero: {
     subtitle: 'The social scoreboard for physical games. Track scores, compete with your group, and build your global rating.',
     browseGames: 'Browse Games',
@@ -86,6 +96,16 @@ const en: Messages = {
     confirm: 'Confirm', players: 'players', minPlayers: 'Need at least 4 players for a tournament', vs: 'vs',
     complete: 'Tournament complete!', yourTurn: 'Pick winner', addPlayer: 'Add player...', startWith: 'Start tournament ({n} players)',
     starting: 'Creating...', cancel: 'Cancel',
+  },
+  challenge: {
+    newChallenge: 'New Challenge', myChallenges: 'Challenges', noChallenge: 'No challenges yet — create one to host a multi-game event!',
+    name: 'Challenge name', namePlaceholder: 'e.g. Company Party 3-Game Challenge',
+    pickGames: 'Pick events', pickPlayers: 'Add players',
+    start: 'Start challenge', starting: 'Creating...', cancel: 'Cancel',
+    notStarted: 'Not started', ongoing: 'Ongoing', done: 'Done',
+    startTournament: 'Start tournament', viewBracket: 'View bracket', standings: 'Standings',
+    points: 'pts', minGames: 'Pick at least 2 events', minPlayers: 'Add at least 4 players',
+    backToChallenge: '← Back to challenge', champion: '🏆 Challenge Champion!', complete: 'Challenge complete!',
   },
   login: { subtitle: 'Track scores, build your rating, and see who the real champion is.', terms: 'By signing in you agree to our terms of service. Always free.', error: 'Something went wrong. Please try again.' },
   gameDesc: {
@@ -127,7 +147,7 @@ const en: Messages = {
 }
 
 const no: Messages = {
-  nav: { games: 'Spill', leaderboard: 'Toppliste', myProfile: 'Min profil', signOut: 'Logg ut', signIn: 'Logg inn' },
+  nav: { games: 'Spill', leaderboard: 'Toppliste', myProfile: 'Min profil', signOut: 'Logg ut', signIn: 'Logg inn', challenges: 'Utfordringer' },
   hero: {
     subtitle: 'Det sosiale poengtavlen for fysiske spill. Spor poeng, konkurrér med gruppen din og bygg din globale rating.',
     browseGames: 'Se alle spill',
@@ -166,6 +186,16 @@ const no: Messages = {
     confirm: 'Bekreft', players: 'spillere', minPlayers: 'Trenger minst 4 spillere til en turnering', vs: 'mot',
     complete: 'Turneringen er ferdig!', yourTurn: 'Velg vinner', addPlayer: 'Legg til spiller...', startWith: 'Start turnering ({n} spillere)',
     starting: 'Oppretter...', cancel: 'Avbryt',
+  },
+  challenge: {
+    newChallenge: 'Ny utfordring', myChallenges: 'Utfordringer', noChallenge: 'Ingen utfordringer ennå — lag en for å arrangere en flergrens-turnering!',
+    name: 'Navn på utfordringen', namePlaceholder: 'F.eks. Firmafest 3-kamp',
+    pickGames: 'Velg grener', pickPlayers: 'Legg til spillere',
+    start: 'Start utfordring', starting: 'Oppretter...', cancel: 'Avbryt',
+    notStarted: 'Ikke startet', ongoing: 'Pågår', done: 'Ferdig',
+    startTournament: 'Start turnering', viewBracket: 'Se bracket', standings: 'Stilling',
+    points: 'poeng', minGames: 'Velg minst 2 grener', minPlayers: 'Legg til minst 4 spillere',
+    backToChallenge: '← Tilbake til utfordringen', champion: '🏆 Utfordringsvinner!', complete: 'Utfordringen er ferdig!',
   },
   login: { subtitle: 'Spor poeng, bygg ratingen din og se hvem som er den virkelige mesteren.', terms: 'Ved å logge inn godtar du våre vilkår. Alltid gratis.', error: 'Noe gikk galt. Prøv igjen.' },
   gameDesc: {
@@ -207,7 +237,7 @@ const no: Messages = {
 }
 
 const de: Messages = {
-  nav: { games: 'Spiele', leaderboard: 'Bestenliste', myProfile: 'Mein Profil', signOut: 'Abmelden', signIn: 'Anmelden' },
+  nav: { games: 'Spiele', leaderboard: 'Bestenliste', myProfile: 'Mein Profil', signOut: 'Abmelden', signIn: 'Anmelden', challenges: 'Challenges' },
   hero: {
     subtitle: 'Das soziale Spielbrett für Gesellschaftsspiele. Verfolge Punkte, konkurriere mit deiner Gruppe und baue deine globale Wertung auf.',
     browseGames: 'Spiele entdecken',
@@ -246,6 +276,16 @@ const de: Messages = {
     confirm: 'Bestätigen', players: 'Spieler', minPlayers: 'Mindestens 4 Spieler für ein Turnier', vs: 'gegen',
     complete: 'Turnier beendet!', yourTurn: 'Gewinner wählen', addPlayer: 'Spieler hinzufügen...', startWith: 'Turnier starten ({n} Spieler)',
     starting: 'Wird erstellt...', cancel: 'Abbrechen',
+  },
+  challenge: {
+    newChallenge: 'Neue Challenge', myChallenges: 'Challenges', noChallenge: 'Noch keine Challenges — erstelle eine für ein Mehrdisziplinen-Event!',
+    name: 'Challenge-Name', namePlaceholder: 'z.B. Firmenparty 3-Disziplinen-Challenge',
+    pickGames: 'Disziplinen wählen', pickPlayers: 'Spieler hinzufügen',
+    start: 'Challenge starten', starting: 'Wird erstellt...', cancel: 'Abbrechen',
+    notStarted: 'Nicht gestartet', ongoing: 'Laufend', done: 'Fertig',
+    startTournament: 'Turnier starten', viewBracket: 'Turnierbaum', standings: 'Rangliste',
+    points: 'Pkt', minGames: 'Mindestens 2 Disziplinen wählen', minPlayers: 'Mindestens 4 Spieler hinzufügen',
+    backToChallenge: '← Zurück zur Challenge', champion: '🏆 Challenge-Champion!', complete: 'Challenge beendet!',
   },
   login: { subtitle: 'Verfolge Punkte, baue deine Wertung auf und sieh, wer der wahre Champion ist.', terms: 'Durch die Anmeldung stimmst du unseren Nutzungsbedingungen zu. Immer kostenlos.', error: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.' },
   gameDesc: {
@@ -287,7 +327,7 @@ const de: Messages = {
 }
 
 const fr: Messages = {
-  nav: { games: 'Jeux', leaderboard: 'Classement', myProfile: 'Mon profil', signOut: 'Se déconnecter', signIn: 'Se connecter' },
+  nav: { games: 'Jeux', leaderboard: 'Classement', myProfile: 'Mon profil', signOut: 'Se déconnecter', signIn: 'Se connecter', challenges: 'Défis' },
   hero: {
     subtitle: 'Le tableau de scores social pour les jeux physiques. Suivez les scores, affrontez votre groupe et construisez votre classement mondial.',
     browseGames: 'Voir les jeux',
@@ -326,6 +366,16 @@ const fr: Messages = {
     confirm: 'Confirmer', players: 'joueurs', minPlayers: 'Minimum 4 joueurs pour un tournoi', vs: 'contre',
     complete: 'Tournoi terminé !', yourTurn: 'Choisir le gagnant', addPlayer: 'Ajouter un joueur...', startWith: 'Démarrer le tournoi ({n} joueurs)',
     starting: 'Création...', cancel: 'Annuler',
+  },
+  challenge: {
+    newChallenge: 'Nouveau défi', myChallenges: 'Défis', noChallenge: 'Aucun défi encore — créez-en un pour organiser un événement multi-épreuves !',
+    name: 'Nom du défi', namePlaceholder: "Ex : Fête d'entreprise — 3 épreuves",
+    pickGames: 'Choisir les épreuves', pickPlayers: 'Ajouter des joueurs',
+    start: 'Démarrer le défi', starting: 'Création...', cancel: 'Annuler',
+    notStarted: 'Non commencé', ongoing: 'En cours', done: 'Terminé',
+    startTournament: 'Démarrer un tournoi', viewBracket: 'Voir le tableau', standings: 'Classement',
+    points: 'pts', minGames: 'Choisir au moins 2 épreuves', minPlayers: 'Ajouter au moins 4 joueurs',
+    backToChallenge: '← Retour au défi', champion: '🏆 Champion du défi !', complete: 'Défi terminé !',
   },
   login: { subtitle: 'Suivez les scores, construisez votre classement et voyez qui est le vrai champion.', terms: 'En vous connectant, vous acceptez nos conditions d\'utilisation. Toujours gratuit.', error: 'Quelque chose s\'est mal passé. Veuillez réessayer.' },
   gameDesc: {
@@ -367,7 +417,7 @@ const fr: Messages = {
 }
 
 const es: Messages = {
-  nav: { games: 'Juegos', leaderboard: 'Clasificación', myProfile: 'Mi perfil', signOut: 'Cerrar sesión', signIn: 'Iniciar sesión' },
+  nav: { games: 'Juegos', leaderboard: 'Clasificación', myProfile: 'Mi perfil', signOut: 'Cerrar sesión', signIn: 'Iniciar sesión', challenges: 'Retos' },
   hero: {
     subtitle: 'El marcador social para juegos físicos. Sigue los puntos, compite con tu grupo y construye tu clasificación global.',
     browseGames: 'Ver juegos',
@@ -406,6 +456,16 @@ const es: Messages = {
     confirm: 'Confirmar', players: 'jugadores', minPlayers: 'Mínimo 4 jugadores para un torneo', vs: 'vs',
     complete: '¡Torneo terminado!', yourTurn: 'Elegir ganador', addPlayer: 'Añadir jugador...', startWith: 'Iniciar torneo ({n} jugadores)',
     starting: 'Creando...', cancel: 'Cancelar',
+  },
+  challenge: {
+    newChallenge: 'Nuevo reto', myChallenges: 'Retos', noChallenge: 'Aún no hay retos — crea uno para organizar un evento multi-disciplina!',
+    name: 'Nombre del reto', namePlaceholder: 'Ej: Fiesta de empresa — 3 disciplinas',
+    pickGames: 'Elegir disciplinas', pickPlayers: 'Añadir jugadores',
+    start: 'Iniciar reto', starting: 'Creando...', cancel: 'Cancelar',
+    notStarted: 'No iniciado', ongoing: 'En curso', done: 'Terminado',
+    startTournament: 'Iniciar torneo', viewBracket: 'Ver cuadro', standings: 'Clasificación',
+    points: 'pts', minGames: 'Elige al menos 2 disciplinas', minPlayers: 'Añade al menos 4 jugadores',
+    backToChallenge: '← Volver al reto', champion: '🏆 ¡Campeón del reto!', complete: '¡Reto completado!',
   },
   login: { subtitle: 'Sigue los puntos, construye tu clasificación y descubre quién es el verdadero campeón.', terms: 'Al iniciar sesión aceptas nuestros términos de servicio. Siempre gratis.', error: 'Algo salió mal. Por favor, inténtalo de nuevo.' },
   gameDesc: {

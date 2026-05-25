@@ -26,6 +26,7 @@ export default function Navbar({ user }: NavbarProps) {
   const navLinks = [
     { href: '/games', label: t.nav.games },
     { href: '/leaderboard', label: t.nav.leaderboard },
+    { href: '/challenges', label: t.nav.challenges },
   ]
 
   return (

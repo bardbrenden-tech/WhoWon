@@ -211,6 +211,53 @@ create policy "Auth users can manage matches" on tournament_matches for all usin
 
 -- ============================================================
 
+-- ============================================================
+-- Multi-game challenges
+-- Run this migration if upgrading from single-tournament schema
+
+create table if not exists challenges (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  created_by uuid not null references auth.users(id),
+  status text not null default 'active' check (status in ('active', 'completed')),
+  created_at timestamptz not null default now()
+);
+alter table challenges enable row level security;
+create policy "Challenges viewable by everyone" on challenges for select using (true);
+create policy "Auth users create challenges" on challenges for insert to authenticated with check (auth.uid() = created_by);
+create policy "Creator updates challenges" on challenges for update to authenticated using (auth.uid() = created_by);
+
+create table if not exists challenge_players (
+  id uuid primary key default gen_random_uuid(),
+  challenge_id uuid not null references challenges(id) on delete cascade,
+  display_name text not null,
+  profile_id uuid references auth.users(id),
+  guest_player_id uuid references guest_players(id)
+);
+alter table challenge_players enable row level security;
+create policy "Challenge players viewable by everyone" on challenge_players for select using (true);
+create policy "Auth users manage challenge players" on challenge_players for all to authenticated
+  using (challenge_id in (select id from challenges where created_by = auth.uid()))
+  with check (challenge_id in (select id from challenges where created_by = auth.uid()));
+
+create table if not exists challenge_games (
+  id uuid primary key default gen_random_uuid(),
+  challenge_id uuid not null references challenges(id) on delete cascade,
+  game_id text not null,
+  order_index int not null default 0,
+  tournament_id uuid references tournaments(id)
+);
+alter table challenge_games enable row level security;
+create policy "Challenge games viewable by everyone" on challenge_games for select using (true);
+create policy "Auth users manage challenge games" on challenge_games for all to authenticated
+  using (challenge_id in (select id from challenges where created_by = auth.uid()))
+  with check (challenge_id in (select id from challenges where created_by = auth.uid()));
+
+-- Link tournament players back to the challenge player they represent
+alter table tournament_players add column if not exists challenge_player_id uuid references challenge_players(id);
+
+-- ============================================================
+
 -- Game star ratings
 create table game_ratings (
   profile_id uuid references profiles(id),

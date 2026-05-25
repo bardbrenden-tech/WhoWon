@@ -85,6 +85,7 @@ export interface TournamentPlayer {
   guest_player_id: string | null
   display_name: string
   seed: number
+  challenge_player_id?: string | null
 }
 
 export interface TournamentMatch {
@@ -100,6 +101,37 @@ export interface TournamentMatch {
   player1?: TournamentPlayer
   player2?: TournamentPlayer
   winner?: TournamentPlayer
+}
+
+export interface Challenge {
+  id: string
+  name: string
+  created_by: string
+  status: 'active' | 'completed'
+  created_at: string
+}
+
+export interface ChallengePlayer {
+  id: string
+  challenge_id: string
+  display_name: string
+  profile_id: string | null
+  guest_player_id: string | null
+}
+
+export interface ChallengeGame {
+  id: string
+  challenge_id: string
+  game_id: string
+  order_index: number
+  tournament_id: string | null
+}
+
+export interface Standing {
+  challengePlayerId: string
+  displayName: string
+  points: number
+  placements: Record<string, number>
 }
 
 export interface Feedback {
