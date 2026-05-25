@@ -26,6 +26,8 @@ const GAME_COMPONENTS: Record<string, DynamicGameComponent> = {
   'sequence': Generic, 'petanque': Generic, 'croquet': Generic, 'bowling': Generic,
   'kubb': Generic, 'molkky': Generic, 'disc-golf': Generic, 'cornhole': Generic,
   'table-tennis': Generic, 'billiards': Generic, 'badminton': Generic, 'foosball': Generic,
+  'golf':   dynamic<GameComponentProps>(() => import('@/components/games/Golf')),
+  'tennis': dynamic<GameComponentProps>(() => import('@/components/games/Tennis')),
 }
 
 interface Props {

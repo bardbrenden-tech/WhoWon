@@ -143,6 +143,8 @@ const en: Messages = {
     'billiards': 'Track frames of pool or billiards. Most frames won takes the match.',
     'badminton': 'Track sets of badminton. First to win 2 sets (best of 3) wins.',
     'foosball': 'Track goals and games of table football. Great for group tournaments.',
+    'golf': 'Set up your course with par per hole, then track strokes for each player. See live score vs par and a running leaderboard.',
+    'tennis': 'Track sets in a tennis match. Enter the set score (e.g. 6-4) and who won each set.',
   },
 }
 
@@ -233,6 +235,8 @@ const no: Messages = {
     'billiards': 'Spor frames i biljard eller pool. Flest vunnede frames tar kampen.',
     'badminton': 'Spor sett i badminton. Første til 2 sett (best av 3) vinner.',
     'foosball': 'Spor mål og kamper i fotballbord. Perfekt for gruppeturneringer.',
+    'golf': 'Sett opp banen med par per hull, spor slag per hull og se score mot par i sanntid. Lavest totalt antall slag vinner.',
+    'tennis': 'Spor sett i en tenniskamp. Legg inn sett-resultater (f.eks. 6-4) og hvem som vant hvert sett.',
   },
 }
 
@@ -323,6 +327,8 @@ const de: Messages = {
     'molkky': 'Wirf den Mölkky-Stift, um nummerierte Kegel umzuwerfen. Erster auf genau 50 Punkten gewinnt.',
     'disc-golf': 'Wirf Scheiben in Korbziele mit möglichst wenigen Würfen. Niedrigste Gesamtpunktzahl gewinnt.',
     'cornhole': 'Wirf Säcke ins Loch (3 Pkt) oder auf das Brett (1 Pkt). Punkte werden saldiert. Erster auf 21 gewinnt.',
+    'golf': 'Richte den Kurs mit Par pro Loch ein, verfolge Schläge und sieh dein Score vs. Par in Echtzeit.',
+    'tennis': 'Verfolge Sätze im Tennis. Trage Satzergebnisse ein (z.B. 6-4) und wer jeden Satz gewonnen hat.',
   },
 }
 
@@ -413,6 +419,8 @@ const fr: Messages = {
     'molkky': 'Lancez le quille Mölkky pour renverser des quilles numérotées. Premier à exactement 50 points gagne.',
     'disc-golf': 'Lancez des disques dans les paniers en aussi peu de lancers que possible. Score le plus bas gagne.',
     'cornhole': 'Lancez des sacs dans le trou (3 pts) ou sur le plateau (1 pt). Les points s\'annulent. Premier à 21 gagne.',
+    'golf': 'Configurez le parcours avec le par par trou, suivez les coups et voyez votre score vs par en temps réel.',
+    'tennis': 'Suivez les sets d\'un match de tennis. Entrez le score (ex. 6-4) et qui a gagné chaque set.',
   },
 }
 
@@ -503,6 +511,8 @@ const es: Messages = {
     'molkky': 'Lanza el palo Mölkky para derribar pinos numerados. El primero en exactamente 50 puntos gana.',
     'disc-golf': 'Lanza discos a las canastas en el menor número de lanzamientos. La puntuación más baja gana.',
     'cornhole': 'Lanza sacos al agujero (3 pts) o al tablero (1 pt). Los puntos se cancelan. Primero en 21 gana.',
+    'golf': 'Configura el recorrido con el par por hoyo, registra golpes y ve tu puntuación vs par en tiempo real.',
+    'tennis': 'Registra los sets de un partido de tenis. Introduce el marcador (ej. 6-4) y quién ganó cada set.',
   },
 }
 
