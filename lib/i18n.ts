@@ -102,6 +102,10 @@ const en: Messages = {
     'petanque': 'Throw boules closest to the jack to score. First team to 13 points wins.',
     'bowling': 'Track your bowling scores across 10 frames including strikes and spares.',
     'croquet': 'Hit balls through hoops in order using a mallet. First to complete all hoops wins.',
+    'kubb': 'Knock over the opponent\'s kubbs with wooden batons, then topple the king to win.',
+    'molkky': 'Throw the Mölkky skittle to knock over numbered pins. First to reach exactly 50 wins.',
+    'disc-golf': 'Complete each hole in as few disc throws as possible. Lowest total score wins.',
+    'cornhole': 'Toss bags into the hole (3 pts) or onto the board (1 pt). Cancel scoring. First to 21 wins.',
   },
 }
 
@@ -167,6 +171,10 @@ const no: Messages = {
     'petanque': 'Kast boules nærmest cochonneten for å score. Første lag til 13 poeng vinner.',
     'bowling': 'Spor bowlingpoengene dine over 10 frames inkludert strikes og spares.',
     'croquet': 'Slå baller gjennom ringer i rekkefølge med en kølle. Første til å fullføre alle ringer vinner.',
+    'kubb': 'Kast kastepinner for å velte motstanderens kubber, deretter toppfiguren for å vinne.',
+    'molkky': 'Kast Mölkky-pinnen for å velte nummererte kjegler. Første til nøyaktig 50 poeng vinner.',
+    'disc-golf': 'Kast disc inn i kurven på så få kast som mulig. Lavest totalscore vinner.',
+    'cornhole': 'Kast poser i hullet (3 p) eller på brettet (1 p). Poeng kanselleres mot hverandre. Første til 21 vinner.',
   },
 }
 
@@ -232,6 +240,10 @@ const de: Messages = {
     'petanque': 'Wirf Boules am nächsten zur Zielkugel. Erstes Team mit 13 Punkten gewinnt.',
     'bowling': 'Verfolge deine Bowling-Punktzahlen über 10 Frames mit Strikes und Spares.',
     'croquet': 'Schlage Bälle mit einem Schläger in der richtigen Reihenfolge durch Tore.',
+    'kubb': 'Wirf Stäbe, um die Kubbs des Gegners umzuwerfen, dann den König für den Sieg.',
+    'molkky': 'Wirf den Mölkky-Stift, um nummerierte Kegel umzuwerfen. Erster auf genau 50 Punkten gewinnt.',
+    'disc-golf': 'Wirf Scheiben in Korbziele mit möglichst wenigen Würfen. Niedrigste Gesamtpunktzahl gewinnt.',
+    'cornhole': 'Wirf Säcke ins Loch (3 Pkt) oder auf das Brett (1 Pkt). Punkte werden saldiert. Erster auf 21 gewinnt.',
   },
 }
 
@@ -297,6 +309,10 @@ const fr: Messages = {
     'petanque': 'Lancez les boules le plus près du cochonnet. Première équipe à 13 points gagne.',
     'bowling': 'Suivez vos scores sur 10 carreaux avec strikes et spares.',
     'croquet': 'Frappez les balles dans les arceaux dans l\'ordre avec un maillet.',
+    'kubb': 'Lancez des bâtons pour renverser les kubbs adverses, puis le roi pour gagner.',
+    'molkky': 'Lancez le quille Mölkky pour renverser des quilles numérotées. Premier à exactement 50 points gagne.',
+    'disc-golf': 'Lancez des disques dans les paniers en aussi peu de lancers que possible. Score le plus bas gagne.',
+    'cornhole': 'Lancez des sacs dans le trou (3 pts) ou sur le plateau (1 pt). Les points s\'annulent. Premier à 21 gagne.',
   },
 }
 
@@ -362,6 +378,10 @@ const es: Messages = {
     'petanque': 'Lanza las bolas más cerca del boliche. El primer equipo en 13 puntos gana.',
     'bowling': 'Registra tus puntuaciones en 10 turnos incluyendo plenos y semiplenos.',
     'croquet': 'Golpea las bolas por los aros en orden con un mazo. El primero en completarlos gana.',
+    'kubb': 'Lanza bastones para derribar los kubbs rivales, luego el rey para ganar.',
+    'molkky': 'Lanza el palo Mölkky para derribar pinos numerados. El primero en exactamente 50 puntos gana.',
+    'disc-golf': 'Lanza discos a las canastas en el menor número de lanzamientos. La puntuación más baja gana.',
+    'cornhole': 'Lanza sacos al agujero (3 pts) o al tablero (1 pt). Los puntos se cancelan. Primero en 21 gana.',
   },
 }
 
