@@ -2,8 +2,10 @@ import type { Metadata } from 'next'
 import { Geist } from 'next/font/google'
 import './globals.css'
 import { createClient } from '@/lib/supabase/server'
+import { getLocale } from '@/lib/i18n-server'
 import Navbar from '@/components/Navbar'
 import FeedbackButton from '@/components/FeedbackButton'
+import { LanguageProvider } from '@/components/LanguageProvider'
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist' })
 
@@ -15,13 +17,16 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const locale = await getLocale()
 
   return (
-    <html lang="en" className={`${geist.variable} h-full`}>
+    <html lang={locale} className={`${geist.variable} h-full`}>
       <body className="min-h-full bg-gray-50 text-gray-900 font-sans antialiased">
-        <Navbar user={user} />
-        <main>{children}</main>
-        <FeedbackButton />
+        <LanguageProvider initialLocale={locale}>
+          <Navbar user={user} />
+          <main>{children}</main>
+          <FeedbackButton />
+        </LanguageProvider>
       </body>
     </html>
   )

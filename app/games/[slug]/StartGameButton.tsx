@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { GAME_OPTIONS } from '@/lib/games'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 import type { GameMeta } from '@/lib/types'
 import type { User } from '@supabase/supabase-js'
 
@@ -20,6 +22,7 @@ interface PlayerEntry {
 
 export default function StartGameButton({ game, user }: Props) {
   const router = useRouter()
+  const { t } = useLocale()
   const [open, setOpen] = useState(false)
   const [players, setPlayers] = useState<PlayerEntry[]>([])
   const [guestPlayers, setGuestPlayers] = useState<Array<{ id: string; name: string }>>([])
@@ -97,7 +100,7 @@ export default function StartGameButton({ game, user }: Props) {
         onClick={handleOpen}
         className="bg-indigo-600 text-white font-bold px-6 py-2.5 rounded-xl hover:bg-indigo-700 transition-colors"
       >
-        Start Game
+        {t.game.startGame}
       </button>
 
       {open && (
@@ -105,7 +108,7 @@ export default function StartGameButton({ game, user }: Props) {
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
           <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
             <h2 className="font-bold text-gray-900 text-lg mb-1">Start {game.name}</h2>
-            <p className="text-sm text-gray-500 mb-5">{game.min_players}–{game.max_players} players</p>
+            <p className="text-sm text-gray-500 mb-5">{game.min_players}–{game.max_players} {t.game.players}</p>
 
             {/* Current players */}
             <div className="space-y-2 mb-4">
@@ -125,7 +128,7 @@ export default function StartGameButton({ game, user }: Props) {
             {/* Add saved guests */}
             {guestPlayers.filter(g => !players.find(p => p.guestPlayerId === g.id)).length > 0 && (
               <div className="mb-4">
-                <p className="text-xs text-gray-500 font-medium mb-2 uppercase tracking-wide">Your players</p>
+                <p className="text-xs text-gray-500 font-medium mb-2 uppercase tracking-wide">{t.game.yourPlayers}</p>
                 <div className="flex flex-wrap gap-2">
                   {guestPlayers.filter(g => !players.find(p => p.guestPlayerId === g.id)).map(g => (
                     <button
@@ -148,11 +151,11 @@ export default function StartGameButton({ game, user }: Props) {
                   value={newName}
                   onChange={e => setNewName(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && addNew()}
-                  placeholder="Add player name..."
+                  placeholder={t.game.addPlayerName}
                   className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
                 <button onClick={addNew} disabled={!newName.trim()} className="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-200 disabled:opacity-40 transition-colors">
-                  Add
+                  {t.game.add}
                 </button>
               </div>
             )}
@@ -160,7 +163,7 @@ export default function StartGameButton({ game, user }: Props) {
             {/* Game options */}
             {gameOptionDefs.length > 0 && (
               <div className="mb-5">
-                <p className="text-xs text-gray-500 font-medium mb-2 uppercase tracking-wide">Rules</p>
+                <p className="text-xs text-gray-500 font-medium mb-2 uppercase tracking-wide">{t.game.rulesOption}</p>
                 <div className="space-y-2">
                   {gameOptionDefs.map(opt => (
                     <label key={opt.key} className="flex items-start gap-3 cursor-pointer">
@@ -182,20 +185,20 @@ export default function StartGameButton({ game, user }: Props) {
 
             <div className="flex gap-3">
               <button onClick={() => setOpen(false)} className="flex-1 border border-gray-300 text-gray-600 text-sm font-medium py-2.5 rounded-xl hover:bg-gray-50 transition-colors">
-                Cancel
+                {t.game.cancel}
               </button>
               <button
                 onClick={startGame}
                 disabled={players.length < game.min_players || loading}
                 className="flex-1 bg-indigo-600 text-white text-sm font-bold py-2.5 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-40"
               >
-                {loading ? 'Starting...' : `Start (${players.length} players)`}
+                {loading ? t.game.starting : tp(t.game.startWith, { n: players.length })}
               </button>
             </div>
 
             {players.length < game.min_players && (
               <p className="text-xs text-center text-gray-400 mt-2">
-                Need at least {game.min_players} players to start
+                {tp(t.game.needAtLeast, { n: game.min_players })}
               </p>
             )}
           </div>

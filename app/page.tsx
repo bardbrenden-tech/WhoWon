@@ -1,8 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { GAMES, CATEGORIES } from '@/lib/games'
+import { getServerT } from '@/lib/i18n-server'
+import type { GameCategory } from '@/lib/types'
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { t } = await getServerT()
   const activeGames = GAMES.filter(g => g.active)
 
   return (
@@ -23,20 +26,20 @@ export default function HomePage() {
             Who Won?
           </h1>
           <p className="text-lg sm:text-xl text-gray-200 mb-10 max-w-xl mx-auto leading-relaxed">
-            The social scoreboard for physical games. Track scores, compete with your group, and build your global rating.
+            {t.hero.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/games"
               className="bg-indigo-500 hover:bg-indigo-400 text-white font-bold px-8 py-3.5 rounded-xl transition-colors text-lg shadow-lg shadow-indigo-900/40"
             >
-              Browse Games
+              {t.hero.browseGames}
             </Link>
             <Link
               href="/login"
               className="border-2 border-white/40 hover:border-white/70 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-lg backdrop-blur-sm"
             >
-              Sign in free
+              {t.hero.signInFree}
             </Link>
           </div>
         </div>
@@ -44,7 +47,7 @@ export default function HomePage() {
 
       {/* Categories */}
       <section className="max-w-6xl mx-auto px-4 py-12">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">Browse by category</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-6">{t.home.browseByCategory}</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {CATEGORIES.map(cat => (
             <Link
@@ -53,7 +56,9 @@ export default function HomePage() {
               className="bg-white border border-gray-200 rounded-xl p-4 text-center hover:border-indigo-300 hover:shadow-sm transition-all group"
             >
               <div className="text-3xl mb-2">{cat.icon}</div>
-              <div className="text-sm font-medium text-gray-700 group-hover:text-indigo-600">{cat.label}</div>
+              <div className="text-sm font-medium text-gray-700 group-hover:text-indigo-600">
+                {t.category[cat.id as keyof typeof t.category] ?? cat.label}
+              </div>
             </Link>
           ))}
         </div>
@@ -61,7 +66,7 @@ export default function HomePage() {
 
       {/* Active Games */}
       <section className="max-w-6xl mx-auto px-4 pb-12">
-        <h2 className="text-xl font-bold text-gray-900 mb-6">Play now</h2>
+        <h2 className="text-xl font-bold text-gray-900 mb-6">{t.home.playNow}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {activeGames.map(game => (
             <Link
@@ -82,8 +87,8 @@ export default function HomePage() {
                   </div>
                   <p className="text-sm text-gray-500 line-clamp-2">{game.description}</p>
                   <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-                    <span>{game.min_players}–{game.max_players} players</span>
-                    <span className="capitalize">{game.category}</span>
+                    <span>{game.min_players}–{game.max_players} {t.game.players}</span>
+                    <span>{t.category[game.category as keyof typeof t.category] ?? game.category}</span>
                   </div>
                 </div>
               </div>
@@ -95,12 +100,12 @@ export default function HomePage() {
       {/* How it works */}
       <section className="bg-white border-t border-gray-200 py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-12">How it works</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-12">{t.home.howItWorks}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {[
-              { icon: '👥', title: 'Add your players', desc: 'Sign in with Google, then add your friends as players — no accounts needed for them.' },
-              { icon: '🎮', title: 'Play with built-in scorecards', desc: 'Built-in scorecards for every game — no more pen and paper.' },
-              { icon: '📊', title: 'Track your rating', desc: 'Earn Elo points per game. See how you compare locally and globally.' },
+              { icon: '👥', title: t.home.step1Title, desc: t.home.step1Desc },
+              { icon: '🎮', title: t.home.step2Title, desc: t.home.step2Desc },
+              { icon: '📊', title: t.home.step3Title, desc: t.home.step3Desc },
             ].map((step, i) => (
               <div key={i} className="flex flex-col items-center">
                 <div className="text-4xl mb-4">{step.icon}</div>
@@ -115,7 +120,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-8 px-4 text-center text-sm">
         <p className="font-bold text-white mb-1">Who Won?</p>
-        <p>Free forever · who-won.com</p>
+        <p>{t.home.footer}</p>
       </footer>
     </div>
   )

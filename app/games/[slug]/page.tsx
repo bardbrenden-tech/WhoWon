@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { getGame, GAMES } from '@/lib/games'
 import { RULES } from '@/lib/rules'
 import { createClient } from '@/lib/supabase/server'
+import { getServerT } from '@/lib/i18n-server'
 import StartGameButton from './StartGameButton'
 import RulesAccordion from './RulesAccordion'
 import PageBanner from '@/components/PageBanner'
@@ -18,6 +19,7 @@ export default async function GamePage({ params }: Props) {
 
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const { t } = await getServerT()
 
   // Fetch average rating and leaderboard
   const [{ data: ratingsData }, { data: leaderboard }] = await Promise.all([
@@ -41,11 +43,11 @@ export default async function GamePage({ params }: Props) {
 
   return (
     <div>
-      <PageBanner title={`${game.icon} ${game.name}`} subtitle={`${game.min_players}–${game.max_players} players · ${game.category}`} />
+      <PageBanner title={`${game.icon} ${game.name}`} subtitle={`${game.min_players}–${game.max_players} ${t.game.players} · ${game.category}`} />
       <div className="max-w-4xl mx-auto px-4 py-8">
       {/* Breadcrumb */}
       <nav className="text-sm text-gray-400 mb-6 flex items-center gap-2">
-        <Link href="/games" className="hover:text-gray-600">Games</Link>
+        <Link href="/games" className="hover:text-gray-600">{t.nav.games}</Link>
         <span>/</span>
         <span className="text-gray-700">{game.name}</span>
       </nav>
@@ -59,15 +61,15 @@ export default async function GamePage({ params }: Props) {
               <h1 className="text-2xl font-black text-gray-900">{game.name}</h1>
               {game.name_alt && <span className="text-gray-400 text-sm">{game.name_alt}</span>}
               {!game.active && (
-                <span className="bg-gray-100 text-gray-500 text-xs font-medium px-2 py-0.5 rounded-full">Coming soon</span>
+                <span className="bg-gray-100 text-gray-500 text-xs font-medium px-2 py-0.5 rounded-full">{t.games.comingSoon}</span>
               )}
             </div>
             <p className="text-gray-600 mb-4">{game.description}</p>
             <div className="flex items-center gap-4 text-sm text-gray-500 flex-wrap">
-              <span>👥 {game.min_players}–{game.max_players} players</span>
+              <span>👥 {game.min_players}–{game.max_players} {t.game.players}</span>
               <span className="capitalize">📂 {game.category}</span>
               {avgRating && <span>⭐ {avgRating} / 5 ({ratingsData?.length} ratings)</span>}
-              <span>{game.higher_is_better ? '⬆️ Higher is better' : '⬇️ Lower is better'}</span>
+              <span>{game.higher_is_better ? t.game.higherIsBetter : t.game.lowerIsBetter}</span>
             </div>
           </div>
         </div>
@@ -82,13 +84,13 @@ export default async function GamePage({ params }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-6">
           {/* Rules */}
-          {rules && <RulesAccordion rules={rules} />}
+          {rules && <RulesAccordion rules={rules} labels={{ badge: t.game.rulesBadge, quickStart: t.game.quickStart, fullRules: t.game.fullRules, show: t.game.showFullRules, hide: t.game.hideFullRules }} />}
         </div>
 
         <div className="space-y-6">
           {/* Leaderboard */}
           <div className="bg-white border border-gray-200 rounded-2xl p-5">
-            <h2 className="font-bold text-gray-900 mb-4">🏆 Global Leaderboard</h2>
+            <h2 className="font-bold text-gray-900 mb-4">{t.game.globalLeaderboard}</h2>
             {leaderboard && leaderboard.length > 0 ? (
               <ol className="space-y-2">
                 {leaderboard.map((entry, i) => {
@@ -107,14 +109,14 @@ export default async function GamePage({ params }: Props) {
                 })}
               </ol>
             ) : (
-              <p className="text-sm text-gray-400">No ratings yet — be the first!</p>
+              <p className="text-sm text-gray-400">{t.game.noRatings}</p>
             )}
           </div>
 
           {/* You might also like */}
           {related.length > 0 && (
             <div className="bg-white border border-gray-200 rounded-2xl p-5">
-              <h2 className="font-bold text-gray-900 mb-4">You might also like</h2>
+              <h2 className="font-bold text-gray-900 mb-4">{t.game.youMightAlsoLike}</h2>
               <div className="space-y-3">
                 {related.map(g => (
                   <Link key={g.id} href={`/games/${g.id}`} className="flex items-center gap-3 hover:text-indigo-600 transition-colors">

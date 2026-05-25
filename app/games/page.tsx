@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { GAMES, CATEGORIES } from '@/lib/games'
 import type { GameCategory } from '@/lib/types'
 import PageBanner from '@/components/PageBanner'
+import { getServerT } from '@/lib/i18n-server'
 
 interface Props {
   searchParams: Promise<{ category?: string; q?: string }>
@@ -9,6 +10,7 @@ interface Props {
 
 export default async function GamesPage({ searchParams }: Props) {
   const { category, q } = await searchParams
+  const { t } = await getServerT()
   const activeCategory = category as GameCategory | undefined
 
   const filtered = GAMES.filter(g => {
@@ -19,7 +21,7 @@ export default async function GamesPage({ searchParams }: Props) {
 
   return (
     <div>
-      <PageBanner title="Games" subtitle="Choose a game and start tracking" />
+      <PageBanner title={t.games.title} subtitle={t.games.bannerSubtitle} />
       <div className="max-w-6xl mx-auto px-4 py-8">
 
       {/* Category filter */}
@@ -30,7 +32,7 @@ export default async function GamesPage({ searchParams }: Props) {
             !activeCategory ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white border-gray-300 text-gray-600 hover:border-gray-400'
           }`}
         >
-          All
+          {t.games.all}
         </Link>
         {CATEGORIES.map(cat => (
           <Link
@@ -40,7 +42,7 @@ export default async function GamesPage({ searchParams }: Props) {
               activeCategory === cat.id ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white border-gray-300 text-gray-600 hover:border-gray-400'
             }`}
           >
-            {cat.icon} {cat.label}
+            {cat.icon} {t.category[cat.id as keyof typeof t.category] ?? cat.label}
           </Link>
         ))}
       </div>
@@ -54,11 +56,11 @@ export default async function GamesPage({ searchParams }: Props) {
                 href={`/games/${game.id}`}
                 className="block bg-white border border-gray-200 rounded-xl p-5 hover:border-indigo-300 hover:shadow-sm transition-all group"
               >
-                <GameCard game={game} />
+                <GameCard game={game} soonLabel={t.games.soon} playersLabel={t.game.players} />
               </Link>
             ) : (
               <div className="bg-white border border-gray-200 rounded-xl p-5 opacity-60 cursor-not-allowed">
-                <GameCard game={game} comingSoon />
+                <GameCard game={game} comingSoon soonLabel={t.games.soon} playersLabel={t.game.players} />
               </div>
             )}
           </div>
@@ -76,7 +78,7 @@ export default async function GamesPage({ searchParams }: Props) {
   )
 }
 
-function GameCard({ game, comingSoon }: { game: (typeof GAMES)[0]; comingSoon?: boolean }) {
+function GameCard({ game, comingSoon, soonLabel, playersLabel }: { game: (typeof GAMES)[0]; comingSoon?: boolean; soonLabel: string; playersLabel: string }) {
   return (
     <div className="flex items-start gap-4">
       <div className="text-3xl">{game.icon}</div>
@@ -86,13 +88,13 @@ function GameCard({ game, comingSoon }: { game: (typeof GAMES)[0]; comingSoon?: 
             {game.name}
           </h3>
           {comingSoon && (
-            <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full shrink-0">Soon</span>
+            <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full shrink-0">{soonLabel}</span>
           )}
         </div>
         {game.name_alt && <p className="text-xs text-gray-400 mb-1">{game.name_alt}</p>}
         <p className="text-sm text-gray-500 line-clamp-2">{game.description}</p>
         <div className="flex items-center gap-3 mt-2 text-xs text-gray-400">
-          <span>{game.min_players}–{game.max_players} players</span>
+          <span>{game.min_players}–{game.max_players} {playersLabel}</span>
           <span className="capitalize">{game.category}</span>
         </div>
       </div>

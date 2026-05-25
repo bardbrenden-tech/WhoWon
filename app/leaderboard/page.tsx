@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { getActiveGames, getGame } from '@/lib/games'
 import Link from 'next/link'
 import PageBanner from '@/components/PageBanner'
+import { getServerT } from '@/lib/i18n-server'
 
 interface Props {
   searchParams: Promise<{ game?: string }>
@@ -9,6 +10,7 @@ interface Props {
 
 export default async function LeaderboardPage({ searchParams }: Props) {
   const { game: gameId } = await searchParams
+  const { t } = await getServerT()
   const activeGames = getActiveGames()
   const selectedGame = gameId ? getGame(gameId) : activeGames[0]
 
@@ -22,7 +24,7 @@ export default async function LeaderboardPage({ searchParams }: Props) {
 
   return (
     <div>
-      <PageBanner title="Global Leaderboard" subtitle="Ranked by Elo rating across all games" />
+      <PageBanner title={t.leaderboard.title} subtitle={t.leaderboard.bannerSubtitle} />
       <div className="max-w-3xl mx-auto px-4 py-8">
 
       {/* Game selector */}
@@ -44,7 +46,7 @@ export default async function LeaderboardPage({ searchParams }: Props) {
         <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100">
             <h2 className="font-bold text-gray-900">{selectedGame.icon} {selectedGame.name}</h2>
-            <p className="text-xs text-gray-400">Sorted by Elo rating</p>
+            <p className="text-xs text-gray-400">{t.leaderboard.sortedByElo}</p>
           </div>
 
           {leaderboard && leaderboard.length > 0 ? (
@@ -65,7 +67,7 @@ export default async function LeaderboardPage({ searchParams }: Props) {
                     <span className="flex-1 font-semibold text-gray-800 truncate">{name}</span>
                     <div className="text-right shrink-0">
                       <p className="font-black text-indigo-600">{entry.rating}</p>
-                      <p className="text-xs text-gray-400">{entry.games_played} games · {entry.wins}W</p>
+                      <p className="text-xs text-gray-400">{entry.games_played} {t.game.rounds} · {entry.wins}W</p>
                     </div>
                   </div>
                 )
@@ -74,7 +76,7 @@ export default async function LeaderboardPage({ searchParams }: Props) {
           ) : (
             <div className="py-16 text-center text-gray-400">
               <p className="text-3xl mb-2">🎮</p>
-              <p>No players yet — <Link href={`/games/${selectedGame.id}`} className="text-indigo-600 hover:underline">be the first!</Link></p>
+              <p>{t.leaderboard.noPlayers.split('—')[0]}— <Link href={`/games/${selectedGame.id}`} className="text-indigo-600 hover:underline">{t.leaderboard.noPlayers.split('— ')[1]}</Link></p>
             </div>
           )}
         </div>

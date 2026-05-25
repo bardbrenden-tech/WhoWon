@@ -4,6 +4,8 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
+import { useLocale } from './LanguageProvider'
+import LanguageSwitcher from './LanguageSwitcher'
 
 interface NavbarProps {
   user: User | null
@@ -13,6 +15,7 @@ export default function Navbar({ user }: NavbarProps) {
   const pathname = usePathname()
   const [menuOpen, setMenuOpen] = useState(false)
   const supabase = createClient()
+  const { t } = useLocale()
 
   async function handleSignOut() {
     await supabase.auth.signOut()
@@ -20,8 +23,8 @@ export default function Navbar({ user }: NavbarProps) {
   }
 
   const navLinks = [
-    { href: '/games', label: 'Games' },
-    { href: '/leaderboard', label: 'Leaderboard' },
+    { href: '/games', label: t.nav.games },
+    { href: '/leaderboard', label: t.nav.leaderboard },
   ]
 
   return (
@@ -47,7 +50,9 @@ export default function Navbar({ user }: NavbarProps) {
           ))}
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
+
           {user ? (
             <div className="relative">
               <button
@@ -59,11 +64,11 @@ export default function Navbar({ user }: NavbarProps) {
               {menuOpen && (
                 <div className="absolute right-0 mt-2 w-44 bg-white border border-gray-200 rounded-lg shadow-lg py-1 z-50">
                   <Link href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" onClick={() => setMenuOpen(false)}>
-                    My Profile
+                    {t.nav.myProfile}
                   </Link>
                   <hr className="my-1 border-gray-100" />
                   <button onClick={handleSignOut} className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
-                    Sign out
+                    {t.nav.signOut}
                   </button>
                 </div>
               )}
@@ -73,7 +78,7 @@ export default function Navbar({ user }: NavbarProps) {
               href="/login"
               className="bg-indigo-600 text-white text-sm font-semibold px-4 py-1.5 rounded-lg hover:bg-indigo-700 transition-colors"
             >
-              Sign in
+              {t.nav.signIn}
             </Link>
           )}
         </div>
