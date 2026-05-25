@@ -83,7 +83,7 @@ export default async function ProfilePage() {
               {recentSessions.map((s: { id: string; game_id: string; status: string; created_at: string; session_players: { display_name: string }[] }) => {
                 const game = getGame(s.game_id)
                 return (
-                  <div key={s.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+                  <Link key={s.id} href={`/sessions/${s.id}`} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors">
                     <span className="text-lg">{game?.icon ?? '🎮'}</span>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-800">{game?.name ?? s.game_id}</p>
@@ -91,11 +91,11 @@ export default async function ProfilePage() {
                     </div>
                     <div className="text-right">
                       <span className={`text-xs px-2 py-0.5 rounded-full ${s.status === 'completed' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
-                        {s.status}
+                        {s.status === 'completed' ? 'Fullført' : s.status === 'abandoned' ? 'Avbrutt' : 'Aktiv'}
                       </span>
                       <p className="text-xs text-gray-400 mt-0.5">{new Date(s.created_at).toLocaleDateString()}</p>
                     </div>
-                  </div>
+                  </Link>
                 )
               })}
             </div>

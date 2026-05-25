@@ -51,7 +51,7 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
 
     players.forEach(p => {
       const playerHoles = newStrokes.map(h => h[p.id] ?? 0)
-      onScoreUpdate(p.id, { holes: playerHoles, courseName, handicap: handicaps[p.id] ?? 0 })
+      onScoreUpdate(p.id, { holes: playerHoles, pars: pars.slice(0, holeCount), courseName, handicap: handicaps[p.id] ?? 0 })
     })
 
     if (currentHole < holeCount - 1) {
