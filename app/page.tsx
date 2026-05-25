@@ -37,7 +37,8 @@ export default async function HomePage() {
             </Link>
             <Link
               href="/login"
-              className="border-2 border-white/40 hover:border-white/70 text-white font-semibold px-8 py-3.5 rounded-xl hover:bg-white/10 transition-colors text-lg backdrop-blur-sm"
+              className="font-bold px-8 py-3.5 rounded-xl transition-colors text-lg shadow-lg"
+              style={{ background: 'linear-gradient(180deg, #FFE566 0%, #F5C518 45%, #CC7A00 100%)', color: '#1a1a1a' }}
             >
               {t.hero.signInFree}
             </Link>
