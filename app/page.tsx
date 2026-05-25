@@ -119,7 +119,7 @@ export default async function HomePage() {
       {/* Footer */}
       <footer className="bg-gray-900 text-gray-400 py-8 px-4 text-center text-sm">
         <div className="flex justify-center mb-3">
-          <Image src="/images/Logo.jpg" alt="Who Won?" width={80} height={52} className="rounded-md opacity-90" />
+          <Image src="/images/Logo.png" alt="Who Won?" width={80} height={52} className="rounded-md opacity-90" />
         </div>
         <p>{t.home.footer}</p>
       </footer>
