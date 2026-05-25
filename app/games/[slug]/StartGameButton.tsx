@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { GAME_OPTIONS } from '@/lib/games'
 import type { GameMeta } from '@/lib/types'
 import type { User } from '@supabase/supabase-js'
 
@@ -25,6 +26,10 @@ export default function StartGameButton({ game, user }: Props) {
   const [newName, setNewName] = useState('')
   const [loading, setLoading] = useState(false)
   const [loadedGuests, setLoadedGuests] = useState(false)
+  const gameOptionDefs = GAME_OPTIONS[game.id] ?? []
+  const [gameOptions, setGameOptions] = useState<Record<string, boolean>>(
+    Object.fromEntries(gameOptionDefs.map(o => [o.key, o.default]))
+  )
 
   async function handleOpen() {
     if (!user) { router.push('/login'); return }
@@ -68,7 +73,7 @@ export default function StartGameButton({ game, user }: Props) {
     }
 
     // Create session
-    const { data: session, error } = await supabase.from('sessions').insert({ game_id: game.id, created_by: user!.id }).select('id').single()
+    const { data: session, error } = await supabase.from('sessions').insert({ game_id: game.id, created_by: user!.id, options: gameOptions }).select('id').single()
     if (error || !session) { setLoading(false); return }
 
     // Add session players
@@ -149,6 +154,29 @@ export default function StartGameButton({ game, user }: Props) {
                 <button onClick={addNew} disabled={!newName.trim()} className="bg-gray-100 text-gray-700 text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-200 disabled:opacity-40 transition-colors">
                   Add
                 </button>
+              </div>
+            )}
+
+            {/* Game options */}
+            {gameOptionDefs.length > 0 && (
+              <div className="mb-5">
+                <p className="text-xs text-gray-500 font-medium mb-2 uppercase tracking-wide">Rules</p>
+                <div className="space-y-2">
+                  {gameOptionDefs.map(opt => (
+                    <label key={opt.key} className="flex items-start gap-3 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={gameOptions[opt.key] ?? opt.default}
+                        onChange={e => setGameOptions(prev => ({ ...prev, [opt.key]: e.target.checked }))}
+                        className="mt-0.5 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                      />
+                      <div>
+                        <p className="text-sm font-medium text-gray-800">{opt.label}</p>
+                        <p className="text-xs text-gray-400">{opt.description}</p>
+                      </div>
+                    </label>
+                  ))}
+                </div>
               </div>
             )}
 

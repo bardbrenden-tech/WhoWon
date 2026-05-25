@@ -4,7 +4,8 @@ import type { GameComponentProps } from '@/lib/types'
 
 interface HeartsState { total: number; rounds: number[] }
 
-export default function Hearts({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+export default function Hearts({ players, options, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const shootTheMoonEnabled = options.shootTheMoon !== false
   const [state, setState] = useState<Record<string, HeartsState>>(() =>
     Object.fromEntries(players.map(p => {
       const saved = p.score_data as Partial<HeartsState>
@@ -85,7 +86,7 @@ export default function Hearts({ players, onScoreUpdate, onComplete, onAbandon }
           <h3 className="font-semibold text-gray-800 mb-3">Round {(state[players[0].id].rounds.length) + 1} scores</h3>
 
           {/* Shoot the moon */}
-          <div className="mb-3">
+          {shootTheMoonEnabled && <div className="mb-3">
             <p className="text-xs text-gray-500 mb-2">Shoot the moon?</p>
             <div className="flex flex-wrap gap-2">
               {players.map(p => (
@@ -98,7 +99,7 @@ export default function Hearts({ players, onScoreUpdate, onComplete, onAbandon }
                 </button>
               ))}
             </div>
-          </div>
+          </div>}
 
           {!moonShooter && (
             <div className="space-y-2 mb-3">

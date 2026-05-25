@@ -1,5 +1,11 @@
 import type { GameCategory, GameMeta } from './types'
 
+export const GAME_OPTIONS: Record<string, Array<{ key: string; label: string; description: string; default: boolean }>> = {
+  'hearts': [
+    { key: 'shootTheMoon', label: 'Shoot the moon', description: 'Getting all hearts + Spar dame gives everyone else 240 pts', default: true },
+  ],
+}
+
 export const CATEGORIES: { id: GameCategory; label: string; icon: string }[] = [
   { id: 'dice',    label: 'Dice Games',    icon: '🎲' },
   { id: 'card',    label: 'Card Games',    icon: '🃏' },

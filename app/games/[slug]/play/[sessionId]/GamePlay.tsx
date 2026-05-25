@@ -164,6 +164,7 @@ export default function GamePlay({ game, session, userId }: Props) {
       </div>
       <GameComponent
         players={session.session_players}
+        options={session.options ?? {}}
         onScoreUpdate={handleScoreUpdate}
         onComplete={handleComplete}
         onAbandon={handleAbandon}

@@ -49,6 +49,7 @@ export interface Session {
   game_id: string
   created_by: string
   status: 'active' | 'completed' | 'abandoned'
+  options: Record<string, unknown>
   created_at: string
   completed_at: string | null
   session_players?: SessionPlayer[]
@@ -98,6 +99,7 @@ export interface LeaderboardEntry {
 
 export interface GameComponentProps {
   players: SessionPlayer[]
+  options: Record<string, unknown>
   onScoreUpdate: (playerId: string, scoreData: Record<string, unknown>) => void
   onComplete: (results: Array<{ id: string; finalScore: number; rank: number }>) => void
   onAbandon: () => void
