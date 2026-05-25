@@ -5,6 +5,7 @@ import { getRules } from '@/lib/rules'
 import { createClient } from '@/lib/supabase/server'
 import { getServerT, getLocale } from '@/lib/i18n-server'
 import StartGameButton from './StartGameButton'
+import StartTournamentButton from '@/components/StartTournamentButton'
 import RulesAccordion from './RulesAccordion'
 import PageBanner from '@/components/PageBanner'
 
@@ -76,8 +77,9 @@ export default async function GamePage({ params }: Props) {
         </div>
 
         {game.active && (
-          <div className="mt-5 pt-5 border-t border-gray-100">
+          <div className="mt-5 pt-5 border-t border-gray-100 flex flex-wrap gap-3">
             <StartGameButton game={game} user={user} />
+            <StartTournamentButton game={game} user={user} />
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-export type GameCategory = 'dice' | 'card' | 'board' | 'darts' | 'outdoor' | 'party'
+export type GameCategory = 'dice' | 'card' | 'board' | 'darts' | 'outdoor' | 'party' | 'sport'
 
 export interface GameMeta {
   id: string
@@ -67,6 +67,39 @@ export interface Rating {
   updated_at: string
   profiles?: Profile
   guest_players?: GuestPlayer
+}
+
+export interface Tournament {
+  id: string
+  game_id: string
+  name: string | null
+  created_by: string
+  status: 'active' | 'completed'
+  created_at: string
+}
+
+export interface TournamentPlayer {
+  id: string
+  tournament_id: string
+  profile_id: string | null
+  guest_player_id: string | null
+  display_name: string
+  seed: number
+}
+
+export interface TournamentMatch {
+  id: string
+  tournament_id: string
+  round: number
+  match_index: number
+  player1_id: string | null
+  player2_id: string | null
+  winner_id: string | null
+  score: string | null
+  status: 'pending' | 'completed' | 'bye'
+  player1?: TournamentPlayer
+  player2?: TournamentPlayer
+  winner?: TournamentPlayer
 }
 
 export interface Feedback {

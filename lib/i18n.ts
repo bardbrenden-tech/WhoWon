@@ -35,7 +35,13 @@ export type Messages = {
     memberSince: string; addEmail: string; emailPlaceholder: string; save: string
     games: string; wins: string; elo: string; removeConfirm: string
   }
-  category: { dice: string; card: string; darts: string; board: string; outdoor: string; party: string }
+  category: { dice: string; card: string; darts: string; board: string; outdoor: string; party: string; sport: string }
+  tournament: {
+    startTournament: string; bracket: string; round: string; final: string; semifinal: string
+    bye: string; setWinner: string; winner: string; champion: string; score: string
+    confirm: string; players: string; minPlayers: string; vs: string; complete: string
+    yourTurn: string; addPlayer: string; startWith: string; starting: string; cancel: string
+  }
   login: { subtitle: string; terms: string; error: string }
   gameDesc: Record<string, string>
 }
@@ -73,7 +79,14 @@ const en: Messages = {
     recentGames: 'Recent Games', memberSince: 'Member since', addEmail: '+ Add email', emailPlaceholder: 'Email address',
     save: 'Save', games: 'games', wins: 'wins', elo: 'Elo', removeConfirm: 'Remove this player?',
   },
-  category: { dice: 'Dice Games', card: 'Card Games', darts: 'Darts', board: 'Board Games', outdoor: 'Outdoor', party: 'Party Games' },
+  category: { dice: 'Dice Games', card: 'Card Games', darts: 'Darts', board: 'Board Games', outdoor: 'Outdoor', party: 'Party Games', sport: 'Sport & 1v1' },
+  tournament: {
+    startTournament: 'Start Tournament', bracket: 'Tournament Bracket', round: 'Round', final: 'Final', semifinal: 'Semifinal',
+    bye: 'Bye', setWinner: 'Set Winner', winner: 'Winner', champion: '🏆 Champion', score: 'Score (optional)',
+    confirm: 'Confirm', players: 'players', minPlayers: 'Need at least 4 players for a tournament', vs: 'vs',
+    complete: 'Tournament complete!', yourTurn: 'Pick winner', addPlayer: 'Add player...', startWith: 'Start tournament ({n} players)',
+    starting: 'Creating...', cancel: 'Cancel',
+  },
   login: { subtitle: 'Track scores, build your rating, and see who the real champion is.', terms: 'By signing in you agree to our terms of service. Always free.', error: 'Something went wrong. Please try again.' },
   gameDesc: {
     'maxi-yatzy': 'The classic dice game with 6 dice and expanded categories including House, Tower, and Maxi Yatzy bonus.',
@@ -106,6 +119,10 @@ const en: Messages = {
     'molkky': 'Throw the Mölkky skittle to knock over numbered pins. First to reach exactly 50 wins.',
     'disc-golf': 'Complete each hole in as few disc throws as possible. Lowest total score wins.',
     'cornhole': 'Toss bags into the hole (3 pts) or onto the board (1 pt). Cancel scoring. First to 21 wins.',
+    'table-tennis': 'Track sets of table tennis. Best of 3 or 5 sets. Perfect for 1v1 tournaments.',
+    'billiards': 'Track frames of pool or billiards. Most frames won takes the match.',
+    'badminton': 'Track sets of badminton. First to win 2 sets (best of 3) wins.',
+    'foosball': 'Track goals and games of table football. Great for group tournaments.',
   },
 }
 
@@ -142,7 +159,14 @@ const no: Messages = {
     recentGames: 'Nylige spill', memberSince: 'Medlem siden', addEmail: '+ Legg til e-post', emailPlaceholder: 'E-postadresse',
     save: 'Lagre', games: 'spill', wins: 'seire', elo: 'Elo', removeConfirm: 'Fjerne denne spilleren?',
   },
-  category: { dice: 'Terningspill', card: 'Kortspill', darts: 'Darts', board: 'Brettspill', outdoor: 'Utendørs', party: 'Festspill' },
+  category: { dice: 'Terningspill', card: 'Kortspill', darts: 'Darts', board: 'Brettspill', outdoor: 'Utendørs', party: 'Festspill', sport: 'Sport & 1v1' },
+  tournament: {
+    startTournament: 'Start turnering', bracket: 'Turneringsbraketten', round: 'Runde', final: 'Finale', semifinal: 'Semifinale',
+    bye: 'Fripass', setWinner: 'Sett vinner', winner: 'Vinner', champion: '🏆 Mester', score: 'Resultat (valgfritt)',
+    confirm: 'Bekreft', players: 'spillere', minPlayers: 'Trenger minst 4 spillere til en turnering', vs: 'mot',
+    complete: 'Turneringen er ferdig!', yourTurn: 'Velg vinner', addPlayer: 'Legg til spiller...', startWith: 'Start turnering ({n} spillere)',
+    starting: 'Oppretter...', cancel: 'Avbryt',
+  },
   login: { subtitle: 'Spor poeng, bygg ratingen din og se hvem som er den virkelige mesteren.', terms: 'Ved å logge inn godtar du våre vilkår. Alltid gratis.', error: 'Noe gikk galt. Prøv igjen.' },
   gameDesc: {
     'maxi-yatzy': 'Det klassiske terningspillet med 6 terninger og utvidede kategorier inkludert Hytte, Tårn og Maxi Yatzy-bonus.',
@@ -175,6 +199,10 @@ const no: Messages = {
     'molkky': 'Kast Mölkky-pinnen for å velte nummererte kjegler. Første til nøyaktig 50 poeng vinner.',
     'disc-golf': 'Kast disc inn i kurven på så få kast som mulig. Lavest totalscore vinner.',
     'cornhole': 'Kast poser i hullet (3 p) eller på brettet (1 p). Poeng kanselleres mot hverandre. Første til 21 vinner.',
+    'table-tennis': 'Spor sett i bordtennis. Best av 3 eller 5 sett. Perfekt for 1v1-turneringer.',
+    'billiards': 'Spor frames i biljard eller pool. Flest vunnede frames tar kampen.',
+    'badminton': 'Spor sett i badminton. Første til 2 sett (best av 3) vinner.',
+    'foosball': 'Spor mål og kamper i fotballbord. Perfekt for gruppeturneringer.',
   },
 }
 
@@ -211,7 +239,14 @@ const de: Messages = {
     recentGames: 'Letzte Spiele', memberSince: 'Mitglied seit', addEmail: '+ E-Mail hinzufügen', emailPlaceholder: 'E-Mail-Adresse',
     save: 'Speichern', games: 'Spiele', wins: 'Siege', elo: 'Elo', removeConfirm: 'Diesen Spieler entfernen?',
   },
-  category: { dice: 'Würfelspiele', card: 'Kartenspiele', darts: 'Darts', board: 'Brettspiele', outdoor: 'Outdoor', party: 'Partyspiele' },
+  category: { dice: 'Würfelspiele', card: 'Kartenspiele', darts: 'Darts', board: 'Brettspiele', outdoor: 'Outdoor', party: 'Partyspiele', sport: 'Sport & 1v1' },
+  tournament: {
+    startTournament: 'Turnier starten', bracket: 'Turnierbaum', round: 'Runde', final: 'Finale', semifinal: 'Halbfinale',
+    bye: 'Freilos', setWinner: 'Gewinner setzen', winner: 'Gewinner', champion: '🏆 Champion', score: 'Ergebnis (optional)',
+    confirm: 'Bestätigen', players: 'Spieler', minPlayers: 'Mindestens 4 Spieler für ein Turnier', vs: 'gegen',
+    complete: 'Turnier beendet!', yourTurn: 'Gewinner wählen', addPlayer: 'Spieler hinzufügen...', startWith: 'Turnier starten ({n} Spieler)',
+    starting: 'Wird erstellt...', cancel: 'Abbrechen',
+  },
   login: { subtitle: 'Verfolge Punkte, baue deine Wertung auf und sieh, wer der wahre Champion ist.', terms: 'Durch die Anmeldung stimmst du unseren Nutzungsbedingungen zu. Immer kostenlos.', error: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.' },
   gameDesc: {
     'maxi-yatzy': 'Das klassische Würfelspiel mit 6 Würfeln und erweiterten Kategorien wie Haus, Turm und Maxi-Yatzy-Bonus.',
@@ -240,6 +275,10 @@ const de: Messages = {
     'petanque': 'Wirf Boules am nächsten zur Zielkugel. Erstes Team mit 13 Punkten gewinnt.',
     'bowling': 'Verfolge deine Bowling-Punktzahlen über 10 Frames mit Strikes und Spares.',
     'croquet': 'Schlage Bälle mit einem Schläger in der richtigen Reihenfolge durch Tore.',
+    'table-tennis': 'Verfolge Sätze beim Tischtennis. Beste von 3 oder 5 Sätzen. Perfekt für 1v1-Turniere.',
+    'billiards': 'Verfolge Frames beim Billard oder Pool. Die meisten gewonnenen Frames gewinnen.',
+    'badminton': 'Verfolge Sätze beim Badminton. Erster mit 2 Sätzen (Best of 3) gewinnt.',
+    'foosball': 'Verfolge Tore und Spiele beim Tischkicker. Ideal für Gruppenturniere.',
     'kubb': 'Wirf Stäbe, um die Kubbs des Gegners umzuwerfen, dann den König für den Sieg.',
     'molkky': 'Wirf den Mölkky-Stift, um nummerierte Kegel umzuwerfen. Erster auf genau 50 Punkten gewinnt.',
     'disc-golf': 'Wirf Scheiben in Korbziele mit möglichst wenigen Würfen. Niedrigste Gesamtpunktzahl gewinnt.',
@@ -280,7 +319,14 @@ const fr: Messages = {
     recentGames: 'Parties récentes', memberSince: 'Membre depuis', addEmail: '+ Ajouter un e-mail', emailPlaceholder: 'Adresse e-mail',
     save: 'Enregistrer', games: 'parties', wins: 'victoires', elo: 'Elo', removeConfirm: 'Supprimer ce joueur ?',
   },
-  category: { dice: 'Jeux de dés', card: 'Jeux de cartes', darts: 'Fléchettes', board: 'Jeux de plateau', outdoor: 'Plein air', party: 'Jeux de société' },
+  category: { dice: 'Jeux de dés', card: 'Jeux de cartes', darts: 'Fléchettes', board: 'Jeux de plateau', outdoor: 'Plein air', party: 'Jeux de société', sport: 'Sport & 1v1' },
+  tournament: {
+    startTournament: 'Démarrer un tournoi', bracket: 'Tableau du tournoi', round: 'Tour', final: 'Finale', semifinal: 'Demi-finale',
+    bye: 'Exempt', setWinner: 'Définir le gagnant', winner: 'Gagnant', champion: '🏆 Champion', score: 'Score (optionnel)',
+    confirm: 'Confirmer', players: 'joueurs', minPlayers: 'Minimum 4 joueurs pour un tournoi', vs: 'contre',
+    complete: 'Tournoi terminé !', yourTurn: 'Choisir le gagnant', addPlayer: 'Ajouter un joueur...', startWith: 'Démarrer le tournoi ({n} joueurs)',
+    starting: 'Création...', cancel: 'Annuler',
+  },
   login: { subtitle: 'Suivez les scores, construisez votre classement et voyez qui est le vrai champion.', terms: 'En vous connectant, vous acceptez nos conditions d\'utilisation. Toujours gratuit.', error: 'Quelque chose s\'est mal passé. Veuillez réessayer.' },
   gameDesc: {
     'maxi-yatzy': 'Le jeu de dés classique avec 6 dés et des catégories étendues : Maison, Tour et bonus Maxi Yatzy.',
@@ -309,6 +355,10 @@ const fr: Messages = {
     'petanque': 'Lancez les boules le plus près du cochonnet. Première équipe à 13 points gagne.',
     'bowling': 'Suivez vos scores sur 10 carreaux avec strikes et spares.',
     'croquet': 'Frappez les balles dans les arceaux dans l\'ordre avec un maillet.',
+    'table-tennis': 'Suivez les sets de tennis de table. Meilleur de 3 ou 5. Parfait pour les tournois.',
+    'billiards': 'Suivez les manches de billard ou de pool. Le plus de manches gagnées remporte la partie.',
+    'badminton': 'Suivez les sets de badminton. Premier à 2 sets (meilleur de 3) gagne.',
+    'foosball': 'Suivez buts et parties au baby-foot. Idéal pour les tournois de groupe.',
     'kubb': 'Lancez des bâtons pour renverser les kubbs adverses, puis le roi pour gagner.',
     'molkky': 'Lancez le quille Mölkky pour renverser des quilles numérotées. Premier à exactement 50 points gagne.',
     'disc-golf': 'Lancez des disques dans les paniers en aussi peu de lancers que possible. Score le plus bas gagne.',
@@ -349,7 +399,14 @@ const es: Messages = {
     recentGames: 'Partidas recientes', memberSince: 'Miembro desde', addEmail: '+ Añadir correo', emailPlaceholder: 'Correo electrónico',
     save: 'Guardar', games: 'partidas', wins: 'victorias', elo: 'Elo', removeConfirm: '¿Eliminar este jugador?',
   },
-  category: { dice: 'Juegos de dados', card: 'Juegos de cartas', darts: 'Dardos', board: 'Juegos de mesa', outdoor: 'Exterior', party: 'Juegos de fiesta' },
+  category: { dice: 'Juegos de dados', card: 'Juegos de cartas', darts: 'Dardos', board: 'Juegos de mesa', outdoor: 'Exterior', party: 'Juegos de fiesta', sport: 'Deporte & 1v1' },
+  tournament: {
+    startTournament: 'Iniciar torneo', bracket: 'Cuadro del torneo', round: 'Ronda', final: 'Final', semifinal: 'Semifinal',
+    bye: 'Bye', setWinner: 'Establecer ganador', winner: 'Ganador', champion: '🏆 Campeón', score: 'Resultado (opcional)',
+    confirm: 'Confirmar', players: 'jugadores', minPlayers: 'Mínimo 4 jugadores para un torneo', vs: 'vs',
+    complete: '¡Torneo terminado!', yourTurn: 'Elegir ganador', addPlayer: 'Añadir jugador...', startWith: 'Iniciar torneo ({n} jugadores)',
+    starting: 'Creando...', cancel: 'Cancelar',
+  },
   login: { subtitle: 'Sigue los puntos, construye tu clasificación y descubre quién es el verdadero campeón.', terms: 'Al iniciar sesión aceptas nuestros términos de servicio. Siempre gratis.', error: 'Algo salió mal. Por favor, inténtalo de nuevo.' },
   gameDesc: {
     'maxi-yatzy': 'El clásico juego de dados con 6 dados y categorías ampliadas: Casa, Torre y bono Maxi Yatzy.',
@@ -378,6 +435,10 @@ const es: Messages = {
     'petanque': 'Lanza las bolas más cerca del boliche. El primer equipo en 13 puntos gana.',
     'bowling': 'Registra tus puntuaciones en 10 turnos incluyendo plenos y semiplenos.',
     'croquet': 'Golpea las bolas por los aros en orden con un mazo. El primero en completarlos gana.',
+    'table-tennis': 'Registra sets de tenis de mesa. Mejor de 3 o 5. Perfecto para torneos.',
+    'billiards': 'Registra partidas de billar o pool. El que gana más partidas se lleva el match.',
+    'badminton': 'Registra sets de bádminton. Primero en 2 sets (mejor de 3) gana.',
+    'foosball': 'Registra goles y partidas de futbolín. Ideal para torneos de grupo.',
     'kubb': 'Lanza bastones para derribar los kubbs rivales, luego el rey para ganar.',
     'molkky': 'Lanza el palo Mölkky para derribar pinos numerados. El primero en exactamente 50 puntos gana.',
     'disc-golf': 'Lanza discos a las canastas en el menor número de lanzamientos. La puntuación más baja gana.',

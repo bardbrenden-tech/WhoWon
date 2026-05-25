@@ -164,6 +164,53 @@ alter table feedback enable row level security;
 create policy "Anyone can submit feedback" on feedback for insert with check (true);
 create policy "Only service role can read feedback" on feedback for select using (auth.role() = 'service_role');
 
+-- ============================================================
+-- TOURNAMENTS (run this migration block in Supabase SQL Editor)
+-- ============================================================
+
+create table tournaments (
+  id uuid primary key default gen_random_uuid(),
+  game_id text not null,
+  name text,
+  created_by uuid references profiles(id) not null,
+  status text not null default 'active' check (status in ('active', 'completed')),
+  created_at timestamptz not null default now()
+);
+alter table tournaments enable row level security;
+create policy "Tournaments viewable by everyone" on tournaments for select using (true);
+create policy "Auth users can create tournaments" on tournaments for insert with check (auth.uid() = created_by);
+create policy "Creator can update tournament" on tournaments for update using (auth.uid() = created_by);
+
+create table tournament_players (
+  id uuid primary key default gen_random_uuid(),
+  tournament_id uuid references tournaments(id) on delete cascade not null,
+  profile_id uuid references profiles(id),
+  guest_player_id uuid references guest_players(id),
+  display_name text not null,
+  seed int not null
+);
+alter table tournament_players enable row level security;
+create policy "Tournament players viewable by everyone" on tournament_players for select using (true);
+create policy "Auth users can insert tournament players" on tournament_players for insert with check (true);
+
+create table tournament_matches (
+  id uuid primary key default gen_random_uuid(),
+  tournament_id uuid references tournaments(id) on delete cascade not null,
+  round int not null,
+  match_index int not null,
+  player1_id uuid references tournament_players(id),
+  player2_id uuid references tournament_players(id),
+  winner_id uuid references tournament_players(id),
+  score text,
+  status text not null default 'pending' check (status in ('pending', 'completed', 'bye')),
+  created_at timestamptz not null default now()
+);
+alter table tournament_matches enable row level security;
+create policy "Tournament matches viewable by everyone" on tournament_matches for select using (true);
+create policy "Auth users can manage matches" on tournament_matches for all using (true);
+
+-- ============================================================
+
 -- Game star ratings
 create table game_ratings (
   profile_id uuid references profiles(id),
