@@ -65,7 +65,10 @@ function ScoreCell({ config, value, onChange }: { config: CellConfig; value: str
 
 export default function Yatzy({ players, onScoreUpdate, onComplete }: GameComponentProps) {
   const [scores, setScores] = useState<Record<string,Record<ScoreKey,string>>>(() =>
-    Object.fromEntries(players.map(p=>[p.id,{...(p.score_data as Record<ScoreKey,string>??EMPTY)}]))
+    Object.fromEntries(players.map(p => {
+      const saved = p.score_data as Record<string, string> | null | undefined
+      return [p.id, { ...EMPTY, ...(saved || {}) }]
+    }))
   )
   const fillCount = (s: Record<ScoreKey,string>) => (Object.keys(EMPTY) as ScoreKey[]).filter(k=>s[k]!=='').length
   const minFills = Math.min(...players.map(p=>fillCount(scores[p.id]??EMPTY)))
