@@ -52,10 +52,15 @@ export default async function ChallengesPage() {
               const playerCount = Array.isArray(c.challenge_players) ? c.challenge_players.length : 0
 
               // Derive real status: all started games completed = done
-              const startedGames = games.filter((g: { tournament_id: string | null; tournaments: { status: string } | null }) => g.tournament_id)
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const startedGames = games.filter((g: any) => g.tournament_id)
               const isCompleted  = c.status === 'completed' ||
                 (gameCount > 0 && startedGames.length === gameCount &&
-                  startedGames.every((g: { tournaments: { status: string } | null }) => g.tournaments?.status === 'completed'))
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  startedGames.every((g: any) => {
+                    const t = Array.isArray(g.tournaments) ? g.tournaments[0] : g.tournaments
+                    return t?.status === 'completed'
+                  }))
 
               return (
                 <div key={c.id} className="relative bg-white border border-gray-200 rounded-2xl hover:border-indigo-300 hover:shadow-sm transition-all group">
