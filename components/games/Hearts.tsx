@@ -15,16 +15,17 @@ export default function Hearts({ players, onScoreUpdate, onComplete, onAbandon }
   const [error, setError] = useState('')
   const [moonShooter, setMoonShooter] = useState<string | null>(null)
 
-  const GAME_OVER_SCORE = 100
+  const GAME_OVER_SCORE = 500
+  const ROUND_TOTAL = 140   // 12×10 + ace×20 + Spar dame 100 − Ruter knekt 100
+  const MOON_SCORE = 240    // all hearts (140) + Spar dame (100)
 
   function submitRound() {
-    // Validate: either shoot the moon, or all hearts distributed = 26 total
     if (moonShooter) {
       setState(prev => {
         const next = { ...prev }
         players.forEach(p => {
           if (p.id !== moonShooter) {
-            next[p.id] = { total: prev[p.id].total + 26, rounds: [...prev[p.id].rounds, 26] }
+            next[p.id] = { total: prev[p.id].total + MOON_SCORE, rounds: [...prev[p.id].rounds, MOON_SCORE] }
             onScoreUpdate(p.id, next[p.id] as unknown as Record<string, unknown>)
           } else {
             next[p.id] = { ...prev[p.id], rounds: [...prev[p.id].rounds, 0] }
@@ -40,9 +41,9 @@ export default function Hearts({ players, onScoreUpdate, onComplete, onAbandon }
     }
 
     const vals = players.map(p => parseInt(inputs[p.id] || '0'))
-    if (vals.some(v => isNaN(v) || v < 0)) { setError('Enter valid scores for all players'); return }
+    if (vals.some(v => isNaN(v))) { setError('Enter valid scores for all players'); return }
     const total = vals.reduce((a, b) => a + b, 0)
-    if (total !== 26) { setError(`Total must be 26 (hearts: 13 pts, Queen of Spades: 13 pts). Currently: ${total}`); return }
+    if (total !== ROUND_TOTAL) { setError(`Total must be ${ROUND_TOTAL}. Currently: ${total}`); return }
     setError('')
 
     setState(prev => {
@@ -105,7 +106,7 @@ export default function Hearts({ players, onScoreUpdate, onComplete, onAbandon }
                 <div key={p.id} className="flex items-center gap-3">
                   <label className="text-sm font-medium text-gray-700 w-24 truncate">{p.display_name}</label>
                   <input
-                    type="number" min={0} max={26} value={inputs[p.id]}
+                    type="number" min={-100} max={240} value={inputs[p.id]}
                     onChange={e => setInputs(prev => ({ ...prev, [p.id]: e.target.value }))}
                     className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     placeholder="0"
@@ -116,18 +117,18 @@ export default function Hearts({ players, onScoreUpdate, onComplete, onAbandon }
           )}
 
           {error && <p className="text-sm text-red-500 mb-2">{error}</p>}
-          {moonShooter && <p className="text-sm text-indigo-600 mb-3">🌙 {players.find(p=>p.id===moonShooter)?.display_name} shot the moon — everyone else gets 26 pts</p>}
+          {moonShooter && <p className="text-sm text-indigo-600 mb-3">🌙 {players.find(p=>p.id===moonShooter)?.display_name} shot the moon — everyone else gets 240 pts</p>}
 
           <button onClick={submitRound} className="w-full bg-indigo-600 text-white py-2.5 font-bold rounded-xl hover:bg-indigo-700 transition-colors">
             Add Round
           </button>
-          <p className="text-xs text-gray-400 mt-2 text-center">Hearts = 1pt each, Queen of Spades = 13pts, total must be 26</p>
+          <p className="text-xs text-gray-400 mt-2 text-center">Hearts 10pt (ace 20pt), Spar dame 100pt, Ruter knekt −100pt. Total must be 140</p>
         </div>
       )}
 
       {isGameOver && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-center">
-          <p className="font-bold text-amber-800">Game over! Someone reached {GAME_OVER_SCORE}.</p>
+          <p className="font-bold text-amber-800">Game over! Someone reached {GAME_OVER_SCORE} points.</p>
           <p className="text-sm text-amber-600 mt-1">Lowest score wins.</p>
         </div>
       )}
