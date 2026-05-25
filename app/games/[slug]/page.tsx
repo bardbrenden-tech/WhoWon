@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getGame, GAMES } from '@/lib/games'
-import { RULES } from '@/lib/rules'
+import { getRules } from '@/lib/rules'
 import { createClient } from '@/lib/supabase/server'
-import { getServerT } from '@/lib/i18n-server'
+import { getServerT, getLocale } from '@/lib/i18n-server'
 import StartGameButton from './StartGameButton'
 import RulesAccordion from './RulesAccordion'
 import PageBanner from '@/components/PageBanner'
@@ -20,6 +20,7 @@ export default async function GamePage({ params }: Props) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   const { t } = await getServerT()
+  const locale = await getLocale()
 
   // Fetch average rating and leaderboard
   const [{ data: ratingsData }, { data: leaderboard }] = await Promise.all([
@@ -36,7 +37,7 @@ export default async function GamePage({ params }: Props) {
     ? (ratingsData.reduce((s, r) => s + r.rating, 0) / ratingsData.length).toFixed(1)
     : null
 
-  const rules = RULES[game.id]
+  const rules = getRules(game.id, locale)
 
   // Related games (same category, different game)
   const related = GAMES.filter(g => g.active && g.category === game.category && g.id !== game.id).slice(0, 3)

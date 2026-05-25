@@ -485,6 +485,7 @@ export const RULES: Record<string, GameRules> = {
   'farkle': {
     quickStart: [
       'Roll 6 dice. You must score at least one die or it\'s a Farkle (lose all unbanked points this turn).',
+
       'Scoring: 1s = 100 pts, 5s = 50 pts, three 1s = 1000, three of any kind = that number × 100 (e.g., three 4s = 400).',
       'After scoring, choose to bank your points or roll remaining dice to add more.',
       'If all 6 dice score, you can roll all 6 again (hot dice).',
@@ -515,4 +516,172 @@ export const RULES: Record<string, GameRules> = {
       'Player with highest score (at least 10 000) after final round wins.',
     ],
   },
+}
+
+const QUICK_START_NO: Record<string, string[]> = {
+  'maxi-yatzy': [
+    'Kast 6 terninger opp til 3 ganger per tur — hold terninger mellom kastene.',
+    'Skriv inn én kategori per tur. Hver kategori kan bare brukes én gang.',
+    'Øvre seksjon (Ettere–Seksere): summer matchende terninger. Bonus 100 p ved sum ≥ 84.',
+    'Nedre seksjon: 1 Par, 2 Par, 3 Par, 3/4/5 Like, Rekker, Hytte (2+3), Hus (3+3), Tårn (2+4), Sjanse, Maxi Yatzy (100 p).',
+    'Høyeste totalscore vinner.',
+  ],
+  'yatzy': [
+    'Kast 5 terninger opp til 3 ganger per tur — hold terninger mellom kastene.',
+    'Skriv inn én kategori per tur. Hver kan bare brukes én gang.',
+    'Øvre seksjon (Ettere–Seksere): sum av matchende terninger. Bonus 50 p ved sum ≥ 63.',
+    'Nedre seksjon: 1 Par, 2 Par, 3/4 Like, Fullt Hus, Liten/Stor Straight, Sjanse, Yatzy (50 p).',
+    'Høyeste totalscore vinner.',
+  ],
+  'darts-501': [
+    'Hver spiller starter med 501 poeng.',
+    'Kast 3 piler i tur. Trekk poengsummen fra totalen din.',
+    'Du må avslutte på nøyaktig 0 — siste pil må treffe en dobling (eller blink).',
+    'Bust (under 0 eller nøyaktig 1): poengsummen tilbakestilles til start av turen.',
+    'Første til nøyaktig 0 vinner.',
+  ],
+  'darts-301': [
+    'Hver spiller starter med 301 poeng.',
+    'Kast 3 piler i tur. Trekk poengsummen fra totalen din.',
+    'Du må avslutte på nøyaktig 0 — siste pil må treffe en dobling (eller blink).',
+    'Bust (under 0 eller nøyaktig 1): poengsummen tilbakestilles.',
+    'Første til nøyaktig 0 vinner.',
+  ],
+  'darts-cricket': [
+    'Tall i spill: 15, 16, 17, 18, 19, 20 og Blink.',
+    'Treff et tall 3 ganger for å "lukke" det. Merker: 1 = /, 2 = X, 3 = lukket (⊗).',
+    'Etter lukking scorer ekstra treff poeng — men bare hvis motstanderen ikke har lukket tallet ennå.',
+    'Vinn ved å lukke alle tall OG ha høyest (eller lik) score.',
+  ],
+  'hearts': [
+    '3–6 spillere, standard 52-korts kortstokk.',
+    'Hvert stikk: høyeste kort av ledet farge vinner. Hjerter er ikke trumf.',
+    'Poeng: Hjerter = 10 p hvert (Hjerteess = 20 p), Spardam = 100 p, Ruterknekt = −100 p.',
+    'Skyt månen (valgfritt): ta ALLE hjerter + Spardam → du scorer 0, alle andre får 240 p.',
+    'Spillet slutter når noen når 500 poeng. Lavest score vinner.',
+  ],
+  'farkle': [
+    'Kast 6 terninger. Du MÅ score minst én terning, ellers er det Farkle (tap alle ubankede poeng).',
+    'Poeng: 1 = 100 p, 5 = 50 p, tre ettere = 1000, tre like = antall × 100 (f.eks. tre femmere = 500).',
+    'Etter scoring: bank poengene eller kast gjenstående terninger for å samle mer.',
+    'Alle 6 terninger scorer: hot dice — kast alle 6 igjen og legg til.',
+    'Trenger 1000 p i én tur for å åpne kontoen. Første til 10 000 vinner (alle andre får én siste tur).',
+  ],
+  'spades': [
+    '4 spillere, 2 lag. Spar er alltid trumf.',
+    'Alle byr på antall stikk de forventer. Laget scorer 10 p per budt stikk ved å nå budet.',
+    'Overtrekk (poser) gir 1 p, men 10 poser = −100 p. Underbuding koster 10 p per stikk under.',
+    'Første lag til 500 p vinner.',
+  ],
+  'rummy': [
+    'Trekk et kort, kast ett. Mål: form grupper (3+ like rang) og rekker (3+ påfølgende, samme farge).',
+    'Gå ut ved å legge ned alle kortene dine.',
+    'Straffepoeng lik kortverdi av ulagte kort i motstandernes hender.',
+    'Bildekort = 10 p, ess = 1 p. Lavest score vinner.',
+  ],
+  'gin-rummy': [
+    '2 spillere. Trekk og kast ett kort per tur. Form grupper og rekker.',
+    'Bank når gjenstående ubrukte kort summerer til 10 eller mindre.',
+    'Motstanderen legger av på dine kombinasjoner, teller gjenstående.',
+    'Gin (0 ubrukte): +25 bonuspoeng. Underkutt (motstanderens gjenstående ≤ din): +25 p til motstanderen.',
+    'Høyest score etter avtalte runder vinner.',
+  ],
+  'canasta': [
+    '2–6 spillere (best med 4 i 2 lag). Form kortkombinasjoner av 3+ kort med samme rang.',
+    'En canasta er en kombinasjon på 7+ kort. Naturlig canasta = 7 uten jokere (+500 p).',
+    'Jokere og 2-ere kan erstatte kort, men ikke overskride naturlige kort i kombinasjonen.',
+    'Første lag til 5000 p vinner.',
+  ],
+  'phase-10': [
+    'Fullfør 10 spesifikke faser i rekkefølge. Trekk et kort, kast ett.',
+    'Faser: grupper (like rang) og rekker (påfølgende). Eks. fase 1: 2 grupper à 3 kort.',
+    'Jokere kan erstatte alle kort. Skip-kort gjør at neste spiller mister en tur.',
+    'Straffepoeng for gjenværende kort etter at noen går ut. Lavest score vinner.',
+  ],
+  'uno': [
+    'Match topkortet etter farge, tall eller symbol.',
+    'Trekk 2 hvis du ikke kan spille. Ropa "UNO!" med 1 kort igjen.',
+    'Spesialkort: Hopp, Snu, Trekk 2, Wild, Wild Trekk 4.',
+    'Når noen går ut, scorer andre straffepoeng. Første til 500 avslutter spillet — lavest score vinner.',
+  ],
+  'cabo': [
+    '4 kort ned. Kikk på dine to nederste i starten.',
+    'Trekk et kort og bytt det mot et av dine (kast gammel), eller kast det (bruk spesialeffekt).',
+    'Ropa "Cabo" når du tror håndsummen er lavest. Alle andre får én tur til.',
+    'Lavest håndsum vinner runden. Første til 100 p er ute — lavest score til slutt vinner.',
+  ],
+  'cribbage': [
+    '2–4 spillere. Del 6 kort; alle kaster 2 til "kribben" (tilhører utdeleren).',
+    'Vend et startkort. Er det en knekt, scorer utdeleren 2 poeng.',
+    'Spill kort om hverandre og score for 15-ere, par, rekker og 31-ere. Deretter telles håndene.',
+    'Første til 121 poeng vinner.',
+  ],
+  'doppelkopf': [
+    '4 spillere, 2 lag (Re mot Kontra). Lag holdes hemmelig — avsløres av hvem som holder kloverkonginnene.',
+    'Mål: ta stikk verdt 120+ poeng (Re) eller stoppe dem (Kontra).',
+    'Vinnerlaget scorer 1 spillpoeng per spiller; bonuser for ekstra prestasjoner.',
+  ],
+  'skat': [
+    '3 spillere. Del 10 kort med 2 skjulte (skaten).',
+    'Spillerne byr for å bli deklaranten — tar opp skaten og velger trumf.',
+    'Deklaranten forsøker å vinne kortpoeng; forsvarerne forsøker å stoppe dem.',
+  ],
+  'catan': [
+    'Samle ressurser (Tre, Leire, Korn, Sau, Malm) for å bygge veier, bosetninger, byer og kort.',
+    'Bosetninger = 1 sp, Byer = 2 sp. Lengste vei og Største hær = 2 sp hver.',
+    'Første til 10 seierpoeng vinner.',
+  ],
+  'ticket-to-ride': [
+    'Krev jernbaneruter ved å spille matchende fargede togsett.',
+    'Score poeng for krevde ruter. Fullfør destinasjonskort (bonus) eller mislykkes (minus).',
+    'Når en spiller har ≤2 togsett igjen, alle får én tur til — deretter telles score.',
+  ],
+  'carcassonne': [
+    'Legg fliser etter tur for å bygge et middelaldersk landskap av byer, veier og klostre.',
+    'Plasser en brikke på flisen for å kreve en funksjon. Score når funksjoner fullføres.',
+    'Ved slutten: score ufullstendige funksjoner og jordbruksområder.',
+  ],
+  'scrabble': [
+    'Legg bokstavbrikker for å forme ord. Ord må kobles til eksisterende brikker.',
+    'Score = sum av bokstavverdier. Dobbelt/trippelt-felt multipliserer score.',
+    'Bingo (alle 7 brikker i ett trekk): +50 p. Trekk fra ubrukte brikker til slutt.',
+    'Høyest score vinner.',
+  ],
+  'backgammon': [
+    'Flytt alle 15 brikker rundt brettet inn i hjemme-bordet ditt, deretter bær dem av.',
+    'Kast 2 terninger per tur; flytt brikker de viste tallene.',
+    'Treff en enkelt motstanderbrikke: send den til bar — den må inn igjen før andre trekk.',
+    'Første til å bære av alle brikker vinner.',
+  ],
+  'sequence': [
+    '2–12 spillere i lag. Spill et kort og plasser en brikke på matchende brett-felt.',
+    'Form en sekvens på 5 brikker på rad (horisontalt, vertikalt eller diagonalt).',
+    'Knekter: én øye = fjern motstanderbrikke; to øyne = joker (spill hvor som helst).',
+    'Første lag til nødvendig antall sekvenser vinner.',
+  ],
+  'petanque': [
+    'Lag kaster kuler (boules) så nær målkulen (cochonnet) som mulig.',
+    'Nærmeste lag scorer 1 poeng per kule nærmere enn motstanderens nærmeste kule.',
+    'Første lag til 13 poeng vinner.',
+  ],
+  'bowling': [
+    '10 frames. Hvert frame: kast opp til 2 ganger for å velte alle 10 kjegler.',
+    'Strike (alle 10 på første kast): score 10 + neste 2 kast.',
+    'Spare (alle 10 på andre kast): score 10 + neste kast.',
+    'Åpent frame: score = veltede kjegler. Maks totalscore er 300.',
+  ],
+  'croquet': [
+    'Slå baller gjennom ringer i riktig rekkefølge med en kølle.',
+    'Score 1 poeng per ring passert. Å passere en ring gir et bonusslag.',
+    'Treffe en annens ball (roquet) gir 2 bonusslag.',
+    'Første til å fullføre alle ringer og treffe pelen vinner.',
+  ],
+}
+
+export function getRules(gameId: string, locale: string): GameRules | undefined {
+  const rules = RULES[gameId]
+  if (!rules) return undefined
+  const noQS = locale === 'no' ? QUICK_START_NO[gameId] : undefined
+  if (noQS) return { ...rules, quickStart: noQS }
+  return rules
 }
