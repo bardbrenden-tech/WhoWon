@@ -58,7 +58,7 @@ export default function Navbar({ user }: NavbarProps) {
             <div className="relative">
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
-                className="w-9 h-9 rounded-full text-sm font-bold flex items-center justify-center ring-2 ring-offset-1 ring-yellow-300 hover:ring-yellow-400 hover:scale-105 transition-all shadow-md"
+                className="w-9 h-9 rounded-full text-sm font-bold flex items-center justify-center ring-2 ring-black hover:scale-105 transition-all"
                 style={{ backgroundColor: '#F5C518', color: '#1a1a1a' }}
               >
                 {user.user_metadata?.full_name?.[0]?.toUpperCase() ?? 'U'}
