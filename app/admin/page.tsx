@@ -95,8 +95,20 @@ export default async function AdminPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
-  if (!user || user.email !== ADMIN_EMAIL) {
-    redirect('/')
+  if (!user) {
+    redirect('/login')
+  }
+
+  // Temporary: show email so we can verify the correct one
+  const ALLOWED = ['bard.brenden@gmail.com', 'bard@brenden.no']
+  if (!ALLOWED.includes(user.email ?? '')) {
+    return (
+      <div className="max-w-md mx-auto mt-20 p-6 bg-white rounded-xl border text-center">
+        <p className="text-gray-500 text-sm mb-2">Ikke tilgang. Din innloggingsepost er:</p>
+        <p className="font-mono text-gray-900 font-bold">{user.email}</p>
+        <p className="text-gray-400 text-xs mt-4">Gi denne til utvikler for å få tilgang.</p>
+      </div>
+    )
   }
 
   const stats = await getStats()
