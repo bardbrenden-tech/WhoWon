@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/profile', '/challenges', '/sessions'],
+      disallow: ['/api/', '/profile', '/challenges', '/sessions', '/admin'],
     },
     sitemap: 'https://who-won.com/sitemap.xml',
   }
