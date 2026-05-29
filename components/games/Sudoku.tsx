@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, type CSSProperties } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import type { GameComponentProps } from '@/lib/types'
 
@@ -201,8 +201,8 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
     !!selected && grid[r][c] !== 0 && grid[r][c] === grid[selected[0]][selected[1]]
   const isErr     = (r: number, c: number) => !isFixed(r, c) && hasConflict(grid, r, c)
 
-  function cellStyle(r: number, c: number): React.CSSProperties {
-    let bg = '#ffffff', color = '#1f2937', fw: React.CSSProperties['fontWeight'] = 500
+  function cellStyle(r: number, c: number): CSSProperties {
+    let bg = '#ffffff', color = '#1f2937', fw: CSSProperties['fontWeight'] = 500
     if (isSel(r, c))   { bg = '#6366f1'; color = '#ffffff' }
     else if (isErr(r, c))     { bg = '#fee2e2'; color = '#dc2626' }
     else if (isSameVal(r, c)) { bg = '#c7d2fe'; color = '#312e81' }

@@ -31,6 +31,7 @@ export default function StartGameButton({ game, user }: Props) {
   const [newEmail, setNewEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [loadedGuests, setLoadedGuests] = useState(false)
+  const [startError, setStartError] = useState<string | null>(null)
   const gameOptionDefs = GAME_OPTIONS[game.id] ?? []
   const [gameOptions, setGameOptions] = useState<Record<string, boolean>>(
     Object.fromEntries(gameOptionDefs.map(o => [o.key, o.default]))
@@ -68,6 +69,7 @@ export default function StartGameButton({ game, user }: Props) {
   async function startGame() {
     if (players.length < game.min_players) return
     setLoading(true)
+    setStartError(null)
     const supabase = createClient()
 
     // Create any new guest players first
@@ -80,7 +82,11 @@ export default function StartGameButton({ game, user }: Props) {
 
     // Create session
     const { data: session, error } = await supabase.from('sessions').insert({ game_id: game.id, created_by: user!.id, options: { higher_is_better: game.higher_is_better, ...gameOptions } }).select('id').single()
-    if (error || !session) { setLoading(false); return }
+    if (error || !session) {
+      setLoading(false)
+      setStartError(error?.message ?? 'Could not create session. Please try again.')
+      return
+    }
 
     // Add session players
     const sessionPlayers = players.map(p => ({
@@ -194,6 +200,10 @@ export default function StartGameButton({ game, user }: Props) {
                   ))}
                 </div>
               </div>
+            )}
+
+            {startError && (
+              <p className="text-sm text-red-500 bg-red-50 border border-red-200 rounded-lg px-3 py-2 mb-3">{startError}</p>
             )}
 
             <div className="flex gap-3">
