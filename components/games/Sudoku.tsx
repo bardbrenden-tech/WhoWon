@@ -57,14 +57,18 @@ function fillGrid(g: Grid, rng: () => number, pos = 0): boolean {
   return false
 }
 
-function generatePuzzle(sessionId: string) {
+type Difficulty = 'easy' | 'medium' | 'hard'
+const REMOVE_COUNT: Record<Difficulty, number> = { easy: 36, medium: 51, hard: 62 }
+// easy → 45 hints, medium → 30 hints, hard → 19 hints
+
+function generatePuzzle(sessionId: string, difficulty: Difficulty = 'medium') {
   const rng = makeRng(sessionSeed(sessionId || 'default'))
   const solution: Grid = Array.from({ length: 9 }, () => Array(9).fill(0))
   fillGrid(solution, rng)
   const puzzle: Grid = solution.map(row => [...row])
-  // Remove 51 cells → 30 given clues (medium difficulty)
   const cells = shuffle(Array.from({ length: 81 }, (_, i) => i), rng)
-  for (let i = 0; i < 51; i++) {
+  const remove = REMOVE_COUNT[difficulty]
+  for (let i = 0; i < remove; i++) {
     puzzle[Math.floor(cells[i] / 9)][cells[i] % 9] = 0
   }
   return { puzzle, solution }
@@ -96,9 +100,12 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
 
   const myPlayer = players.find(p => p.profile_id === userId || p.guest_player_id === userId) ?? players[0]
 
-  // Generate puzzle exactly once, deterministically from sessionId
+  const [difficulty, setDifficulty] = useState<Difficulty>('medium')
+
+  // Re-generate puzzle when difficulty changes (only allowed in 'ready' phase)
   const puzzleRef = useRef<{ puzzle: Grid; solution: Grid } | null>(null)
-  if (!puzzleRef.current) puzzleRef.current = generatePuzzle(sessionId)
+  if (!puzzleRef.current) puzzleRef.current = generatePuzzle(sessionId, difficulty)
+
   const { puzzle, solution } = puzzleRef.current
 
   const [phase,      setPhase]      = useState<Phase>('ready')
@@ -157,6 +164,14 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
     const sorted = [...allResults].sort((a, b) => (a.time ?? 99999) - (b.time ?? 99999))
     onComplete(sorted.map((r, i) => ({ id: r.id, finalScore: r.time ?? 99999, rank: i + 1 })))
   }, [allResults, phase]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Difficulty (only usable in 'ready' phase) ─────────────────────────────
+  function changeDifficulty(d: Difficulty) {
+    const newPuzzle = generatePuzzle(sessionId, d)
+    puzzleRef.current = newPuzzle
+    setDifficulty(d)
+    setGrid(newPuzzle.puzzle.map(row => [...row]))
+  }
 
   // ── Actions ────────────────────────────────────────────────────────────────
   function handleCellClick(r: number, c: number) {
@@ -247,6 +262,29 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
             </div>
           </div>
         )}
+
+        {/* Difficulty picker */}
+        <div className="w-full bg-white border border-gray-200 rounded-2xl p-4">
+          <p className="text-sm font-semibold text-gray-700 mb-3 text-center">Vanskelighetsgrad</p>
+          <div className="flex gap-2">
+            {(['easy', 'medium', 'hard'] as Difficulty[]).map(d => (
+              <button
+                key={d}
+                onClick={() => changeDifficulty(d)}
+                className={`flex-1 py-2.5 rounded-xl text-sm font-bold border-2 transition-colors
+                  ${difficulty === d
+                    ? 'bg-indigo-600 border-indigo-600 text-white'
+                    : 'bg-white border-gray-200 text-gray-700 hover:border-indigo-300'
+                  }`}
+              >
+                {d === 'easy' ? 'Lett' : d === 'medium' ? 'Middels' : 'Vanskelig'}
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-gray-400 mt-2 text-center">
+            {difficulty === 'easy' ? '45 hint' : difficulty === 'medium' ? '30 hint' : '19 hint'}
+          </p>
+        </div>
 
         <div className="w-full space-y-3">
           <button
