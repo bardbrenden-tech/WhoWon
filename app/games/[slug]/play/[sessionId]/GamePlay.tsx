@@ -41,11 +41,12 @@ interface Props {
   game: GameMeta
   session: Session & { session_players: SessionPlayer[] }
   userId: string
+  userEmail?: string
 }
 
 interface FinalResult { id: string; finalScore: number; rank: number }
 
-export default function GamePlay({ game, session, userId }: Props) {
+export default function GamePlay({ game, session, userId, userEmail = '' }: Props) {
   const router = useRouter()
   const [completed, setCompleted] = useState(false)
   const [results, setResults] = useState<FinalResult[]>([])
@@ -194,7 +195,7 @@ export default function GamePlay({ game, session, userId }: Props) {
       </div>
       <GameComponent
         players={session.session_players}
-        options={{ ...(session.options ?? {}), sessionId: session.id, userId }}
+        options={{ ...(session.options ?? {}), sessionId: session.id, userId, userEmail }}
         onScoreUpdate={handleScoreUpdate}
         onComplete={handleComplete}
         onAbandon={handleAbandon}

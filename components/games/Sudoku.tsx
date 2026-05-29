@@ -97,6 +97,7 @@ type PlayerResult = { id: string; displayName: string; time: number | null }
 export default function Sudoku({ players, options, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
   const sessionId = (options.sessionId as string) || ''
   const userId    = (options.userId    as string) || ''
+  const userEmail = (options.userEmail as string) || ''
 
   // Identify current player: profile match → localStorage cache → null (needs picking)
   const matchedByUserId = players.find(p => p.profile_id === userId)
@@ -132,15 +133,42 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
   const intervalRef    = useRef<ReturnType<typeof setInterval> | null>(null)
   const finalTimeRef   = useRef(0)
 
-  // On mount: store page URL and restore identity from localStorage if needed
+  // On mount: set page URL, restore identity from localStorage, or auto-match by email
   useEffect(() => {
     setPageUrl(window.location.href)
     if (myPlayerId || isSolo) return
+
+    // 1) Check localStorage cache first (instant, no network)
     const stored = localStorage.getItem(`who-won-player-${sessionId}`)
     if (stored && players.find(p => p.id === stored)) {
       setMyPlayerId(stored)
       setPhase('ready')
+      return
     }
+
+    // 2) If the logged-in user has an email, check whether it matches a guest player in this session
+    if (!userEmail) return
+    const guestIds = players
+      .filter(p => p.guest_player_id && !p.profile_id)
+      .map(p => p.guest_player_id!)
+    if (guestIds.length === 0) return
+
+    const supabase = createClient()
+    supabase
+      .from('guest_players')
+      .select('id')
+      .in('id', guestIds)
+      .eq('email', userEmail)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!data) return
+        const sp = players.find(p => p.guest_player_id === data.id)
+        if (!sp) return
+        // Auto-identify and cache so they're recognised on future visits too
+        localStorage.setItem(`who-won-player-${sessionId}`, sp.id)
+        setMyPlayerId(sp.id)
+        setPhase('ready')
+      })
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Timer

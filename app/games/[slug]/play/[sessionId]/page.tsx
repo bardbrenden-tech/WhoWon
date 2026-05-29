@@ -25,5 +25,5 @@ export default async function PlayPage({ params }: Props) {
   if (!session) notFound()
   if (session.status === 'completed') redirect(`/games/${slug}`)
 
-  return <GamePlay game={game} session={session} userId={user.id} />
+  return <GamePlay game={game} session={session} userId={user.id} userEmail={user.email ?? ''} />
 }
