@@ -91,16 +91,25 @@ function hasConflict(grid: Grid, r: number, c: number): boolean {
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
-type Phase = 'ready' | 'playing' | 'waiting'
+type Phase = 'identify' | 'ready' | 'playing' | 'waiting'
 type PlayerResult = { id: string; displayName: string; time: number | null }
 
 export default function Sudoku({ players, options, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
   const sessionId = (options.sessionId as string) || ''
   const userId    = (options.userId    as string) || ''
 
-  const myPlayer = players.find(p => p.profile_id === userId || p.guest_player_id === userId) ?? players[0]
+  // Identify current player: profile match → localStorage cache → null (needs picking)
+  const matchedByUserId = players.find(p => p.profile_id === userId)
+  const isSolo = players.length === 1
+
+  const [myPlayerId, setMyPlayerId] = useState<string | null>(
+    isSolo ? players[0].id : (matchedByUserId?.id ?? null)
+  )
+  const myPlayer = players.find(p => p.id === myPlayerId) ?? players[0]
 
   const [difficulty, setDifficulty] = useState<Difficulty>('medium')
+  const [pageUrl,    setPageUrl]    = useState('')
+  const [copied,     setCopied]     = useState(false)
 
   // Re-generate puzzle when difficulty changes (only allowed in 'ready' phase)
   const puzzleRef = useRef<{ puzzle: Grid; solution: Grid } | null>(null)
@@ -108,7 +117,9 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
 
   const { puzzle, solution } = puzzleRef.current
 
-  const [phase,      setPhase]      = useState<Phase>('ready')
+  const [phase,      setPhase]      = useState<Phase>(
+    () => (isSolo || !!matchedByUserId) ? 'ready' : 'identify'
+  )
   const [grid,       setGrid]       = useState<Grid>(() => puzzle.map(row => [...row]))
   const [selected,   setSelected]   = useState<[number, number] | null>(null)
   const [elapsed,    setElapsed]    = useState(0)
@@ -120,6 +131,17 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
   const startTimeRef   = useRef(0)
   const intervalRef    = useRef<ReturnType<typeof setInterval> | null>(null)
   const finalTimeRef   = useRef(0)
+
+  // On mount: store page URL and restore identity from localStorage if needed
+  useEffect(() => {
+    setPageUrl(window.location.href)
+    if (myPlayerId || isSolo) return
+    const stored = localStorage.getItem(`who-won-player-${sessionId}`)
+    if (stored && players.find(p => p.id === stored)) {
+      setMyPlayerId(stored)
+      setPhase('ready')
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Timer
   useEffect(() => {
@@ -164,6 +186,19 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
     const sorted = [...allResults].sort((a, b) => (a.time ?? 99999) - (b.time ?? 99999))
     onComplete(sorted.map((r, i) => ({ id: r.id, finalScore: r.time ?? 99999, rank: i + 1 })))
   }, [allResults, phase]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Identify & share ─────────────────────────────────────────────────────
+  function identifyAs(id: string) {
+    localStorage.setItem(`who-won-player-${sessionId}`, id)
+    setMyPlayerId(id)
+    setPhase('ready')
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(window.location.href)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   // ── Difficulty (only usable in 'ready' phase) ─────────────────────────────
   function changeDifficulty(d: Difficulty) {
@@ -231,6 +266,33 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
     }
   }
 
+  // ── Render: Identify ──────────────────────────────────────────────────────
+  if (phase === 'identify') {
+    return (
+      <div className="max-w-sm mx-auto py-10 px-4 flex flex-col items-center gap-6">
+        <div className="text-center">
+          <div className="text-5xl mb-3">👋</div>
+          <h2 className="text-2xl font-black text-gray-900">Hvem er du?</h2>
+          <p className="text-sm text-gray-500 mt-1">Velg navnet ditt for å fortsette</p>
+        </div>
+        <div className="w-full space-y-2">
+          {players.map(p => (
+            <button
+              key={p.id}
+              onClick={() => identifyAs(p.id)}
+              className="w-full bg-white border-2 border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 text-gray-800 font-semibold py-4 px-5 rounded-2xl transition-colors text-left flex items-center gap-3"
+            >
+              <span className="w-9 h-9 rounded-full bg-indigo-100 text-indigo-700 font-black text-sm flex items-center justify-center shrink-0">
+                {p.display_name[0].toUpperCase()}
+              </span>
+              {p.display_name}
+            </button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   // ── Render: Ready ──────────────────────────────────────────────────────────
   if (phase === 'ready') {
     return (
@@ -259,6 +321,25 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
                   {p.id === myPlayer.id && <span className="text-xs text-indigo-400 ml-auto">deg</span>}
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* Share link — shown to the session owner so they can invite others */}
+        {players.length > 1 && pageUrl && (
+          <div className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-4">
+            <p className="text-sm font-semibold text-gray-700 mb-1 text-center">Inviter spillere</p>
+            <p className="text-xs text-gray-400 mb-3 text-center">Del denne lenken med de andre — de åpner den på sin egen enhet</p>
+            <div className="flex gap-2 items-center">
+              <p className="flex-1 text-xs text-gray-500 font-mono bg-white border border-gray-200 rounded-xl px-3 py-2 truncate">{pageUrl}</p>
+              <button
+                onClick={copyLink}
+                className={`shrink-0 text-xs font-bold px-3 py-2 rounded-xl transition-colors ${
+                  copied ? 'bg-green-500 text-white' : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                }`}
+              >
+                {copied ? 'Kopiert!' : 'Kopier'}
+              </button>
             </div>
           </div>
         )}
