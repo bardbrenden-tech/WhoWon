@@ -128,6 +128,9 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
     () => players.map(p => ({ id: p.id, displayName: p.display_name, time: null }))
   )
 
+  type ConfettiPiece = { id: number; left: number; delay: number; duration: number; color: string; size: number; isCircle: boolean }
+  const [confetti, setConfetti] = useState<ConfettiPiece[]>([])
+
   const calledComplete = useRef(false)
   const startTimeRef   = useRef(0)
   const intervalRef    = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -214,6 +217,21 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
     const sorted = [...allResults].sort((a, b) => (a.time ?? 99999) - (b.time ?? 99999))
     onComplete(sorted.map((r, i) => ({ id: r.id, finalScore: r.time ?? 99999, rank: i + 1 })))
   }, [allResults, phase]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Confetti burst when puzzle is solved
+  useEffect(() => {
+    if (phase !== 'waiting') return
+    const colors = ['#a5b4fc', '#fcd34d', '#6ee7b7', '#fca5a5', '#93c5fd', '#f9a8d4', '#c4b5fd', '#ffffff']
+    setConfetti(Array.from({ length: 50 }, (_, i) => ({
+      id: i,
+      left: Math.random() * 100,
+      delay: Math.random() * 2.5,
+      duration: 2 + Math.random() * 2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      size: 6 + Math.floor(Math.random() * 10),
+      isCircle: Math.random() > 0.5,
+    })))
+  }, [phase])
 
   // ── Identify & share ─────────────────────────────────────────────────────
   function identifyAs(id: string) {
@@ -421,38 +439,99 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
       if (b.time === null) return -1
       return a.time - b.time
     })
+    const allDone = allResults.every(r => r.time !== null)
+    const praise = myTime < 120 ? '🔥 Lynrask!' : myTime < 300 ? '⚡ Rask løsning!' : myTime < 600 ? '👏 Godt gjort!' : '✅ Fullført!'
+
     return (
-      <div className="max-w-sm mx-auto py-10 px-4 flex flex-col items-center gap-6">
-        <div className="text-center">
-          <div className="text-5xl mb-3">✅</div>
-          <h2 className="text-xl font-black text-gray-900">Bra jobbet!</h2>
-          <p className="text-3xl font-black text-indigo-600 mt-1 tabular-nums">{fmt(myTime)}</p>
+      <div className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center px-4 py-10 gap-6"
+           style={{ background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%)' }}>
+
+        <style>{`
+          @keyframes confetti-fall {
+            0%   { transform: translateY(-40px) rotate(0deg);    opacity: 1; }
+            80%  { opacity: 1; }
+            100% { transform: translateY(105vh) rotate(800deg);  opacity: 0; }
+          }
+          @keyframes pop-in {
+            0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+            65%  { transform: scale(1.25) rotate(5deg); opacity: 1; }
+            100% { transform: scale(1)  rotate(0deg);  opacity: 1; }
+          }
+          @keyframes slide-up {
+            from { transform: translateY(28px); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+          }
+        `}</style>
+
+        {/* Confetti */}
+        {confetti.map(c => (
+          <div key={c.id} style={{
+            position: 'absolute', pointerEvents: 'none',
+            left: `${c.left}%`, top: 0,
+            width: c.size, height: c.size,
+            background: c.color,
+            borderRadius: c.isCircle ? '50%' : '3px',
+            animation: `confetti-fall ${c.duration}s ${c.delay}s ease-in forwards`,
+          }} />
+        ))}
+
+        {/* Main card */}
+        <div className="relative z-10 flex flex-col items-center gap-5 w-full max-w-sm">
+
+          {/* Big celebration emoji */}
+          <div style={{ animation: 'pop-in 0.65s cubic-bezier(.22,1,.36,1) forwards', fontSize: 80 }}>
+            🎉
+          </div>
+
+          {/* Time card */}
+          <div className="w-full rounded-3xl p-6 text-center"
+               style={{
+                 background: 'rgba(255,255,255,0.18)',
+                 backdropFilter: 'blur(12px)',
+                 border: '1px solid rgba(255,255,255,0.3)',
+                 animation: 'slide-up 0.5s 0.35s ease-out both',
+               }}>
+            <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Din tid</p>
+            <p className="text-7xl font-black text-white tabular-nums leading-none">{fmt(myTime)}</p>
+            <p className="text-white/80 text-base font-semibold mt-3">{praise}</p>
+          </div>
+
+          {/* Multiplayer standings */}
           {players.length > 1 && (
-            <p className="text-sm text-gray-400 mt-2">Venter på de andre…</p>
+            <div className="w-full rounded-2xl overflow-hidden"
+                 style={{
+                   background: 'rgba(255,255,255,0.12)',
+                   backdropFilter: 'blur(8px)',
+                   border: '1px solid rgba(255,255,255,0.2)',
+                   animation: 'slide-up 0.5s 0.55s ease-out both',
+                 }}>
+              {!allDone && (
+                <div className="px-4 py-2.5 border-b border-white/10 text-center">
+                  <p className="text-white/60 text-xs font-semibold animate-pulse">Venter på de andre…</p>
+                </div>
+              )}
+              {sorted.map((r, i) => (
+                <div key={r.id} className="flex items-center justify-between px-4 py-3 border-b border-white/10 last:border-0">
+                  <div className="flex items-center gap-2.5">
+                    <span className="w-7 text-center text-lg">
+                      {r.time !== null
+                        ? (i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`)
+                        : '⏳'}
+                    </span>
+                    <span className={`text-sm ${r.id === myPlayer.id ? 'text-white font-bold' : 'text-white/80 font-medium'}`}>
+                      {r.displayName}
+                      {r.id === myPlayer.id && <span className="text-white/50 text-xs ml-1">(deg)</span>}
+                    </span>
+                  </div>
+                  {r.time !== null
+                    ? <span className={`text-sm font-bold tabular-nums ${i === 0 ? 'text-yellow-300' : 'text-white/90'}`}>{fmt(r.time)}</span>
+                    : <span className="text-xs text-white/40 animate-pulse">løser…</span>
+                  }
+                </div>
+              ))}
+            </div>
           )}
         </div>
-
-        {players.length > 1 && (
-          <div className="w-full bg-white border border-gray-200 rounded-2xl overflow-hidden">
-            {sorted.map((r, i) => (
-              <div key={r.id} className="flex items-center justify-between px-4 py-3 border-b border-gray-100 last:border-0">
-                <div className="flex items-center gap-2.5">
-                  <span className="w-6 text-center text-base">
-                    {r.time !== null ? (i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}.`) : '⏳'}
-                  </span>
-                  <span className="text-sm font-medium text-gray-800">
-                    {r.displayName}
-                    {r.id === myPlayer.id && <span className="text-xs text-gray-400 ml-1">(deg)</span>}
-                  </span>
-                </div>
-                {r.time !== null
-                  ? <span className="text-sm font-bold text-green-600 tabular-nums">{fmt(r.time)}</span>
-                  : <span className="text-xs text-gray-400 animate-pulse">løser…</span>
-                }
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     )
   }
