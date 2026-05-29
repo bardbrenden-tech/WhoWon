@@ -34,6 +34,7 @@ const GAME_COMPONENTS: Record<string, DynamicGameComponent> = {
   'qwixx': Generic, 'king-of-tokyo': Generic,
   'golf':   dynamic<GameComponentProps>(() => import('@/components/games/Golf')),
   'tennis': dynamic<GameComponentProps>(() => import('@/components/games/Tennis')),
+  'sudoku': dynamic<GameComponentProps>(() => import('@/components/games/Sudoku')),
 }
 
 interface Props {
@@ -66,6 +67,15 @@ export default function GamePlay({ game, session, userId }: Props) {
 
   async function handleComplete(finalResults: FinalResult[]) {
     const supabase = createClient()
+
+    // Guard: multi-device games (e.g. Sudoku) can trigger this on multiple devices simultaneously.
+    // If the session is already completed, skip Elo recalculation and just show the results.
+    const { data: sessionCheck } = await supabase.from('sessions').select('status').eq('id', session.id).single()
+    if (sessionCheck?.status === 'completed') {
+      setResults(finalResults)
+      setCompleted(true)
+      return
+    }
 
     // Fetch current ratings for all players
     const playerRatings: Record<string, { rating: number; gamesPlayed: number }> = {}
@@ -184,7 +194,7 @@ export default function GamePlay({ game, session, userId }: Props) {
       </div>
       <GameComponent
         players={session.session_players}
-        options={session.options ?? {}}
+        options={{ ...(session.options ?? {}), sessionId: session.id, userId }}
         onScoreUpdate={handleScoreUpdate}
         onComplete={handleComplete}
         onAbandon={handleAbandon}

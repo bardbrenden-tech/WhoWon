@@ -35,7 +35,7 @@ export type Messages = {
     memberSince: string; addEmail: string; emailPlaceholder: string; save: string
     games: string; wins: string; elo: string; removeConfirm: string
   }
-  category: { dice: string; card: string; darts: string; board: string; outdoor: string; party: string; sport: string }
+  category: { dice: string; card: string; darts: string; board: string; outdoor: string; party: string; sport: string; puzzle: string }
   tournament: {
     startTournament: string; bracket: string; round: string; final: string; semifinal: string
     bye: string; setWinner: string; winner: string; champion: string; score: string
@@ -89,7 +89,7 @@ const en: Messages = {
     recentGames: 'Recent Games', memberSince: 'Member since', addEmail: '+ Add email', emailPlaceholder: 'Email address',
     save: 'Save', games: 'games', wins: 'wins', elo: 'Elo', removeConfirm: 'Remove this player?',
   },
-  category: { dice: 'Dice Games', card: 'Card Games', darts: 'Darts', board: 'Board Games', outdoor: 'Outdoor', party: 'Party Games', sport: 'Sport & 1v1' },
+  category: { dice: 'Dice Games', card: 'Card Games', darts: 'Darts', board: 'Board Games', outdoor: 'Outdoor', party: 'Party Games', sport: 'Sport & 1v1', puzzle: 'Puzzle Games' },
   tournament: {
     startTournament: 'Start Tournament', bracket: 'Tournament Bracket', round: 'Round', final: 'Final', semifinal: 'Semifinal',
     bye: 'Bye', setWinner: 'Set Winner', winner: 'Winner', champion: '🏆 Champion', score: 'Score (optional)',
@@ -159,6 +159,7 @@ const en: Messages = {
     'pandemic': 'Work together to cure four diseases before outbreaks spiral out of control. Track rounds survived or diseases cured.',
     'qwixx': 'Roll six dice and cross off numbers in four colour rows. Lock a row or score big — but blocking others costs everyone.',
     'king-of-tokyo': 'Roll custom dice to stomp Tokyo, zap rivals, and grab victory points. First to 20 points or last monster standing wins.',
+    'sudoku': 'Solve the 9×9 puzzle as fast as you can. Everyone gets the same board — lowest time wins.',
   },
 }
 
@@ -195,7 +196,7 @@ const no: Messages = {
     recentGames: 'Nylige spill', memberSince: 'Medlem siden', addEmail: '+ Legg til e-post', emailPlaceholder: 'E-postadresse',
     save: 'Lagre', games: 'spill', wins: 'seire', elo: 'Elo', removeConfirm: 'Fjerne denne spilleren?',
   },
-  category: { dice: 'Terningspill', card: 'Kortspill', darts: 'Darts', board: 'Brettspill', outdoor: 'Utendørs', party: 'Festspill', sport: 'Sport & 1v1' },
+  category: { dice: 'Terningspill', card: 'Kortspill', darts: 'Darts', board: 'Brettspill', outdoor: 'Utendørs', party: 'Festspill', sport: 'Sport & 1v1', puzzle: 'Pusslespill' },
   tournament: {
     startTournament: 'Start turnering', bracket: 'Turneringsbraketten', round: 'Runde', final: 'Finale', semifinal: 'Semifinale',
     bye: 'Fripass', setWinner: 'Sett vinner', winner: 'Vinner', champion: '🏆 Mester', score: 'Resultat (valgfritt)',
@@ -265,6 +266,7 @@ const no: Messages = {
     'pandemic': 'Samarbeid om å kurere fire sykdommer før utbruddene eskalerer. Spor runder dere overlever eller sykdommer dere kurerer.',
     'qwixx': 'Kast seks terninger og stryk tall i fire fargerader. Lås en rad eller score stort — men å blokkere andre koster alle.',
     'king-of-tokyo': 'Kast spesialterninger for å dominere Tokyo, zape rivaler og samle seierspoeng. Første til 20 poeng eller siste monster stående vinner.',
+    'sudoku': 'Løs 9×9-brettet så raskt du kan. Alle spillere får samme brett — lavest tid vinner.',
   },
 }
 
@@ -301,7 +303,7 @@ const de: Messages = {
     recentGames: 'Letzte Spiele', memberSince: 'Mitglied seit', addEmail: '+ E-Mail hinzufügen', emailPlaceholder: 'E-Mail-Adresse',
     save: 'Speichern', games: 'Spiele', wins: 'Siege', elo: 'Elo', removeConfirm: 'Diesen Spieler entfernen?',
   },
-  category: { dice: 'Würfelspiele', card: 'Kartenspiele', darts: 'Darts', board: 'Brettspiele', outdoor: 'Outdoor', party: 'Partyspiele', sport: 'Sport & 1v1' },
+  category: { dice: 'Würfelspiele', card: 'Kartenspiele', darts: 'Darts', board: 'Brettspiele', outdoor: 'Outdoor', party: 'Partyspiele', sport: 'Sport & 1v1', puzzle: 'Puzzlespiele' },
   tournament: {
     startTournament: 'Turnier starten', bracket: 'Turnierbaum', round: 'Runde', final: 'Finale', semifinal: 'Halbfinale',
     bye: 'Freilos', setWinner: 'Gewinner setzen', winner: 'Gewinner', champion: '🏆 Champion', score: 'Ergebnis (optional)',
@@ -371,6 +373,7 @@ const de: Messages = {
     'pandemic': 'Arbeite zusammen, um vier Krankheiten zu heilen, bevor Ausbrüche eskalieren. Zähle überlebte Runden oder geheilte Krankheiten.',
     'qwixx': 'Würfle sechs Würfel und streiche Zahlen in vier Farbreihen. Blockieren kostet alle Punkte.',
     'king-of-tokyo': 'Würfle mit Sonderwürfeln, um Tokio zu beherrschen und Rivalen zu zappen. Erster auf 20 Punkten oder letztes Monster gewinnt.',
+    'sudoku': 'Löse das 9×9-Rätsel so schnell wie möglich. Alle bekommen dasselbe Rätsel — die niedrigste Zeit gewinnt.',
   },
 }
 
@@ -407,7 +410,7 @@ const fr: Messages = {
     recentGames: 'Parties récentes', memberSince: 'Membre depuis', addEmail: '+ Ajouter un e-mail', emailPlaceholder: 'Adresse e-mail',
     save: 'Enregistrer', games: 'parties', wins: 'victoires', elo: 'Elo', removeConfirm: 'Supprimer ce joueur ?',
   },
-  category: { dice: 'Jeux de dés', card: 'Jeux de cartes', darts: 'Fléchettes', board: 'Jeux de plateau', outdoor: 'Plein air', party: 'Jeux de société', sport: 'Sport & 1v1' },
+  category: { dice: 'Jeux de dés', card: 'Jeux de cartes', darts: 'Fléchettes', board: 'Jeux de plateau', outdoor: 'Plein air', party: 'Jeux de société', sport: 'Sport & 1v1', puzzle: 'Puzzles' },
   tournament: {
     startTournament: 'Démarrer un tournoi', bracket: 'Tableau du tournoi', round: 'Tour', final: 'Finale', semifinal: 'Demi-finale',
     bye: 'Exempt', setWinner: 'Définir le gagnant', winner: 'Gagnant', champion: '🏆 Champion', score: 'Score (optionnel)',
@@ -477,6 +480,7 @@ const fr: Messages = {
     'pandemic': 'Coopérez pour guérir quatre maladies avant que les épidémies se propagent. Suivez vos survies ou maladies guéries.',
     'qwixx': 'Lancez six dés et barrez des chiffres dans quatre rangées de couleur. Bloquer les autres coûte des points à tous.',
     'king-of-tokyo': 'Lancez des dés spéciaux pour dominer Tokyo et électrocuter les rivaux. Premier à 20 points ou dernier monstre debout gagne.',
+    'sudoku': 'Résolvez la grille 9×9 le plus vite possible. Tous les joueurs ont la même grille — le temps le plus court gagne.',
   },
 }
 
@@ -513,7 +517,7 @@ const es: Messages = {
     recentGames: 'Partidas recientes', memberSince: 'Miembro desde', addEmail: '+ Añadir correo', emailPlaceholder: 'Correo electrónico',
     save: 'Guardar', games: 'partidas', wins: 'victorias', elo: 'Elo', removeConfirm: '¿Eliminar este jugador?',
   },
-  category: { dice: 'Juegos de dados', card: 'Juegos de cartas', darts: 'Dardos', board: 'Juegos de mesa', outdoor: 'Exterior', party: 'Juegos de fiesta', sport: 'Deporte & 1v1' },
+  category: { dice: 'Juegos de dados', card: 'Juegos de cartas', darts: 'Dardos', board: 'Juegos de mesa', outdoor: 'Exterior', party: 'Juegos de fiesta', sport: 'Deporte & 1v1', puzzle: 'Rompecabezas' },
   tournament: {
     startTournament: 'Iniciar torneo', bracket: 'Cuadro del torneo', round: 'Ronda', final: 'Final', semifinal: 'Semifinal',
     bye: 'Bye', setWinner: 'Establecer ganador', winner: 'Ganador', champion: '🏆 Campeón', score: 'Resultado (opcional)',
@@ -583,6 +587,7 @@ const es: Messages = {
     'pandemic': 'Cooperad para curar cuatro enfermedades antes de que los brotes se descontrolen. Registra rondas sobrevividas o enfermedades curadas.',
     'qwixx': 'Lanza seis dados y tacha números en cuatro filas de colores. Bloquear a todos cuesta puntos a todo el mundo.',
     'king-of-tokyo': 'Lanza dados especiales para dominar Tokio y electrocutar rivales. El primero en 20 puntos o el último monstruo en pie gana.',
+    'sudoku': 'Resuelve el tablero 9×9 lo más rápido posible. Todos los jugadores tienen el mismo tablero — el tiempo más bajo gana.',
   },
 }
 

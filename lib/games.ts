@@ -14,6 +14,7 @@ export const CATEGORIES: { id: GameCategory; label: string; icon: string }[] = [
   { id: 'outdoor', label: 'Outdoor',       icon: '🌿' },
   { id: 'party',   label: 'Party Games',   icon: '🎉' },
   { id: 'sport',   label: 'Sport & 1v1',   icon: '🏓' },
+  { id: 'puzzle',  label: 'Puzzle Games',  icon: '🧩' },
 ]
 
 export const GAMES: GameMeta[] = [
@@ -63,6 +64,7 @@ export const GAMES: GameMeta[] = [
   { id: 'cornhole',   name: 'Cornhole',         name_alt: 'Bønneposs',          category: 'outdoor', description: 'Toss bags into a hole for 3 pts or land on the board for 1 pt. Cancel scoring. First to 21 wins.',                              min_players: 2, max_players: 4, higher_is_better: true,  active: true,  sort_order: 46, icon: '🎯' },
   { id: 'golf',       name: 'Golf',             name_alt: null,                 category: 'outdoor', description: 'Set up your course hole by hole with par values. Track strokes per hole and see your score vs par in real time.',               min_players: 1, max_players: 8, higher_is_better: false, active: true,  sort_order: 47, icon: '⛳' },
   { id: 'tennis',     name: 'Tennis',           name_alt: null,                 category: 'outdoor', description: 'Track sets in a tennis match. Enter who won each set and the score. Works for singles and doubles.',                             min_players: 2, max_players: 4, higher_is_better: true,  active: true,  sort_order: 48, icon: '🎾' },
+  { id: 'sudoku',     name: 'Sudoku',           name_alt: null,                 category: 'puzzle', description: 'Solve the 9×9 puzzle as fast as you can. Everyone gets the same board — lowest time wins.',                                             min_players: 1, max_players: 8,  higher_is_better: false, active: true,  sort_order: 70, icon: '🔢' },
   { id: 'beer-pong',  name: 'Beer Pong',        name_alt: null,                 category: 'party',  description: 'Toss ping-pong balls into the opponent\'s cups. Hit a cup — they drink and it\'s removed. First to clear all cups wins.',         min_players: 2, max_players: 2, higher_is_better: true,  active: true,  sort_order: 60, icon: '🍺' },
   { id: 'bezzerwizzer', name: 'Bezzerwizzer',   name_alt: null,                 category: 'party',  description: 'Trivia-quiz der du velger kategori og stjeler poeng fra motstanderne. Legg inn poeng etter hver runde.',                          min_players: 2, max_players: 8, higher_is_better: true,  active: true,  sort_order: 61, icon: '🧠' },
   { id: 'alias',      name: 'Alias',            name_alt: null,                 category: 'party',  description: 'Forklar ord uten å si selve ordet. Lag konkurrerer om å gjette flest ord på tid. Legg inn poeng per runde.',                      min_players: 2, max_players: 12, higher_is_better: true, active: true,  sort_order: 62, icon: '💬' },

@@ -1,4 +1,4 @@
-export type GameCategory = 'dice' | 'card' | 'board' | 'darts' | 'outdoor' | 'party' | 'sport'
+export type GameCategory = 'dice' | 'card' | 'board' | 'darts' | 'outdoor' | 'party' | 'sport' | 'puzzle'
 
 export interface GameMeta {
   id: string
