@@ -22,6 +22,12 @@ export interface EloResult {
 
 export function calculateElo(players: EloPlayer[]): EloResult[] {
   const n = players.length
+
+  // Solo game: no meaningful matchup, return ratings unchanged
+  if (n <= 1) {
+    return players.map(p => ({ id: p.id, oldRating: p.rating, newRating: p.rating, change: 0 }))
+  }
+
   const changes = new Array(n).fill(0)
 
   for (let i = 0; i < n; i++) {
