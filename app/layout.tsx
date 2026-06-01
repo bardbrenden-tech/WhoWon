@@ -21,9 +21,6 @@ export const metadata: Metadata = {
     siteName: 'Who Won?',
     type: 'website',
   },
-  alternates: {
-    canonical: 'https://who-won.com',
-  },
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
