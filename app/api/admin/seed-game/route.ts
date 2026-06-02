@@ -10,7 +10,7 @@ export async function GET() {
     {
       id: 'sudoku',
       name: 'Sudoku',
-      name_alt: null,
+      name_alt: null as string | null,
       category: 'puzzle',
       description: 'Solve the 9×9 puzzle as fast as you can. Everyone gets the same board — lowest time wins.',
       min_players: 1,
