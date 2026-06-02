@@ -1,52 +1,68 @@
 import { NextResponse } from 'next/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 
-// One-time endpoint to insert missing games into the Supabase games table.
-// Visit /api/admin/seed-game to run.
+// Idempotent endpoint to insert missing games into the Supabase games table.
+// Safe to run multiple times. Visit /api/admin/seed-game to run.
 export async function GET() {
   const supabase = createAdminClient()
 
-  // First check what columns the games table actually has
-  const { data: existing, error: checkErr } = await supabase
-    .from('games')
-    .select('id')
-    .eq('id', 'sudoku')
-    .maybeSingle()
+  const games = [
+    {
+      id: 'sudoku',
+      name: 'Sudoku',
+      name_alt: null,
+      category: 'puzzle',
+      description: 'Solve the 9×9 puzzle as fast as you can. Everyone gets the same board — lowest time wins.',
+      min_players: 1,
+      max_players: 8,
+      higher_is_better: false,
+      active: true,
+      sort_order: 70,
+      icon: '🔢',
+    },
+    {
+      id: 'chess',
+      name: 'Sjakk',
+      name_alt: 'Chess',
+      category: 'board',
+      description: 'Registrer utfallet av sjakkpartiet. Velg hvem som vant — eller om det ble remis.',
+      min_players: 2,
+      max_players: 2,
+      higher_is_better: true,
+      active: true,
+      sort_order: 29,
+      icon: '♟️',
+    },
+  ]
 
-  if (checkErr) {
-    return NextResponse.json({ error: checkErr.message }, { status: 500 })
-  }
+  const results: string[] = []
 
-  if (existing) {
-    return NextResponse.json({ message: 'sudoku already exists in games table' })
-  }
+  for (const game of games) {
+    const { data: existing } = await supabase
+      .from('games')
+      .select('id')
+      .eq('id', game.id)
+      .maybeSingle()
 
-  // Try inserting with category='puzzle' first, fall back to 'board'
-  const gameRow = {
-    id: 'sudoku',
-    name: 'Sudoku',
-    name_alt: null,
-    category: 'puzzle',
-    description: 'Solve the 9×9 puzzle as fast as you can. Everyone gets the same board — lowest time wins.',
-    min_players: 1,
-    max_players: 8,
-    higher_is_better: false,
-    active: true,
-    sort_order: 70,
-    icon: '🔢',
-  }
-
-  const { error: insertErr } = await supabase.from('games').insert(gameRow)
-
-  if (insertErr) {
-    // If puzzle category is invalid, try with 'board'
-    if (insertErr.message.includes('category') || insertErr.message.includes('violates')) {
-      const { error: err2 } = await supabase.from('games').insert({ ...gameRow, category: 'board' })
-      if (err2) return NextResponse.json({ error: err2.message }, { status: 500 })
-      return NextResponse.json({ message: 'sudoku inserted with category=board' })
+    if (existing) {
+      results.push(`${game.id}: already exists`)
+      continue
     }
-    return NextResponse.json({ error: insertErr.message }, { status: 500 })
+
+    const { error } = await supabase.from('games').insert(game)
+
+    if (error) {
+      // If category value violates a DB constraint, fall back to 'board'
+      if (error.message.includes('category') || error.message.includes('violates')) {
+        const { error: err2 } = await supabase.from('games').insert({ ...game, category: 'board' })
+        results.push(err2 ? `${game.id}: ERROR – ${err2.message}` : `${game.id}: inserted with category=board`)
+      } else {
+        results.push(`${game.id}: ERROR – ${error.message}`)
+      }
+    } else {
+      results.push(`${game.id}: inserted`)
+    }
   }
 
-  return NextResponse.json({ message: 'sudoku inserted successfully with category=puzzle' })
+  return NextResponse.json({ results })
 }

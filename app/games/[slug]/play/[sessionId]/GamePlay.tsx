@@ -35,6 +35,7 @@ const GAME_COMPONENTS: Record<string, DynamicGameComponent> = {
   'golf':   dynamic<GameComponentProps>(() => import('@/components/games/Golf')),
   'tennis': dynamic<GameComponentProps>(() => import('@/components/games/Tennis')),
   'sudoku': dynamic<GameComponentProps>(() => import('@/components/games/Sudoku')),
+  'chess':  dynamic<GameComponentProps>(() => import('@/components/games/Chess')),
 }
 
 interface Props {
