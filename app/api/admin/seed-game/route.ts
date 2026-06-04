@@ -33,6 +33,19 @@ export async function GET() {
       sort_order: 29,
       icon: '♟️',
     },
+    {
+      id: 'padel',
+      name: 'Padel',
+      name_alt: null as string | null,
+      category: 'sport',
+      description: 'Registrer sett i en padelkamp. Legg inn hvem som vant hvert sett — best av 3. Fungerer for både single og double.',
+      min_players: 2,
+      max_players: 4,
+      higher_is_better: true,
+      active: true,
+      sort_order: 54,
+      icon: '🎾',
+    },
   ]
 
   const results: string[] = []
