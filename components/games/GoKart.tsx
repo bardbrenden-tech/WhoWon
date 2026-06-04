@@ -2,29 +2,53 @@
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
 
-// Parse a lap time into seconds. Accepts "42.85" (seconds) or "1:02.5" (mm:ss.ms).
+// Parse a lap time into seconds. Accepts several notations people actually type:
+//   "42.85"      -> 42.85 s
+//   "59"         -> 59 s
+//   "1:02.5"     -> 62.5 s    (mm:ss.fff)
+//   "1:02,5"     -> 62.5 s
+//   "1.01.547"   -> 61.547 s  (m.ss.fff — dots/commas as separators)
+//   "0.59.123"   -> 59.123 s
 // Returns null if the input can't be understood.
 function parseTime(raw: string): number | null {
   const s = raw.trim()
   if (!s) return null
+
+  // Colon notation: minutes : seconds(.fraction)
   if (s.includes(':')) {
-    const [mm, ss] = s.split(':')
+    const [mm, rest] = s.split(':')
     const m = parseInt(mm, 10)
-    const sec = parseFloat(ss)
+    const sec = parseFloat((rest ?? '').replace(/,/g, '.'))
     if (isNaN(m) || isNaN(sec)) return null
     return m * 60 + sec
   }
-  const sec = parseFloat(s.replace(',', '.'))
+
+  const t = s.replace(/,/g, '.')
+  const dotCount = (t.match(/\./g) || []).length
+
+  // Two or more separators -> minutes . seconds . thousandths
+  if (dotCount >= 2) {
+    const [mm, ssStr, ...frac] = t.split('.')
+    const m = parseInt(mm, 10)
+    const sec = parseInt(ssStr, 10)
+    const fracStr = frac.join('')
+    const fraction = fracStr ? parseFloat('0.' + fracStr) : 0
+    if (isNaN(m) || isNaN(sec) || isNaN(fraction)) return null
+    return m * 60 + sec + fraction
+  }
+
+  // Plain seconds, optionally with a decimal fraction.
+  const sec = parseFloat(t)
   return isNaN(sec) ? null : sec
 }
 
 function formatTime(seconds: number): string {
   if (seconds >= 60) {
     const m = Math.floor(seconds / 60)
-    const s = (seconds - m * 60).toFixed(2).padStart(5, '0')
+    const s = (seconds - m * 60).toFixed(3).padStart(6, '0')
     return `${m}:${s}`
   }
-  return `${seconds.toFixed(2)}s`
+  return `${seconds.toFixed(3)}s`
 }
 
 export default function GoKart({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
@@ -84,7 +108,7 @@ export default function GoKart({ players, onScoreUpdate, onComplete, onAbandon }
                 inputMode="decimal"
                 value={times[p.id] ?? ''}
                 onChange={e => update(p.id, e.target.value)}
-                placeholder="42.85"
+                placeholder="1:01.547"
                 className={`w-32 text-right border-2 rounded-xl px-3 py-2 font-mono text-sm focus:outline-none focus:ring-1 focus:ring-indigo-400 ${
                   times[p.id] && secs === null ? 'border-red-300 bg-red-50' : 'border-gray-200'
                 }`}
@@ -92,7 +116,7 @@ export default function GoKart({ players, onScoreUpdate, onComplete, onAbandon }
             </div>
           )
         })}
-        <p className="text-xs text-gray-400">Tid i sekunder (f.eks. 42.85) eller mm:ss (f.eks. 1:02.5).</p>
+        <p className="text-xs text-gray-400">Minutt:sekund (f.eks. 1:01.547 eller 1.01.547), eller bare sekunder (f.eks. 42.85).</p>
       </div>
 
       {/* Leaderboard preview */}
