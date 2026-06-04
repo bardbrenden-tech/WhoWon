@@ -46,6 +46,19 @@ export async function GET() {
       sort_order: 54,
       icon: '🎾',
     },
+    {
+      id: 'go-kart',
+      name: 'Gokart',
+      name_alt: 'Karting',
+      category: 'sport',
+      description: 'Legg inn beste rundetid for hver fører. Raskeste tid vinner løpet.',
+      min_players: 2,
+      max_players: 8,
+      higher_is_better: false,
+      active: true,
+      sort_order: 55,
+      icon: '🏎️',
+    },
   ]
 
   const results: string[] = []
