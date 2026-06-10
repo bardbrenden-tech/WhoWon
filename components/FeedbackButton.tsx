@@ -1,12 +1,14 @@
 'use client'
 import { useState } from 'react'
 import { usePathname } from 'next/navigation'
+import { useLocale } from '@/components/LanguageProvider'
 
 interface FeedbackButtonProps {
   gameId?: string
 }
 
 export default function FeedbackButton({ gameId }: FeedbackButtonProps) {
+  const { t } = useLocale()
   const [open, setOpen] = useState(false)
   const [category, setCategory] = useState<string>('bug')
   const [message, setMessage] = useState('')
@@ -33,9 +35,9 @@ export default function FeedbackButton({ gameId }: FeedbackButtonProps) {
       <button
         onClick={() => setOpen(true)}
         className="fixed bottom-5 right-5 z-40 bg-white border border-gray-300 shadow-md text-gray-600 text-xs font-medium px-3 py-2 rounded-full hover:border-indigo-400 hover:text-indigo-600 transition-all flex items-center gap-1.5"
-        title="Send feedback"
+        title={t.feedback.title}
       >
-        <span>💬</span> Feedback
+        <span>💬</span> {t.feedback.button}
       </button>
 
       {open && (
@@ -45,38 +47,38 @@ export default function FeedbackButton({ gameId }: FeedbackButtonProps) {
             {sent ? (
               <div className="text-center py-4">
                 <p className="text-2xl mb-2">🙏</p>
-                <p className="font-semibold text-gray-800">Thanks for your feedback!</p>
-                <p className="text-sm text-gray-500 mt-1">We review every submission.</p>
+                <p className="font-semibold text-gray-800">{t.feedback.thanks}</p>
+                <p className="text-sm text-gray-500 mt-1">{t.feedback.thanksSub}</p>
               </div>
             ) : (
               <>
-                <h3 className="font-bold text-gray-900 mb-4">Send feedback</h3>
+                <h3 className="font-bold text-gray-900 mb-4">{t.feedback.title}</h3>
                 <form onSubmit={handleSubmit} className="space-y-3">
                   <select
                     value={category}
                     onChange={e => setCategory(e.target.value)}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
-                    <option value="bug">🐛 Something is broken</option>
-                    <option value="feature">✨ Feature request</option>
-                    <option value="design">🎨 Design / UX</option>
-                    <option value="rules">📋 Wrong rules</option>
-                    <option value="other">💬 Other</option>
+                    <option value="bug">{t.feedback.catBug}</option>
+                    <option value="feature">{t.feedback.catFeature}</option>
+                    <option value="design">{t.feedback.catDesign}</option>
+                    <option value="rules">{t.feedback.catRules}</option>
+                    <option value="other">{t.feedback.catOther}</option>
                   </select>
                   <textarea
                     value={message}
                     onChange={e => setMessage(e.target.value)}
-                    placeholder="Tell us what's on your mind..."
+                    placeholder={t.feedback.placeholder}
                     rows={3}
                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
                     autoFocus
                   />
                   <div className="flex gap-2">
                     <button type="button" onClick={() => setOpen(false)} className="flex-1 border border-gray-300 text-gray-600 text-sm font-medium py-2 rounded-lg hover:bg-gray-50 transition-colors">
-                      Cancel
+                      {t.feedback.cancel}
                     </button>
                     <button type="submit" disabled={!message.trim() || loading} className="flex-1 bg-indigo-600 text-white text-sm font-semibold py-2 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-40">
-                      {loading ? 'Sending...' : 'Send'}
+                      {loading ? t.feedback.sending : t.feedback.send}
                     </button>
                   </div>
                 </form>

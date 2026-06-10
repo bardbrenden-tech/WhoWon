@@ -53,6 +53,12 @@ export type Messages = {
     backToChallenge: string; champion: string; complete: string
   }
   login: { subtitle: string; terms: string; error: string }
+  feedback: {
+    button: string; title: string; placeholder: string
+    cancel: string; send: string; sending: string
+    thanks: string; thanksSub: string
+    catBug: string; catFeature: string; catDesign: string; catRules: string; catOther: string
+  }
   gameDesc: Record<string, string>
 }
 
@@ -108,6 +114,7 @@ const en: Messages = {
     backToChallenge: '← Back to challenge', champion: '🏆 Challenge Champion!', complete: 'Challenge complete!',
   },
   login: { subtitle: 'Track scores, build your rating, and see who the real champion is.', terms: 'By signing in you agree to our terms of service. Always free.', error: 'Something went wrong. Please try again.' },
+  feedback: { button: 'Feedback', title: 'Send feedback', placeholder: "Tell us what's on your mind...", cancel: 'Cancel', send: 'Send', sending: 'Sending...', thanks: 'Thanks for your feedback!', thanksSub: 'We review every submission.', catBug: '🐛 Something is broken', catFeature: '✨ Feature request', catDesign: '🎨 Design / UX', catRules: '📋 Wrong rules', catOther: '💬 Other' },
   gameDesc: {
     'maxi-yatzy': 'The classic dice game with 6 dice and expanded categories including House, Tower, and Maxi Yatzy bonus.',
     'yatzy': 'The original 5-dice version. Score in 15 categories and earn a 50-point bonus for 63+ in the upper section.',
@@ -215,6 +222,7 @@ const no: Messages = {
     backToChallenge: '← Tilbake til turneringen', champion: '🏆 Turneringsvinner!', complete: 'Turneringen er ferdig!',
   },
   login: { subtitle: 'Spor poeng, bygg ratingen din og se hvem som er den virkelige mesteren.', terms: 'Ved å logge inn godtar du våre vilkår. Alltid gratis.', error: 'Noe gikk galt. Prøv igjen.' },
+  feedback: { button: 'Tilbakemelding', title: 'Send tilbakemelding', placeholder: 'Fortell oss hva du tenker på ...', cancel: 'Avbryt', send: 'Send', sending: 'Sender ...', thanks: 'Takk for tilbakemeldingen!', thanksSub: 'Vi leser gjennom alt som sendes inn.', catBug: '🐛 Noe er ødelagt', catFeature: '✨ Funksjonsønske', catDesign: '🎨 Design / UX', catRules: '📋 Feil regler', catOther: '💬 Annet' },
   gameDesc: {
     'maxi-yatzy': 'Det klassiske terningspillet med 6 terninger og utvidede kategorier inkludert Hytte, Tårn og Maxi Yatzy-bonus.',
     'yatzy': 'Den originale 5-terningsversjonen. Poengscor i 15 kategorier og tjen 50 bonuspoeng for 63+ i øvre seksjon.',
@@ -322,6 +330,7 @@ const de: Messages = {
     backToChallenge: '← Zurück zur Challenge', champion: '🏆 Challenge-Champion!', complete: 'Challenge beendet!',
   },
   login: { subtitle: 'Verfolge Punkte, baue deine Wertung auf und sieh, wer der wahre Champion ist.', terms: 'Durch die Anmeldung stimmst du unseren Nutzungsbedingungen zu. Immer kostenlos.', error: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.' },
+  feedback: { button: 'Feedback', title: 'Feedback senden', placeholder: 'Sag uns, was dir auf dem Herzen liegt ...', cancel: 'Abbrechen', send: 'Senden', sending: 'Wird gesendet ...', thanks: 'Danke für dein Feedback!', thanksSub: 'Wir prüfen jede Einsendung.', catBug: '🐛 Etwas ist kaputt', catFeature: '✨ Funktionswunsch', catDesign: '🎨 Design / UX', catRules: '📋 Falsche Regeln', catOther: '💬 Sonstiges' },
   gameDesc: {
     'maxi-yatzy': 'Das klassische Würfelspiel mit 6 Würfeln und erweiterten Kategorien wie Haus, Turm und Maxi-Yatzy-Bonus.',
     'yatzy': 'Die originale 5-Würfel-Version. Wertung in 15 Kategorien und 50 Bonuspunkte bei 63+ im oberen Bereich.',
@@ -429,6 +438,7 @@ const fr: Messages = {
     backToChallenge: '← Retour au défi', champion: '🏆 Champion du défi !', complete: 'Défi terminé !',
   },
   login: { subtitle: 'Suivez les scores, construisez votre classement et voyez qui est le vrai champion.', terms: 'En vous connectant, vous acceptez nos conditions d\'utilisation. Toujours gratuit.', error: 'Quelque chose s\'est mal passé. Veuillez réessayer.' },
+  feedback: { button: 'Retour', title: 'Envoyer un retour', placeholder: 'Dites-nous ce que vous avez en tête ...', cancel: 'Annuler', send: 'Envoyer', sending: 'Envoi ...', thanks: 'Merci pour votre retour !', thanksSub: 'Nous lisons chaque message.', catBug: '🐛 Quelque chose ne marche pas', catFeature: '✨ Suggestion de fonction', catDesign: '🎨 Design / UX', catRules: '📋 Règles incorrectes', catOther: '💬 Autre' },
   gameDesc: {
     'maxi-yatzy': 'Le jeu de dés classique avec 6 dés et des catégories étendues : Maison, Tour et bonus Maxi Yatzy.',
     'yatzy': 'La version originale à 5 dés. Marquez dans 15 catégories et gagnez 50 points de bonus si la section supérieure atteint 63+.',
@@ -536,6 +546,7 @@ const es: Messages = {
     backToChallenge: '← Volver al reto', champion: '🏆 ¡Campeón del reto!', complete: '¡Reto completado!',
   },
   login: { subtitle: 'Sigue los puntos, construye tu clasificación y descubre quién es el verdadero campeón.', terms: 'Al iniciar sesión aceptas nuestros términos de servicio. Siempre gratis.', error: 'Algo salió mal. Por favor, inténtalo de nuevo.' },
+  feedback: { button: 'Comentarios', title: 'Enviar comentarios', placeholder: 'Cuéntanos qué piensas ...', cancel: 'Cancelar', send: 'Enviar', sending: 'Enviando ...', thanks: '¡Gracias por tus comentarios!', thanksSub: 'Revisamos cada mensaje.', catBug: '🐛 Algo no funciona', catFeature: '✨ Sugerencia de función', catDesign: '🎨 Diseño / UX', catRules: '📋 Reglas incorrectas', catOther: '💬 Otro' },
   gameDesc: {
     'maxi-yatzy': 'El clásico juego de dados con 6 dados y categorías ampliadas: Casa, Torre y bono Maxi Yatzy.',
     'yatzy': 'La versión original con 5 dados. Puntúa en 15 categorías y gana 50 puntos de bonificación con 63+ en la sección superior.',
