@@ -3,7 +3,6 @@ import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
-import { calculateElo } from '@/lib/elo'
 import type { GameMeta, Session, SessionPlayer, GameComponentProps } from '@/lib/types'
 
 type DynamicGameComponent = React.ComponentType<GameComponentProps>
@@ -70,64 +69,22 @@ export default function GamePlay({ game, session, userId, userEmail = '' }: Prop
   }
 
   async function handleComplete(finalResults: FinalResult[]) {
-    const supabase = createClient()
-
-    // Guard: multi-device games (e.g. Sudoku) can trigger this on multiple devices simultaneously.
-    // If the session is already completed, skip Elo recalculation and just show the results.
-    const { data: sessionCheck } = await supabase.from('sessions').select('status').eq('id', session.id).single()
-    if (sessionCheck?.status === 'completed') {
-      setResults(finalResults)
-      setCompleted(true)
-      return
+    // Elo calculation, ratings and session completion are handled
+    // server-side (service role) so the ratings table stays read-only to
+    // the browser. The route is idempotent and only the session creator
+    // may complete it.
+    let changes: Record<string, number> = {}
+    try {
+      const res = await fetch('/api/sessions/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: session.id, results: finalResults }),
+      })
+      const data = await res.json().catch(() => ({}))
+      changes = data?.eloChanges ?? {}
+    } catch {
+      // Network failure: still show results so the player isn't stuck.
     }
-
-    // Fetch current ratings for all players
-    const playerRatings: Record<string, { rating: number; gamesPlayed: number }> = {}
-    for (const sp of session.session_players) {
-      const col = sp.profile_id ? 'profile_id' : 'guest_player_id'
-      const val = sp.profile_id ?? sp.guest_player_id
-      const { data } = await supabase.from('ratings').select('rating, games_played').eq('game_id', game.id).eq(col, val).single()
-      playerRatings[sp.id] = { rating: data?.rating ?? 1000, gamesPlayed: data?.games_played ?? 0 }
-    }
-
-    // Calculate Elo
-    const eloInputs = session.session_players.map(sp => {
-      const result = finalResults.find(r => r.id === sp.id)
-      return { id: sp.id, rating: playerRatings[sp.id].rating, gamesPlayed: playerRatings[sp.id].gamesPlayed, rank: result?.rank ?? session.session_players.length }
-    })
-    const eloResults = calculateElo(eloInputs)
-    const changes: Record<string, number> = {}
-
-    // Update session_players + ratings
-    for (const r of eloResults) {
-      const sp = session.session_players.find(p => p.id === r.id)!
-      const result = finalResults.find(f => f.id === r.id)!
-      changes[r.id] = r.change
-
-      await supabase.from('session_players').update({
-        final_score: result.finalScore,
-        rank: result.rank,
-        elo_before: r.oldRating,
-        elo_after: r.newRating,
-      }).eq('id', r.id)
-
-      const col = sp.profile_id ? 'profile_id' : 'guest_player_id'
-      const val = sp.profile_id ?? sp.guest_player_id
-      const isWin = result.rank === 1 ? 1 : 0
-
-      await supabase.from('ratings').upsert({
-        profile_id: sp.profile_id,
-        guest_player_id: sp.guest_player_id,
-        game_id: game.id,
-        rating: r.newRating,
-        games_played: (playerRatings[r.id].gamesPlayed ?? 0) + 1,
-        wins: (playerRatings[r.id].gamesPlayed === 0 ? 0 : undefined) ?? isWin,
-        updated_at: new Date().toISOString(),
-      }, { onConflict: col + ',game_id', ignoreDuplicates: false })
-    }
-
-    // Mark session completed
-    await supabase.from('sessions').update({ status: 'completed', completed_at: new Date().toISOString() }).eq('id', session.id)
 
     setResults(finalResults)
     setEloChanges(changes)
