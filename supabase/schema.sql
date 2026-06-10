@@ -59,6 +59,10 @@ create table games (
   sort_order int default 99,
   icon text default '🎮'
 );
+-- Games are a public read-only registry. Reads are open to everyone; all writes
+-- go through the service-role admin client (seed endpoints), which bypasses RLS.
+alter table games enable row level security;
+create policy "Games viewable by everyone" on games for select using (true);
 
 -- Seed V1 games
 insert into games (id, name, name_alt, category, description, min_players, max_players, higher_is_better, active, sort_order, icon) values
