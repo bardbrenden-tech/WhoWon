@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
+import { useLocale } from '@/components/LanguageProvider'
 import type { GameMeta, Session, SessionPlayer, GameComponentProps } from '@/lib/types'
 
 type DynamicGameComponent = React.ComponentType<GameComponentProps>
@@ -50,12 +51,13 @@ interface FinalResult { id: string; finalScore: number; rank: number }
 
 export default function GamePlay({ game, session, userId, userEmail = '' }: Props) {
   const router = useRouter()
+  const { t } = useLocale()
   const [completed, setCompleted] = useState(false)
   const [results, setResults] = useState<FinalResult[]>([])
   const [eloChanges, setEloChanges] = useState<Record<string, number>>({})
 
   const GameComponent = GAME_COMPONENTS[game.id]
-  if (!GameComponent) return <p className="p-8 text-center text-gray-500">Game not yet implemented.</p>
+  if (!GameComponent) return <p className="p-8 text-center text-gray-500">{t.scorecard.notImplemented}</p>
 
   async function handleScoreUpdate(playerId: string, scoreData: Record<string, unknown>) {
     const supabase = createClient()
@@ -102,7 +104,7 @@ export default function GamePlay({ game, session, userId, userEmail = '' }: Prop
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 w-full max-w-sm p-6">
           <div className="text-center mb-6">
             <div className="text-4xl mb-2">🏆</div>
-            <h1 className="text-2xl font-black text-gray-900">Game Over!</h1>
+            <h1 className="text-2xl font-black text-gray-900">{t.scorecard.gameOver}</h1>
             <p className="text-gray-500 text-sm">{game.name}</p>
           </div>
           <div className="space-y-3 mb-6">
@@ -114,13 +116,13 @@ export default function GamePlay({ game, session, userId, userEmail = '' }: Prop
                   <span className="text-2xl">{i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`}</span>
                   <div className="flex-1">
                     <p className="font-bold text-gray-900">{sp.display_name}</p>
-                    <p className="text-sm text-gray-500">Score: {r.finalScore}</p>
+                    <p className="text-sm text-gray-500">{t.scorecard.score}: {r.finalScore}</p>
                   </div>
                   <div className="text-right">
                     <p className={`text-sm font-bold ${elo >= 0 ? 'text-green-600' : 'text-red-500'}`}>
                       {elo >= 0 ? '+' : ''}{elo}
                     </p>
-                    <p className="text-xs text-gray-400">rating</p>
+                    <p className="text-xs text-gray-400">{t.scorecard.rating}</p>
                   </div>
                 </div>
               )
@@ -128,10 +130,10 @@ export default function GamePlay({ game, session, userId, userEmail = '' }: Prop
           </div>
           <div className="flex gap-3">
             <button onClick={() => router.push(`/games/${game.id}`)} className="flex-1 border border-gray-300 text-gray-700 text-sm font-medium py-2.5 rounded-xl hover:bg-gray-50 transition-colors">
-              Back to game
+              {t.scorecard.backToGame}
             </button>
             <button onClick={() => router.push('/')} className="flex-1 bg-indigo-600 text-white text-sm font-bold py-2.5 rounded-xl hover:bg-indigo-700 transition-colors">
-              Home
+              {t.scorecard.home}
             </button>
           </div>
         </div>
@@ -147,10 +149,10 @@ export default function GamePlay({ game, session, userId, userEmail = '' }: Prop
           <p className="text-sm font-semibold text-gray-700">{session.session_players.map(p => p.display_name).join(' · ')}</p>
         </div>
         <button
-          onClick={() => { if (confirm('Abandon this game?')) router.push(`/games/${game.id}`) }}
+          onClick={() => { if (confirm(t.game.abandoning)) router.push(`/games/${game.id}`) }}
           className="text-xs text-gray-400 hover:text-gray-600 border border-gray-200 px-3 py-1.5 rounded-lg"
         >
-          Quit
+          {t.scorecard.quit}
         </button>
       </div>
       <GameComponent

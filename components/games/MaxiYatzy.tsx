@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
 
 type ScoreKey =
   | 'enere' | 'toere' | 'treere' | 'firere' | 'femmere' | 'seksere'
@@ -33,17 +34,14 @@ const CONFIG: Record<ScoreKey, CellConfig> = {
   maxiyatzy:     { type: 'fixed', value: 100 },
 }
 
-const UPPER: { key: ScoreKey; label: string }[] = [
-  { key: 'enere', label: 'Ones' }, { key: 'toere', label: 'Twos' }, { key: 'treere', label: 'Threes' },
-  { key: 'firere', label: 'Fours' }, { key: 'femmere', label: 'Fives' }, { key: 'seksere', label: 'Sixes' },
-]
-const LOWER: { key: ScoreKey; label: string; sub?: string; bold?: boolean }[] = [
-  { key: 'par1', label: '1 Pair' }, { key: 'par2', label: '2 Pairs' }, { key: 'par3', label: '3 Pairs' },
-  { key: 'like3', label: '3 of a Kind' }, { key: 'like4', label: '4 of a Kind' }, { key: 'like5', label: '5 of a Kind' },
-  { key: 'litenStraight', label: 'Small Straight' }, { key: 'storStraight', label: 'Large Straight' },
-  { key: 'fullStraight', label: 'Full Straight' },
-  { key: 'hytte', label: 'House', sub: '2+3' }, { key: 'hus', label: 'Full House', sub: '3+3' }, { key: 'tarn', label: 'Tower', sub: '2+4' },
-  { key: 'sjanse', label: 'Chance' }, { key: 'maxiyatzy', label: 'Maxi Yatzy', bold: true },
+const UPPER_KEYS: ScoreKey[] = ['enere','toere','treere','firere','femmere','seksere']
+const LOWER_ROWS: { key: ScoreKey; sub?: string; bold?: boolean }[] = [
+  { key: 'par1' }, { key: 'par2' }, { key: 'par3' },
+  { key: 'like3' }, { key: 'like4' }, { key: 'like5' },
+  { key: 'litenStraight' }, { key: 'storStraight' },
+  { key: 'fullStraight' },
+  { key: 'hytte', sub: '2+3' }, { key: 'hus', sub: '3+3' }, { key: 'tarn', sub: '2+4' },
+  { key: 'sjanse' }, { key: 'maxiyatzy', bold: true },
 ]
 const EMPTY: Record<ScoreKey, string> = {
   enere:'',toere:'',treere:'',firere:'',femmere:'',seksere:'',
@@ -77,6 +75,18 @@ function ScoreCell({ config, value, onChange }: { config: CellConfig; value: str
 }
 
 export default function MaxiYatzy({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
+  const sc = t.scorecard
+  const LABEL: Record<ScoreKey, string> = {
+    enere: sc.ones, toere: sc.twos, treere: sc.threes, firere: sc.fours, femmere: sc.fives, seksere: sc.sixes,
+    par1: sc.onePair, par2: sc.twoPairs, par3: sc.threePairs,
+    like3: sc.threeOfKind, like4: sc.fourOfKind, like5: sc.fiveOfKind,
+    litenStraight: sc.smallStraight, storStraight: sc.largeStraight, fullStraight: sc.fullStraight,
+    hytte: sc.house, hus: sc.fullHouse, tarn: sc.tower,
+    sjanse: sc.chance, maxiyatzy: sc.maxiYatzy,
+  }
+  const UPPER = UPPER_KEYS.map(key => ({ key, label: LABEL[key] }))
+  const LOWER = LOWER_ROWS.map(r => ({ ...r, label: LABEL[r.key] }))
   const [scores, setScores] = useState<Record<string, Record<ScoreKey, string>>>(() =>
     Object.fromEntries(players.map(p => {
       const saved = p.score_data as Record<string, string> | null | undefined
@@ -123,7 +133,7 @@ export default function MaxiYatzy({ players, onScoreUpdate, onComplete, onAbando
                 {players.map(p => (
                   <th key={p.id} className={`border border-gray-300 px-1 py-1 text-center text-sm font-bold w-16 ${p.id===currentPlayerId ? 'bg-indigo-50 text-indigo-800' : 'bg-gray-50'}`}>
                     {p.display_name}
-                    {p.id===currentPlayerId && <div className="text-xs font-normal text-indigo-400">your turn</div>}
+                    {p.id===currentPlayerId && <div className="text-xs font-normal text-indigo-400">{t.game.yourTurn}</div>}
                   </th>
                 ))}
               </tr>
@@ -147,11 +157,11 @@ export default function MaxiYatzy({ players, onScoreUpdate, onComplete, onAbando
                 </tr>
               ))}
               <tr>
-                <td className={tdC}>Sum</td>
+                <td className={tdC}>{sc.sum}</td>
                 {players.map(p => { const s=upperSum(scores[p.id]??EMPTY); return <td key={p.id} className={tdC}>{s>0?s:''}</td> })}
               </tr>
               <tr>
-                <td className={tdC}>Bonus</td>
+                <td className={tdC}>{sc.bonus}</td>
                 {players.map(p => {
                   const s=upperSum(scores[p.id]??EMPTY); const b=bonus(s); const m=84-s
                   return <td key={p.id} className={`${tdC} ${b?'text-green-700':''}`}>{b?'100':s>0&&m>0?<span className="text-gray-400 text-xs">-{m}</span>:''}</td>
@@ -173,18 +183,18 @@ export default function MaxiYatzy({ players, onScoreUpdate, onComplete, onAbando
                 </tr>
               ))}
               <tr>
-                <td className={tdT}>Total</td>
-                {players.map(p => { const t=total(scores[p.id]??EMPTY); return <td key={p.id} className={tdT}>{t>0?t:''}</td> })}
+                <td className={tdT}>{sc.total}</td>
+                {players.map(p => { const tot=total(scores[p.id]??EMPTY); return <td key={p.id} className={tdT}>{tot>0?tot:''}</td> })}
               </tr>
             </tbody>
           </table>
         </div>
         <div className="p-4 border-t border-gray-200">
           <button
-            onClick={() => { if (!allDone) { if (confirm('Abandon game? No ratings will change.')) onAbandon(); return } handleFinish() }}
+            onClick={() => { if (!allDone) { if (confirm(t.game.abandoning)) onAbandon(); return } handleFinish() }}
             className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors"
           >
-            {allDone ? 'Complete Game' : 'Finish Early'}
+            {allDone ? t.game.completeGame : t.game.finishEarly}
           </button>
         </div>
       </div>

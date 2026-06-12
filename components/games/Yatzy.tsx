@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
 
 type ScoreKey = 'ones'|'twos'|'threes'|'fours'|'fives'|'sixes'|'pair'|'twoPairs'|'threeOfKind'|'fourOfKind'|'fullHouse'|'smallStraight'|'largeStraight'|'chance'|'yatzy'
 
@@ -17,23 +18,20 @@ const CONFIG: Record<ScoreKey, CellConfig> = {
   twoPairs:      { type: 'select', options: [0,6,8,10,12,14,16,18,20,22] },
   threeOfKind:   { type: 'select', options: [0,3,6,9,12,15] },
   fourOfKind:    { type: 'select', options: [0,4,8,12,16,20] },
-  fullHouse:     { type: 'fixed', value: 25 },
-  smallStraight: { type: 'fixed', value: 30 },
-  largeStraight: { type: 'fixed', value: 40 },
+  fullHouse:     { type: 'select', options: [0,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28] },
+  smallStraight: { type: 'fixed', value: 15 },
+  largeStraight: { type: 'fixed', value: 20 },
   chance:        { type: 'select', options: [0,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30] },
   yatzy:         { type: 'fixed', value: 50 },
 }
 
-const UPPER: { key: ScoreKey; label: string }[] = [
-  {key:'ones',label:'Ones'},{key:'twos',label:'Twos'},{key:'threes',label:'Threes'},
-  {key:'fours',label:'Fours'},{key:'fives',label:'Fives'},{key:'sixes',label:'Sixes'},
-]
-const LOWER: { key: ScoreKey; label: string; bold?: boolean }[] = [
-  {key:'pair',label:'1 Pair'},{key:'twoPairs',label:'2 Pairs'},
-  {key:'threeOfKind',label:'3 of a Kind'},{key:'fourOfKind',label:'4 of a Kind'},
-  {key:'fullHouse',label:'Full House'},{key:'smallStraight',label:'Small Straight'},
-  {key:'largeStraight',label:'Large Straight'},{key:'chance',label:'Chance'},
-  {key:'yatzy',label:'Yatzy',bold:true},
+const UPPER_KEYS: ScoreKey[] = ['ones','twos','threes','fours','fives','sixes']
+const LOWER_ROWS: { key: ScoreKey; bold?: boolean }[] = [
+  {key:'pair'},{key:'twoPairs'},
+  {key:'threeOfKind'},{key:'fourOfKind'},
+  {key:'fullHouse'},{key:'smallStraight'},
+  {key:'largeStraight'},{key:'chance'},
+  {key:'yatzy',bold:true},
 ]
 
 const EMPTY: Record<ScoreKey,string> = {ones:'',twos:'',threes:'',fours:'',fives:'',sixes:'',pair:'',twoPairs:'',threeOfKind:'',fourOfKind:'',fullHouse:'',smallStraight:'',largeStraight:'',chance:'',yatzy:''}
@@ -64,6 +62,16 @@ function ScoreCell({ config, value, onChange }: { config: CellConfig; value: str
 }
 
 export default function Yatzy({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
+  const sc = t.scorecard
+  const LABEL: Record<ScoreKey, string> = {
+    ones: sc.ones, twos: sc.twos, threes: sc.threes, fours: sc.fours, fives: sc.fives, sixes: sc.sixes,
+    pair: sc.onePair, twoPairs: sc.twoPairs, threeOfKind: sc.threeOfKind, fourOfKind: sc.fourOfKind,
+    fullHouse: sc.fullHouse, smallStraight: sc.smallStraight, largeStraight: sc.largeStraight,
+    chance: sc.chance, yatzy: sc.yatzy,
+  }
+  const UPPER = UPPER_KEYS.map(key => ({ key, label: LABEL[key] }))
+  const LOWER = LOWER_ROWS.map(r => ({ ...r, label: LABEL[r.key] }))
   const [scores, setScores] = useState<Record<string,Record<ScoreKey,string>>>(() =>
     Object.fromEntries(players.map(p => {
       const saved = p.score_data as Record<string, string> | null | undefined
@@ -107,7 +115,7 @@ export default function Yatzy({ players, onScoreUpdate, onComplete, onAbandon }:
                 {players.map(p=>(
                   <th key={p.id} className={`border border-gray-300 px-1 py-1 text-center text-sm font-bold w-16 ${p.id===currentPlayerId?'bg-indigo-50 text-indigo-800':'bg-gray-50'}`}>
                     {p.display_name}
-                    {p.id===currentPlayerId&&<div className="text-xs font-normal text-indigo-400">your turn</div>}
+                    {p.id===currentPlayerId&&<div className="text-xs font-normal text-indigo-400">{t.game.yourTurn}</div>}
                   </th>
                 ))}
               </tr>
@@ -129,11 +137,11 @@ export default function Yatzy({ players, onScoreUpdate, onComplete, onAbandon }:
                 </tr>
               ))}
               <tr>
-                <td className={tdC}>Sum</td>
+                <td className={tdC}>{sc.sum}</td>
                 {players.map(p=>{const s=upperSum(scores[p.id]??EMPTY);return<td key={p.id} className={tdC}>{s>0?s:''}</td>})}
               </tr>
               <tr>
-                <td className={tdC}>Bonus (50)</td>
+                <td className={tdC}>{sc.bonus} (50)</td>
                 {players.map(p=>{const s=upperSum(scores[p.id]??EMPTY);const b=bonus(s);const m=63-s;return<td key={p.id} className={`${tdC} ${b?'text-green-700':''}`}>{b?'50':s>0&&m>0?<span className="text-gray-400 text-xs">-{m}</span>:''}</td>})}
               </tr>
               {LOWER.map(({key,label,bold})=>(
@@ -152,15 +160,15 @@ export default function Yatzy({ players, onScoreUpdate, onComplete, onAbandon }:
                 </tr>
               ))}
               <tr>
-                <td className={tdT}>Total</td>
-                {players.map(p=>{const t=total(scores[p.id]??EMPTY);return<td key={p.id} className={tdT}>{t>0?t:''}</td>})}
+                <td className={tdT}>{sc.total}</td>
+                {players.map(p=>{const tot=total(scores[p.id]??EMPTY);return<td key={p.id} className={tdT}>{tot>0?tot:''}</td>})}
               </tr>
             </tbody>
           </table>
         </div>
         <div className="p-4 border-t border-gray-200">
-          <button onClick={()=>{ if(!allDone){if(confirm('Abandon game? No ratings will change.'))onAbandon();return} handleFinish()}} className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors">
-            {allDone?'Complete Game':'Finish Early'}
+          <button onClick={()=>{ if(!allDone){if(confirm(t.game.abandoning))onAbandon();return} handleFinish()}} className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors">
+            {allDone?t.game.completeGame:t.game.finishEarly}
           </button>
         </div>
       </div>

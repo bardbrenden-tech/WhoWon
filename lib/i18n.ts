@@ -59,6 +59,16 @@ export type Messages = {
     thanks: string; thanksSub: string
     catBug: string; catFeature: string; catDesign: string; catRules: string; catOther: string
   }
+  scorecard: {
+    ones: string; twos: string; threes: string; fours: string; fives: string; sixes: string
+    onePair: string; twoPairs: string; threePairs: string
+    threeOfKind: string; fourOfKind: string; fiveOfKind: string
+    smallStraight: string; largeStraight: string; fullStraight: string
+    house: string; fullHouse: string; tower: string
+    chance: string; yatzy: string; maxiYatzy: string
+    sum: string; bonus: string; total: string
+    quit: string; gameOver: string; score: string; rating: string; backToGame: string; home: string; notImplemented: string
+  }
   gameDesc: Record<string, string>
 }
 
@@ -115,6 +125,16 @@ const en: Messages = {
   },
   login: { subtitle: 'Track scores, build your rating, and see who the real champion is.', terms: 'By signing in you agree to our terms of service. Always free.', error: 'Something went wrong. Please try again.' },
   feedback: { button: 'Feedback', title: 'Send feedback', placeholder: "Tell us what's on your mind...", cancel: 'Cancel', send: 'Send', sending: 'Sending...', thanks: 'Thanks for your feedback!', thanksSub: 'We review every submission.', catBug: '🐛 Something is broken', catFeature: '✨ Feature request', catDesign: '🎨 Design / UX', catRules: '📋 Wrong rules', catOther: '💬 Other' },
+  scorecard: {
+    ones: 'Ones', twos: 'Twos', threes: 'Threes', fours: 'Fours', fives: 'Fives', sixes: 'Sixes',
+    onePair: '1 Pair', twoPairs: '2 Pairs', threePairs: '3 Pairs',
+    threeOfKind: '3 of a Kind', fourOfKind: '4 of a Kind', fiveOfKind: '5 of a Kind',
+    smallStraight: 'Small Straight', largeStraight: 'Large Straight', fullStraight: 'Full Straight',
+    house: 'House', fullHouse: 'Full House', tower: 'Tower',
+    chance: 'Chance', yatzy: 'Yatzy', maxiYatzy: 'Maxi Yatzy',
+    sum: 'Sum', bonus: 'Bonus', total: 'Total',
+    quit: 'Quit', gameOver: 'Game Over!', score: 'Score', rating: 'rating', backToGame: 'Back to game', home: 'Home', notImplemented: 'Game not yet implemented.',
+  },
   gameDesc: {
     'maxi-yatzy': 'The classic dice game with 6 dice and expanded categories including House, Tower, and Maxi Yatzy bonus.',
     'yatzy': 'The original 5-dice version. Score in 15 categories and earn a 50-point bonus for 63+ in the upper section.',
@@ -223,6 +243,16 @@ const no: Messages = {
   },
   login: { subtitle: 'Spor poeng, bygg ratingen din og se hvem som er den virkelige mesteren.', terms: 'Ved å logge inn godtar du våre vilkår. Alltid gratis.', error: 'Noe gikk galt. Prøv igjen.' },
   feedback: { button: 'Tilbakemelding', title: 'Send tilbakemelding', placeholder: 'Fortell oss hva du tenker på ...', cancel: 'Avbryt', send: 'Send', sending: 'Sender ...', thanks: 'Takk for tilbakemeldingen!', thanksSub: 'Vi leser gjennom alt som sendes inn.', catBug: '🐛 Noe er ødelagt', catFeature: '✨ Funksjonsønske', catDesign: '🎨 Design / UX', catRules: '📋 Feil regler', catOther: '💬 Annet' },
+  scorecard: {
+    ones: 'Enere', twos: 'Toere', threes: 'Treere', fours: 'Firere', fives: 'Femmere', sixes: 'Seksere',
+    onePair: '1 par', twoPairs: '2 par', threePairs: '3 par',
+    threeOfKind: '3 like', fourOfKind: '4 like', fiveOfKind: '5 like',
+    smallStraight: 'Liten straight', largeStraight: 'Stor straight', fullStraight: 'Full straight',
+    house: 'Hytte', fullHouse: 'Hus', tower: 'Tårn',
+    chance: 'Sjanse', yatzy: 'Yatzy', maxiYatzy: 'Maxi Yatzy',
+    sum: 'Sum', bonus: 'Bonus', total: 'Total',
+    quit: 'Avslutt', gameOver: 'Spillet er over!', score: 'Poeng', rating: 'rating', backToGame: 'Tilbake til spillet', home: 'Hjem', notImplemented: 'Spillet er ikke implementert ennå.',
+  },
   gameDesc: {
     'maxi-yatzy': 'Det klassiske terningspillet med 6 terninger og utvidede kategorier inkludert Hytte, Tårn og Maxi Yatzy-bonus.',
     'yatzy': 'Den originale 5-terningsversjonen. Poengscor i 15 kategorier og tjen 50 bonuspoeng for 63+ i øvre seksjon.',
@@ -331,6 +361,16 @@ const de: Messages = {
   },
   login: { subtitle: 'Verfolge Punkte, baue deine Wertung auf und sieh, wer der wahre Champion ist.', terms: 'Durch die Anmeldung stimmst du unseren Nutzungsbedingungen zu. Immer kostenlos.', error: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.' },
   feedback: { button: 'Feedback', title: 'Feedback senden', placeholder: 'Sag uns, was dir auf dem Herzen liegt ...', cancel: 'Abbrechen', send: 'Senden', sending: 'Wird gesendet ...', thanks: 'Danke für dein Feedback!', thanksSub: 'Wir prüfen jede Einsendung.', catBug: '🐛 Etwas ist kaputt', catFeature: '✨ Funktionswunsch', catDesign: '🎨 Design / UX', catRules: '📋 Falsche Regeln', catOther: '💬 Sonstiges' },
+  scorecard: {
+    ones: 'Einer', twos: 'Zweier', threes: 'Dreier', fours: 'Vierer', fives: 'Fünfer', sixes: 'Sechser',
+    onePair: '1 Paar', twoPairs: '2 Paare', threePairs: '3 Paare',
+    threeOfKind: 'Dreierpasch', fourOfKind: 'Viererpasch', fiveOfKind: 'Fünferpasch',
+    smallStraight: 'Kleine Straße', largeStraight: 'Große Straße', fullStraight: 'Volle Straße',
+    house: 'Haus', fullHouse: 'Full House', tower: 'Turm',
+    chance: 'Chance', yatzy: 'Yatzy', maxiYatzy: 'Maxi Yatzy',
+    sum: 'Summe', bonus: 'Bonus', total: 'Gesamt',
+    quit: 'Beenden', gameOver: 'Spiel vorbei!', score: 'Punkte', rating: 'Wertung', backToGame: 'Zurück zum Spiel', home: 'Startseite', notImplemented: 'Spiel noch nicht verfügbar.',
+  },
   gameDesc: {
     'maxi-yatzy': 'Das klassische Würfelspiel mit 6 Würfeln und erweiterten Kategorien wie Haus, Turm und Maxi-Yatzy-Bonus.',
     'yatzy': 'Die originale 5-Würfel-Version. Wertung in 15 Kategorien und 50 Bonuspunkte bei 63+ im oberen Bereich.',
@@ -439,6 +479,16 @@ const fr: Messages = {
   },
   login: { subtitle: 'Suivez les scores, construisez votre classement et voyez qui est le vrai champion.', terms: 'En vous connectant, vous acceptez nos conditions d\'utilisation. Toujours gratuit.', error: 'Quelque chose s\'est mal passé. Veuillez réessayer.' },
   feedback: { button: 'Retour', title: 'Envoyer un retour', placeholder: 'Dites-nous ce que vous avez en tête ...', cancel: 'Annuler', send: 'Envoyer', sending: 'Envoi ...', thanks: 'Merci pour votre retour !', thanksSub: 'Nous lisons chaque message.', catBug: '🐛 Quelque chose ne marche pas', catFeature: '✨ Suggestion de fonction', catDesign: '🎨 Design / UX', catRules: '📋 Règles incorrectes', catOther: '💬 Autre' },
+  scorecard: {
+    ones: 'As', twos: 'Deux', threes: 'Trois', fours: 'Quatre', fives: 'Cinq', sixes: 'Six',
+    onePair: '1 paire', twoPairs: '2 paires', threePairs: '3 paires',
+    threeOfKind: 'Brelan', fourOfKind: 'Carré', fiveOfKind: 'Cinq identiques',
+    smallStraight: 'Petite suite', largeStraight: 'Grande suite', fullStraight: 'Suite complète',
+    house: 'Maison', fullHouse: 'Full', tower: 'Tour',
+    chance: 'Chance', yatzy: 'Yatzy', maxiYatzy: 'Maxi Yatzy',
+    sum: 'Somme', bonus: 'Bonus', total: 'Total',
+    quit: 'Quitter', gameOver: 'Partie terminée !', score: 'Score', rating: 'classement', backToGame: 'Retour au jeu', home: 'Accueil', notImplemented: 'Jeu pas encore disponible.',
+  },
   gameDesc: {
     'maxi-yatzy': 'Le jeu de dés classique avec 6 dés et des catégories étendues : Maison, Tour et bonus Maxi Yatzy.',
     'yatzy': 'La version originale à 5 dés. Marquez dans 15 catégories et gagnez 50 points de bonus si la section supérieure atteint 63+.',
@@ -547,6 +597,16 @@ const es: Messages = {
   },
   login: { subtitle: 'Sigue los puntos, construye tu clasificación y descubre quién es el verdadero campeón.', terms: 'Al iniciar sesión aceptas nuestros términos de servicio. Siempre gratis.', error: 'Algo salió mal. Por favor, inténtalo de nuevo.' },
   feedback: { button: 'Comentarios', title: 'Enviar comentarios', placeholder: 'Cuéntanos qué piensas ...', cancel: 'Cancelar', send: 'Enviar', sending: 'Enviando ...', thanks: '¡Gracias por tus comentarios!', thanksSub: 'Revisamos cada mensaje.', catBug: '🐛 Algo no funciona', catFeature: '✨ Sugerencia de función', catDesign: '🎨 Diseño / UX', catRules: '📋 Reglas incorrectas', catOther: '💬 Otro' },
+  scorecard: {
+    ones: 'Unos', twos: 'Doses', threes: 'Treses', fours: 'Cuatros', fives: 'Cincos', sixes: 'Seises',
+    onePair: '1 pareja', twoPairs: '2 parejas', threePairs: '3 parejas',
+    threeOfKind: 'Trío', fourOfKind: 'Póker', fiveOfKind: 'Cinco iguales',
+    smallStraight: 'Escalera pequeña', largeStraight: 'Escalera grande', fullStraight: 'Escalera completa',
+    house: 'Casa', fullHouse: 'Full', tower: 'Torre',
+    chance: 'Chance', yatzy: 'Yatzy', maxiYatzy: 'Maxi Yatzy',
+    sum: 'Suma', bonus: 'Bonus', total: 'Total',
+    quit: 'Salir', gameOver: '¡Juego terminado!', score: 'Puntos', rating: 'clasificación', backToGame: 'Volver al juego', home: 'Inicio', notImplemented: 'Juego aún no disponible.',
+  },
   gameDesc: {
     'maxi-yatzy': 'El clásico juego de dados con 6 dados y categorías ampliadas: Casa, Torre y bono Maxi Yatzy.',
     'yatzy': 'La versión original con 5 dados. Puntúa en 15 categorías y gana 50 puntos de bonificación con 63+ en la sección superior.',
