@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getGame, GAMES } from '@/lib/games'
@@ -11,6 +12,29 @@ import PageBanner from '@/components/PageBanner'
 
 interface Props {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const game = getGame(slug)
+  if (!game) return {}
+
+  const title = `${game.name} — scores, leaderboard & rules | Who Won?`
+  const description = `${game.description} Track scores, view the global leaderboard and rate ${game.name} on Who Won?`
+  const url = `/games/${game.id}`
+
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: 'Who Won?',
+      type: 'website',
+    },
+  }
 }
 
 export default async function GamePage({ params }: Props) {

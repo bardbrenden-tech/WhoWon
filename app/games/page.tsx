@@ -1,8 +1,22 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { GAMES, CATEGORIES } from '@/lib/games'
 import type { GameCategory } from '@/lib/types'
 import PageBanner from '@/components/PageBanner'
 import { getServerT } from '@/lib/i18n-server'
+
+export const metadata: Metadata = {
+  title: 'All games — dice, cards, darts & board games | Who Won?',
+  description: 'Browse every game you can track on Who Won? — dice, card, darts, board, outdoor, party and sport games with global Elo leaderboards.',
+  alternates: { canonical: '/games' },
+  openGraph: {
+    title: 'All games — dice, cards, darts & board games | Who Won?',
+    description: 'Browse every game you can track on Who Won? with global Elo leaderboards.',
+    url: '/games',
+    siteName: 'Who Won?',
+    type: 'website',
+  },
+}
 
 interface Props {
   searchParams: Promise<{ category?: string; q?: string }>

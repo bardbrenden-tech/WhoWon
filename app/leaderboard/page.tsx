@@ -1,8 +1,22 @@
+import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { getActiveGames, getGame } from '@/lib/games'
 import Link from 'next/link'
 import PageBanner from '@/components/PageBanner'
 import { getServerT } from '@/lib/i18n-server'
+
+export const metadata: Metadata = {
+  title: 'Global leaderboard — Elo rankings for every game | Who Won?',
+  description: 'See global Elo rankings across every game on Who Won? — find out who really won.',
+  alternates: { canonical: '/leaderboard' },
+  openGraph: {
+    title: 'Global leaderboard — Elo rankings for every game | Who Won?',
+    description: 'See global Elo rankings across every game on Who Won?.',
+    url: '/leaderboard',
+    siteName: 'Who Won?',
+    type: 'website',
+  },
+}
 
 interface Props {
   searchParams: Promise<{ game?: string }>

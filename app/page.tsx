@@ -1,7 +1,12 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { GAMES, CATEGORIES } from '@/lib/games'
 import { getServerT } from '@/lib/i18n-server'
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+}
 
 export default async function HomePage() {
   const { t } = await getServerT()
