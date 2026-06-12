@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { deleteChallenge } from './actions'
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 
 export default function DeleteChallengeButton({ challengeId, challengeName }: Props) {
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   async function handleDelete(e: React.MouseEvent) {
     e.preventDefault()
@@ -17,6 +19,7 @@ export default function DeleteChallengeButton({ challengeId, challengeName }: Pr
     setLoading(true)
     try {
       await deleteChallenge(challengeId)
+      router.refresh()
     } catch {
       alert('Noe gikk galt. Prøv igjen.')
       setLoading(false)
