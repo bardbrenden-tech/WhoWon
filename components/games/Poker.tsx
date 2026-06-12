@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 
 type Phase = 'setup' | 'running' | 'break' | 'complete'
 
@@ -55,6 +57,7 @@ function fmtN(n: number) {
 const STACK_PRESETS = [5000, 10000, 15000, 20000, 25000]
 
 export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   // Setup config
   const [levelDuration, setLevelDuration] = useState(20)
   const [breakEvery, setBreakEvery]       = useState(4)
@@ -203,7 +206,7 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
   }
 
   function manualComplete() {
-    if (!confirm('Avslutt turneringen og registrer nåværende plassering?')) return
+    if (!confirm(t.play.pokerManualComplete)) return
     const byChips = [...activeIds]
       .map(id => ({ id, chips: chips[id] ?? 0 }))
       .sort((a, b) => b.chips - a.chips)
@@ -229,9 +232,9 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
         {/* Starting stack */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-semibold text-gray-700">Startstack per spiller</label>
+            <label className="text-sm font-semibold text-gray-700">{t.play.pokerStartStack}</label>
             <span className="text-xs text-gray-400">
-              {players.length} spillere × {fmtN(startingStack)} = <strong className="text-gray-700">{fmtN(totalInitialChips)}</strong> totalt
+              {tp(t.play.pokerStackCalc, { n: players.length, stack: fmtN(startingStack), total: fmtN(totalInitialChips) })}
             </span>
           </div>
           <div className="flex gap-2 mb-2">
@@ -251,7 +254,7 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
                 const v = Number(e.target.value)
                 if (v > 0) setStartingStack(v)
               }}
-              placeholder="Egendefinert..."
+              placeholder={t.play.pokerCustom}
               className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
@@ -259,12 +262,12 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
 
         {/* Level duration */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Nivåvarighet</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">{t.play.pokerLevelDuration}</label>
           <div className="flex gap-2">
             {[10, 15, 20, 25, 30].map(n => (
               <button key={n} onClick={() => setLevelDuration(n)}
                 className={`flex-1 py-2 rounded-lg text-sm font-semibold border transition-colors ${levelDuration === n ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-300 hover:border-indigo-400'}`}>
-                {n} min
+                {tp(t.play.pokerMin, { n })}
               </button>
             ))}
           </div>
@@ -272,12 +275,12 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
 
         {/* Break interval */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Pause etter hvert</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">{t.play.pokerBreakEvery}</label>
           <div className="flex gap-2">
             {[3, 4, 5, 6].map(n => (
               <button key={n} onClick={() => setBreakEvery(n)}
                 className={`flex-1 py-2 rounded-lg text-sm font-semibold border transition-colors ${breakEvery === n ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-300 hover:border-indigo-400'}`}>
-                {n}. nivå
+                {tp(t.play.pokerNthLevel, { n })}
               </button>
             ))}
           </div>
@@ -285,12 +288,12 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
 
         {/* Break duration */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Pauselengde</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">{t.play.pokerBreakLength}</label>
           <div className="flex gap-2">
             {[10, 15, 20].map(n => (
               <button key={n} onClick={() => setBreakDuration(n)}
                 className={`flex-1 py-2 rounded-lg text-sm font-semibold border transition-colors ${breakDuration === n ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-gray-700 border-gray-300 hover:border-indigo-400'}`}>
-                {n} min
+                {tp(t.play.pokerMin, { n })}
               </button>
             ))}
           </div>
@@ -299,22 +302,22 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
         {/* Schedule preview */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-semibold text-gray-700">Blindstruktur</label>
-            <span className="text-xs text-gray-400">~{h > 0 ? `${h}t ` : ''}{m}min totalt</span>
+            <label className="text-sm font-semibold text-gray-700">{t.play.pokerBlindStructure}</label>
+            <span className="text-xs text-gray-400">{h > 0 ? tp(t.play.pokerTotalTimeH, { h, m }) : tp(t.play.pokerTotalTimeM, { m })}</span>
           </div>
           <div className="bg-gray-50 rounded-xl divide-y divide-gray-100 max-h-56 overflow-y-auto text-sm">
             {preview.map((e, i) =>
               e.isBreak ? (
                 <div key={i} className="flex items-center justify-between px-3 py-2 bg-amber-50">
-                  <span className="text-xs font-bold text-amber-600 tracking-wide">☕ PAUSE</span>
-                  <span className="text-xs text-amber-500">{e.durationMinutes} min</span>
+                  <span className="text-xs font-bold text-amber-600 tracking-wide">{t.play.pokerBreak}</span>
+                  <span className="text-xs text-amber-500">{tp(t.play.pokerMin, { n: e.durationMinutes })}</span>
                 </div>
               ) : (
                 <div key={i} className="flex items-center gap-2 px-3 py-2">
-                  <span className="text-xs text-gray-400 w-14 shrink-0">Nivå {e.level}</span>
+                  <span className="text-xs text-gray-400 w-14 shrink-0">{tp(t.play.pokerLevel, { n: e.level })}</span>
                   <span className="font-bold text-gray-800">{e.small.toLocaleString('nb-NO')} / {e.big.toLocaleString('nb-NO')}</span>
-                  {e.ante > 0 && <span className="text-xs text-gray-400">Ante {e.ante}</span>}
-                  <span className="ml-auto text-xs text-gray-400">{e.durationMinutes} min</span>
+                  {e.ante > 0 && <span className="text-xs text-gray-400">{tp(t.play.pokerAnte, { n: e.ante })}</span>}
+                  <span className="ml-auto text-xs text-gray-400">{tp(t.play.pokerMin, { n: e.durationMinutes })}</span>
                 </div>
               )
             )}
@@ -323,9 +326,9 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
 
         <button onClick={startTournament}
           className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition-colors">
-          Start turnering 🃏
+          {t.play.pokerStartTournament}
         </button>
-        <button onClick={onAbandon} className="w-full text-sm text-gray-400 hover:text-gray-600 py-1">Avbryt</button>
+        <button onClick={onAbandon} className="w-full text-sm text-gray-400 hover:text-gray-600 py-1">{t.game.cancel}</button>
       </div>
     )
   }
@@ -348,9 +351,9 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
         <div className="flex gap-2">
           <button onClick={togglePause}
             className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors ${isPaused ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-slate-700 hover:bg-slate-600'}`}>
-            {isPaused ? '▶ Fortsett' : '⏸ Pause'}
+            {isPaused ? t.play.pokerResume : t.play.pokerPause}
           </button>
-          <button onClick={advanceEntry} title="Neste nivå"
+          <button onClick={advanceEntry} title={t.play.pokerNextLevelTitle}
             className="px-3 py-2 rounded-lg text-sm bg-slate-700 hover:bg-slate-600 transition-colors">
             ⏭
           </button>
@@ -358,10 +361,10 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
         <div className="flex gap-2">
           <button onClick={() => setShowChipInput(p => !p)}
             className={`px-3 py-2 rounded-lg text-xs font-medium transition-colors ${showChipInput ? 'bg-amber-600 hover:bg-amber-500' : 'bg-slate-700 hover:bg-slate-600'}`}>
-            🪙 Sjettong
+            {t.play.pokerChipsBtn}
           </button>
           <button onClick={manualComplete} className="text-slate-500 hover:text-slate-300 text-xs px-2 py-1">
-            Avslutt
+            {t.play.pokerFinish}
           </button>
         </div>
       </div>
@@ -370,27 +373,27 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
       <div className="flex-1 flex flex-col items-center justify-center px-4 py-4 text-center">
         {isBreakPhase ? (
           <>
-            <p className="text-amber-400 text-xs font-bold tracking-[0.4em] mb-4">☕ PAUSE</p>
+            <p className="text-amber-400 text-xs font-bold tracking-[0.4em] mb-4">{t.play.pokerBreak}</p>
             <p className={`font-black tabular-nums leading-none transition-colors ${secsToShow <= 60 && !isPaused ? 'text-red-400' : isPaused ? 'text-slate-500' : 'text-amber-300'}`}
               style={{ fontSize: 'clamp(5rem, 20vw, 10rem)' }}>
               {fmtTime(secsToShow)}
             </p>
             {nextPlayEntry && (
               <p className="text-slate-400 mt-5 text-base">
-                Neste: Nivå {nextPlayEntry.level} — {nextPlayEntry.small.toLocaleString('nb-NO')} / {nextPlayEntry.big.toLocaleString('nb-NO')}
-                {nextPlayEntry.ante > 0 && <span className="text-slate-500"> · Ante {nextPlayEntry.ante}</span>}
+                {tp(t.play.pokerNextPrefix, { n: nextPlayEntry.level })} — {nextPlayEntry.small.toLocaleString('nb-NO')} / {nextPlayEntry.big.toLocaleString('nb-NO')}
+                {nextPlayEntry.ante > 0 && <span className="text-slate-500"> · {tp(t.play.pokerAnte, { n: nextPlayEntry.ante })}</span>}
               </p>
             )}
           </>
         ) : (
           <>
-            <p className="text-slate-500 text-xs font-bold tracking-[0.4em] mb-3">NIVÅ {currentEntry?.level}</p>
+            <p className="text-slate-500 text-xs font-bold tracking-[0.4em] mb-3">{tp(t.play.pokerLevelCaps, { n: currentEntry?.level ?? '' })}</p>
             <p className="font-black text-white leading-none"
               style={{ fontSize: 'clamp(2.8rem, 12vw, 6.5rem)' }}>
               {currentEntry ? `${fmtN(currentEntry.small)} / ${fmtN(currentEntry.big)}` : '—'}
             </p>
             {(currentEntry?.ante ?? 0) > 0 && (
-              <p className="text-slate-400 mt-2 text-lg">Ante: {currentEntry!.ante.toLocaleString('nb-NO')}</p>
+              <p className="text-slate-400 mt-2 text-lg">{tp(t.play.pokerAnteColon, { n: currentEntry!.ante.toLocaleString('nb-NO') })}</p>
             )}
             <p className={`font-black tabular-nums leading-none mt-4 transition-colors ${isWarning ? 'text-red-400' : isPaused ? 'text-slate-500' : 'text-emerald-400'}`}
               style={{ fontSize: 'clamp(4rem, 16vw, 8rem)' }}>
@@ -398,8 +401,8 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
             </p>
             {nextPlayEntry && (
               <p className="text-slate-500 mt-3 text-sm">
-                Neste: Nivå {nextPlayEntry.level} — {nextPlayEntry.small.toLocaleString('nb-NO')} / {nextPlayEntry.big.toLocaleString('nb-NO')}
-                {nextPlayEntry.ante > 0 && <span> · Ante {nextPlayEntry.ante}</span>}
+                {tp(t.play.pokerNextPrefix, { n: nextPlayEntry.level })} — {nextPlayEntry.small.toLocaleString('nb-NO')} / {nextPlayEntry.big.toLocaleString('nb-NO')}
+                {nextPlayEntry.ante > 0 && <span> · {tp(t.play.pokerAnte, { n: nextPlayEntry.ante })}</span>}
               </p>
             )}
           </>
@@ -414,9 +417,9 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
           <div className="bg-slate-800 rounded-xl p-4">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <p className="text-sm font-bold text-slate-300">🪙 Sjettong-telling</p>
+                <p className="text-sm font-bold text-slate-300">{t.play.pokerChipCount}</p>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  Totalt i spill: <span className="text-slate-300 font-semibold">{fmtN(totalChipsInPlay)}</span>
+                  {t.play.pokerTotalInPlay} <span className="text-slate-300 font-semibold">{fmtN(totalChipsInPlay)}</span>
                   {totalBuyInCount > 0 && <span className="text-amber-500 ml-2">· {totalBuyInCount} buy-in{totalBuyInCount !== 1 ? 's' : ''}</span>}
                 </p>
               </div>
@@ -438,7 +441,7 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
                     <button
                       onClick={() => doBuyIn(id)}
                       className="px-2 py-1 rounded-lg bg-amber-600 hover:bg-amber-500 text-xs font-bold text-white transition-colors shrink-0"
-                      title={`Legg til ${fmtN(startingStack)} sjettonger`}
+                      title={tp(t.play.pokerBuyInTitle, { x: fmtN(startingStack) })}
                     >
                       +Buy-in
                     </button>
@@ -455,7 +458,7 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
               })}
             </div>
             <p className="text-xs text-slate-600 mt-3">
-              Buy-in legger til {fmtN(startingStack)} sjettonger automatisk
+              {tp(t.play.pokerBuyInAuto, { x: fmtN(startingStack) })}
             </p>
           </div>
         )}
@@ -464,9 +467,9 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
         {!showChipInput && hasChips && (
           <div className="bg-slate-800 rounded-xl p-3">
             <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">Sjettong-ledere</p>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wide">{t.play.pokerChipLeaders}</p>
               <p className="text-xs text-slate-500">
-                {fmtN(totalChipsInPlay)} totalt
+                {tp(t.play.pokerTotalShort, { x: fmtN(totalChipsInPlay) })}
                 {totalBuyInCount > 0 && <span className="text-amber-600 ml-1">· {totalBuyInCount} BI</span>}
               </p>
             </div>
@@ -495,21 +498,21 @@ export default function Poker({ players, onScoreUpdate, onComplete, onAbandon }:
         {isBreakPhase && !showChipInput && !hasChips && (
           <button onClick={() => setShowChipInput(true)}
             className="w-full bg-amber-600 hover:bg-amber-500 text-white font-semibold py-2.5 rounded-xl text-sm transition-colors">
-            🪙 Tell inn sjettonger
+            {t.play.pokerCountChips}
           </button>
         )}
 
         {/* Active players + elimination */}
         <div className="bg-slate-800 rounded-xl p-3">
           <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">
-            Spillere — {activeIds.length} igjen av {players.length}
+            {tp(t.play.pokerPlayersLeft, { n: activeIds.length, m: players.length })}
           </p>
           <div className="flex flex-wrap gap-2">
             {activeIds.map(id => {
               const p = players.find(pl => pl.id === id)!
               return (
                 <button key={id}
-                  onClick={() => { if (confirm(`Marker ${p.display_name} som ute?`)) eliminatePlayer(id) }}
+                  onClick={() => { if (confirm(tp(t.play.pokerMarkOut, { name: p.display_name }))) eliminatePlayer(id) }}
                   className="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-red-800 text-sm font-medium text-white transition-colors">
                   {p.display_name}
                 </button>

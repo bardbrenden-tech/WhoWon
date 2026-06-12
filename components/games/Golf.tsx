@@ -1,6 +1,8 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 
 type Phase = 'setup' | 'playing'
 
@@ -16,6 +18,7 @@ function fmtVsPar(n: number): string {
 }
 
 export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   const [phase, setPhase] = useState<Phase>('setup')
   const [courseName, setCourseName] = useState('')
   const [holeCount, setHoleCount] = useState<9 | 18>(18)
@@ -92,18 +95,18 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
     return (
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Banenavn (valgfritt)</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">{t.play.golfCourseName}</label>
           <input
             type="text"
             value={courseName}
             onChange={e => setCourseName(e.target.value)}
-            placeholder="F.eks. Trysil Golfklubb — Bane A"
+            placeholder={t.play.golfCoursePlaceholder}
             className="w-full border border-gray-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">Antall hull</label>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">{t.play.golfHoleCount}</label>
           <div className="flex gap-3">
             {([9, 18] as const).map(n => (
               <button
@@ -115,7 +118,7 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
                     : 'bg-white text-gray-700 border-gray-300 hover:border-indigo-400'
                 }`}
               >
-                {n} hull
+                {n} {t.play.golfHoles}
               </button>
             ))}
           </div>
@@ -123,21 +126,21 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
 
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-semibold text-gray-700">Par per hull</label>
-            <span className="text-xs text-gray-400">Total par: <strong className="text-gray-700">{totalPar}</strong></span>
+            <label className="text-sm font-semibold text-gray-700">{t.play.golfParPerHole}</label>
+            <span className="text-xs text-gray-400">{t.play.golfTotalPar} <strong className="text-gray-700">{totalPar}</strong></span>
           </div>
           <div className="flex gap-2 mb-2">
-            <button onClick={() => setPars(Array(holeCount).fill(3))} className="text-xs text-gray-400 hover:text-gray-600 border border-gray-200 rounded px-2 py-1">Alle par 3</button>
-            <button onClick={() => setPars(Array(holeCount).fill(4))} className="text-xs text-gray-400 hover:text-gray-600 border border-gray-200 rounded px-2 py-1">Alle par 4</button>
-            <button onClick={() => setPars(Array(holeCount).fill(5))} className="text-xs text-gray-400 hover:text-gray-600 border border-gray-200 rounded px-2 py-1">Alle par 5</button>
+            <button onClick={() => setPars(Array(holeCount).fill(3))} className="text-xs text-gray-400 hover:text-gray-600 border border-gray-200 rounded px-2 py-1">{tp(t.play.golfAllPar, { n: 3 })}</button>
+            <button onClick={() => setPars(Array(holeCount).fill(4))} className="text-xs text-gray-400 hover:text-gray-600 border border-gray-200 rounded px-2 py-1">{tp(t.play.golfAllPar, { n: 4 })}</button>
+            <button onClick={() => setPars(Array(holeCount).fill(5))} className="text-xs text-gray-400 hover:text-gray-600 border border-gray-200 rounded px-2 py-1">{tp(t.play.golfAllPar, { n: 5 })}</button>
           </div>
           {holeCount === 18 && (
-            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1 mt-2">Hull 1–9</p>
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1 mt-2">{tp(t.play.golfHolesRange, { a: 1, b: 9 })}</p>
           )}
           <div className="space-y-1">
             {pars.slice(0, Math.min(holeCount, 9)).map((par, i) => (
               <div key={i} className="flex items-center gap-3">
-                <span className="text-sm font-bold text-gray-800 w-14 shrink-0">Hull {i + 1}</span>
+                <span className="text-sm font-bold text-gray-800 w-14 shrink-0">{tp(t.play.golfHole, { n: i + 1 })}</span>
                 <div className="flex gap-1 flex-1">
                   {[3, 4, 5].map(p => (
                     <button
@@ -158,13 +161,13 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
           </div>
           {holeCount === 18 && (
             <>
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1 mt-3">Hull 10–18</p>
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1 mt-3">{tp(t.play.golfHolesRange, { a: 10, b: 18 })}</p>
               <div className="space-y-1">
                 {pars.slice(9, 18).map((par, j) => {
                   const i = j + 9
                   return (
                     <div key={i} className="flex items-center gap-3">
-                      <span className="text-sm font-bold text-gray-800 w-14 shrink-0">Hull {i + 1}</span>
+                      <span className="text-sm font-bold text-gray-800 w-14 shrink-0">{tp(t.play.golfHole, { n: i + 1 })}</span>
                       <div className="flex gap-1 flex-1">
                         {[3, 4, 5].map(p => (
                           <button
@@ -190,10 +193,10 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
 
         <div>
           <div className="flex items-center justify-between mb-1">
-            <label className="text-sm font-semibold text-gray-700">Handikap (valgfritt)</label>
-            <span className="text-xs text-gray-400">{holeCount === 9 ? 'halveres for 9 hull' : '18-hulls HCP'}</span>
+            <label className="text-sm font-semibold text-gray-700">{t.play.golfHandicap}</label>
+            <span className="text-xs text-gray-400">{holeCount === 9 ? t.play.golfHcpHalved : t.play.golfHcp18}</span>
           </div>
-          <p className="text-xs text-gray-400 mb-2">Skriv inn 0 hvis dere spiller brutto</p>
+          <p className="text-xs text-gray-400 mb-2">{t.play.golfBruttoHint}</p>
           <div className="space-y-2">
             {players.map(p => (
               <div key={p.id} className="flex items-center gap-3 bg-gray-50 rounded-xl px-3 py-2">
@@ -222,9 +225,9 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
           onClick={startGame}
           className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition-colors"
         >
-          Start runde ⛳
+          {t.play.golfStartRound}
         </button>
-        <button onClick={onAbandon} className="w-full text-sm text-gray-400 hover:text-gray-600 py-1">Avbryt</button>
+        <button onClick={onAbandon} className="w-full text-sm text-gray-400 hover:text-gray-600 py-1">{t.game.cancel}</button>
       </div>
     )
   }
@@ -239,7 +242,7 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
       <div className="text-center">
         {courseName && <p className="text-xs text-gray-500 mb-1">{courseName}</p>}
         <div className="flex items-center justify-center gap-3 mb-1">
-          <span className="text-xs text-gray-400 uppercase tracking-wide">Hull {currentHole + 1} / {holeCount}</span>
+          <span className="text-xs text-gray-400 uppercase tracking-wide">{tp(t.play.golfHoleProgress, { n: currentHole + 1, m: holeCount })}</span>
           <div className="flex gap-0.5">
             {pars.slice(0, holeCount).map((_, i) => (
               <div
@@ -251,7 +254,7 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
             ))}
           </div>
         </div>
-        <p className="text-4xl font-black text-gray-900">Par {par}</p>
+        <p className="text-4xl font-black text-gray-900">{tp(t.play.golfPar, { n: par })}</p>
       </div>
 
       {/* Stroke inputs */}
@@ -265,7 +268,7 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
             <div key={p.id} className="bg-white border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3">
               <div className="flex-1 min-w-0">
                 <span className="text-sm font-semibold text-gray-800 truncate block">{p.display_name}</span>
-                {hcp > 0 && <span className="text-xs text-gray-400">HCP {hcp}{holeCount === 9 ? ` (netto ${Math.round(hcp / 2)})` : ''}</span>}
+                {hcp > 0 && <span className="text-xs text-gray-400">HCP {hcp}{holeCount === 9 ? ` (${tp(t.play.golfNetParen, { x: Math.round(hcp / 2) })})` : ''}</span>}
               </div>
               {completed > 0 && (
                 <span className={`text-xs font-semibold w-8 text-right ${totalVsPar(p.id, completed) < 0 ? 'text-green-600' : totalVsPar(p.id, completed) > 0 ? 'text-red-500' : 'text-gray-400'}`}>
@@ -297,7 +300,7 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
         onClick={saveHole}
         className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 transition-colors"
       >
-        {currentHole < holeCount - 1 ? `Neste hull →` : 'Avslutt runde 🏁'}
+        {currentHole < holeCount - 1 ? t.play.golfNextHole : t.play.golfFinishRound}
       </button>
 
       {/* Mini leaderboard */}
@@ -305,10 +308,10 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
         <div className="bg-gray-50 rounded-xl p-3">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-              Stilling etter {completed} hull
+              {tp(t.play.golfStandingAfter, { n: completed })}
             </p>
             {hasHandicaps && (
-              <span className="text-xs text-gray-400">netto</span>
+              <span className="text-xs text-gray-400">{t.play.golfNet}</span>
             )}
           </div>
           {players
@@ -341,7 +344,7 @@ export default function Golf({ players, onScoreUpdate, onComplete, onAbandon }: 
         </div>
       )}
 
-      <button onClick={onAbandon} className="w-full text-sm text-gray-400 hover:text-gray-600 py-1">Avbryt</button>
+      <button onClick={onAbandon} className="w-full text-sm text-gray-400 hover:text-gray-600 py-1">{t.game.cancel}</button>
     </div>
   )
 }

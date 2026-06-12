@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect, useRef, type CSSProperties } from 'react'
 import { createClient } from '@/lib/supabase/client'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 import type { GameComponentProps } from '@/lib/types'
 
 // ── Seeded PRNG ───────────────────────────────────────────────────────────────
@@ -95,6 +97,7 @@ type Phase = 'identify' | 'ready' | 'playing' | 'waiting'
 type PlayerResult = { id: string; displayName: string; time: number | null }
 
 export default function Sudoku({ players, options, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   const sessionId = (options.sessionId as string) || ''
   const userId    = (options.userId    as string) || ''
   const userEmail = (options.userEmail as string) || ''
@@ -318,8 +321,8 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
       <div className="max-w-sm mx-auto py-10 px-4 flex flex-col items-center gap-6">
         <div className="text-center">
           <div className="text-5xl mb-3">👋</div>
-          <h2 className="text-2xl font-black text-gray-900">Hvem er du?</h2>
-          <p className="text-sm text-gray-500 mt-1">Velg navnet ditt for å fortsette</p>
+          <h2 className="text-2xl font-black text-gray-900">{t.play.sudokuWhoAreYou}</h2>
+          <p className="text-sm text-gray-500 mt-1">{t.play.sudokuPickName}</p>
         </div>
         <div className="w-full space-y-2">
           {players.map(p => (
@@ -345,16 +348,16 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
       <div className="max-w-sm mx-auto py-10 px-4 flex flex-col items-center gap-6">
         <div className="text-center">
           <div className="text-5xl mb-3">🔢</div>
-          <h2 className="text-2xl font-black text-gray-900">Sudoku</h2>
-          <p className="text-sm text-gray-500 mt-1">Løs brettet så raskt du kan</p>
+          <h2 className="text-2xl font-black text-gray-900">{t.play.sudokuTitle}</h2>
+          <p className="text-sm text-gray-500 mt-1">{t.play.sudokuSolveFast}</p>
           {players.length > 1 && (
-            <p className="text-xs text-gray-400 mt-1">Alle spillere løser samme brett — best tid vinner</p>
+            <p className="text-xs text-gray-400 mt-1">{t.play.sudokuSameBoard}</p>
           )}
         </div>
 
         {players.length > 1 && (
           <div className="w-full bg-white border border-gray-200 rounded-2xl p-4">
-            <p className="text-sm font-semibold text-gray-700 mb-3 text-center">Spillere</p>
+            <p className="text-sm font-semibold text-gray-700 mb-3 text-center">{t.play.sudokuPlayers}</p>
             <div className="space-y-2">
               {players.map(p => (
                 <div
@@ -364,7 +367,7 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
                 >
                   <span className={`w-2 h-2 rounded-full flex-shrink-0 ${p.id === myPlayer.id ? 'bg-indigo-500' : 'bg-gray-300'}`} />
                   <span className="font-medium text-gray-800">{p.display_name}</span>
-                  {p.id === myPlayer.id && <span className="text-xs text-indigo-400 ml-auto">deg</span>}
+                  {p.id === myPlayer.id && <span className="text-xs text-indigo-400 ml-auto">{t.play.sudokuYou}</span>}
                 </div>
               ))}
             </div>
@@ -374,8 +377,8 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
         {/* Share link — shown to the session owner so they can invite others */}
         {players.length > 1 && pageUrl && (
           <div className="w-full bg-gray-50 border border-gray-200 rounded-2xl p-4">
-            <p className="text-sm font-semibold text-gray-700 mb-1 text-center">Inviter spillere</p>
-            <p className="text-xs text-gray-400 mb-3 text-center">Del denne lenken med de andre — de åpner den på sin egen enhet</p>
+            <p className="text-sm font-semibold text-gray-700 mb-1 text-center">{t.play.sudokuInvite}</p>
+            <p className="text-xs text-gray-400 mb-3 text-center">{t.play.sudokuShareHint}</p>
             <div className="flex gap-2 items-center">
               <p className="flex-1 text-xs text-gray-500 font-mono bg-white border border-gray-200 rounded-xl px-3 py-2 truncate">{pageUrl}</p>
               <button
@@ -384,7 +387,7 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
                   copied ? 'bg-green-500 text-white' : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                 }`}
               >
-                {copied ? 'Kopiert!' : 'Kopier'}
+                {copied ? t.play.sudokuCopied : t.play.sudokuCopy}
               </button>
             </div>
           </div>
@@ -392,7 +395,7 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
 
         {/* Difficulty picker */}
         <div className="w-full bg-white border border-gray-200 rounded-2xl p-4">
-          <p className="text-sm font-semibold text-gray-700 mb-3 text-center">Vanskelighetsgrad</p>
+          <p className="text-sm font-semibold text-gray-700 mb-3 text-center">{t.play.sudokuDifficulty}</p>
           <div className="flex gap-2">
             {(['easy', 'medium', 'hard'] as Difficulty[]).map(d => (
               <button
@@ -404,12 +407,12 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
                     : 'bg-white border-gray-200 text-gray-700 hover:border-indigo-300'
                   }`}
               >
-                {d === 'easy' ? 'Lett' : d === 'medium' ? 'Middels' : 'Vanskelig'}
+                {d === 'easy' ? t.play.sudokuEasy : d === 'medium' ? t.play.sudokuMedium : t.play.sudokuHard}
               </button>
             ))}
           </div>
           <p className="text-xs text-gray-400 mt-2 text-center">
-            {difficulty === 'easy' ? '45 hint' : difficulty === 'medium' ? '30 hint' : '19 hint'}
+            {tp(t.play.sudokuHints, { n: difficulty === 'easy' ? 45 : difficulty === 'medium' ? 30 : 19 })}
           </p>
         </div>
 
@@ -418,13 +421,13 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
             onClick={() => setPhase('playing')}
             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-lg py-4 rounded-2xl transition-colors"
           >
-            Start
+            {t.play.sudokuStart}
           </button>
           <button
-            onClick={() => { if (confirm('Avbryt spillet?')) onAbandon() }}
+            onClick={() => { if (confirm(t.play.confirmAbandonShort)) onAbandon() }}
             className="w-full text-sm text-gray-400 hover:text-gray-600 py-2"
           >
-            Avbryt
+            {t.game.cancel}
           </button>
         </div>
       </div>
@@ -440,7 +443,7 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
       return a.time - b.time
     })
     const allDone = allResults.every(r => r.time !== null)
-    const praise = myTime < 120 ? '🔥 Lynrask!' : myTime < 300 ? '⚡ Rask løsning!' : myTime < 600 ? '👏 Godt gjort!' : '✅ Fullført!'
+    const praise = myTime < 120 ? t.play.praiseLightning : myTime < 300 ? t.play.praiseFast : myTime < 600 ? t.play.praiseGood : t.play.praiseDone
 
     return (
       <div className="relative min-h-screen overflow-hidden flex flex-col items-center justify-center px-4 py-10 gap-6"
@@ -491,7 +494,7 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
                  border: '1px solid rgba(255,255,255,0.3)',
                  animation: 'slide-up 0.5s 0.35s ease-out both',
                }}>
-            <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-2">Din tid</p>
+            <p className="text-white/70 text-xs font-bold uppercase tracking-widest mb-2">{t.play.sudokuYourTime}</p>
             <p className="text-7xl font-black text-white tabular-nums leading-none">{fmt(myTime)}</p>
             <p className="text-white/80 text-base font-semibold mt-3">{praise}</p>
           </div>
@@ -507,7 +510,7 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
                  }}>
               {!allDone && (
                 <div className="px-4 py-2.5 border-b border-white/10 text-center">
-                  <p className="text-white/60 text-xs font-semibold animate-pulse">Venter på de andre…</p>
+                  <p className="text-white/60 text-xs font-semibold animate-pulse">{t.play.sudokuWaitingOthers}</p>
                 </div>
               )}
               {sorted.map((r, i) => (
@@ -520,12 +523,12 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
                     </span>
                     <span className={`text-sm ${r.id === myPlayer.id ? 'text-white font-bold' : 'text-white/80 font-medium'}`}>
                       {r.displayName}
-                      {r.id === myPlayer.id && <span className="text-white/50 text-xs ml-1">(deg)</span>}
+                      {r.id === myPlayer.id && <span className="text-white/50 text-xs ml-1">{t.play.sudokuYouParen}</span>}
                     </span>
                   </div>
                   {r.time !== null
                     ? <span className={`text-sm font-bold tabular-nums ${i === 0 ? 'text-yellow-300' : 'text-white/90'}`}>{fmt(r.time)}</span>
-                    : <span className="text-xs text-white/40 animate-pulse">løser…</span>
+                    : <span className="text-xs text-white/40 animate-pulse">{t.play.sudokuSolving}</span>
                   }
                 </div>
               ))}
@@ -588,11 +591,11 @@ export default function Sudoku({ players, options, onScoreUpdate, onComplete, on
 
         {/* Abandon */}
         <button
-          onClick={() => { if (confirm('Avbryt? Ingen resultater lagres.')) onAbandon() }}
+          onClick={() => { if (confirm(t.play.sudokuAbandonShort)) onAbandon() }}
           className="w-full border border-gray-200 text-gray-400 text-sm py-3 rounded-xl hover:bg-gray-50 transition-colors mt-1"
           style={{ maxWidth: 'min(calc(100vw - 2rem), 340px)' }}
         >
-          Avbryt
+          {t.game.cancel}
         </button>
       </div>
     </div>
