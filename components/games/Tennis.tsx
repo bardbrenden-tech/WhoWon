@@ -1,6 +1,8 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 
 interface SetResult {
   winnerId: string
@@ -8,6 +10,7 @@ interface SetResult {
 }
 
 export default function Tennis({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   const [sets, setSets] = useState<SetResult[]>([])
   const [selectedWinner, setSelectedWinner] = useState<string | null>(null)
   const [setScore, setSetScore] = useState('')
@@ -50,7 +53,7 @@ export default function Tennis({ players, onScoreUpdate, onComplete, onAbandon }
             <p className={`text-5xl font-black ${i === 0 && setsWon(p.id) > 0 ? 'text-indigo-600' : 'text-gray-900'}`}>
               {setsWon(p.id)}
             </p>
-            <p className="text-xs text-gray-400 mt-1">sett</p>
+            <p className="text-xs text-gray-400 mt-1">{t.play.tennisSets}</p>
           </div>
         ))}
       </div>
@@ -62,7 +65,7 @@ export default function Tennis({ players, onScoreUpdate, onComplete, onAbandon }
             const winner = players.find(p => p.id === s.winnerId)
             return (
               <div key={i} className="flex items-center justify-between text-sm bg-gray-50 rounded-lg px-3 py-2">
-                <span className="text-gray-400 text-xs w-12">Sett {i + 1}</span>
+                <span className="text-gray-400 text-xs w-12">{tp(t.play.tennisSetN, { n: i + 1 })}</span>
                 <span className="font-semibold text-gray-800 flex-1 text-center">{winner?.display_name}</span>
                 <span className="text-gray-500 text-xs w-12 text-right">{s.score}</span>
               </div>
@@ -73,7 +76,7 @@ export default function Tennis({ players, onScoreUpdate, onComplete, onAbandon }
 
       {/* Add set */}
       <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
-        <p className="text-sm font-semibold text-gray-700">Sett {sets.length + 1} — hvem vant?</p>
+        <p className="text-sm font-semibold text-gray-700">{tp(t.play.tennisAddSetTitle, { n: sets.length + 1 })}</p>
         <div className="flex flex-wrap gap-2">
           {players.map(p => (
             <button
@@ -94,7 +97,7 @@ export default function Tennis({ players, onScoreUpdate, onComplete, onAbandon }
           value={setScore}
           onChange={e => setSetScore(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && selectedWinner && addSet()}
-          placeholder="Resultat, f.eks. 6-4 (valgfritt)"
+          placeholder={t.play.tennisScorePlaceholder}
           className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-400"
         />
         <button
@@ -102,7 +105,7 @@ export default function Tennis({ players, onScoreUpdate, onComplete, onAbandon }
           disabled={!selectedWinner}
           className="w-full bg-indigo-600 text-white font-semibold py-2.5 rounded-xl hover:bg-indigo-700 disabled:opacity-40 transition-colors"
         >
-          Legg til sett
+          {t.play.tennisAddSet}
         </button>
       </div>
 
@@ -111,9 +114,9 @@ export default function Tennis({ players, onScoreUpdate, onComplete, onAbandon }
         disabled={sets.length === 0}
         className="w-full border border-gray-300 text-gray-700 font-semibold py-2.5 rounded-xl hover:bg-gray-50 disabled:opacity-40 transition-colors"
       >
-        Avslutt kamp
+        {t.play.tennisFinishMatch}
       </button>
-      <button onClick={onAbandon} className="w-full text-sm text-gray-400 hover:text-gray-600 py-1">Avbryt</button>
+      <button onClick={onAbandon} className="w-full text-sm text-gray-400 hover:text-gray-600 py-1">{t.game.cancel}</button>
     </div>
   )
 }

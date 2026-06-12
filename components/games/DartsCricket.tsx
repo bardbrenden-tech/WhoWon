@@ -1,6 +1,8 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 
 const NUMBERS = [20, 19, 18, 17, 16, 15, 'bull'] as const
 type CricketNumber = typeof NUMBERS[number]
@@ -19,6 +21,7 @@ function markDisplay(n: number) {
 }
 
 export default function DartsCricket({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   const [state, setState] = useState<Record<string, CricketState>>(() =>
     Object.fromEntries(players.map(p => {
       const saved = p.score_data as Partial<CricketState>
@@ -128,7 +131,7 @@ export default function DartsCricket({ players, onScoreUpdate, onComplete, onAba
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-100">
-              <th className="px-3 py-2 text-left text-xs text-gray-400">Number</th>
+              <th className="px-3 py-2 text-left text-xs text-gray-400">{t.play.cricketNumber}</th>
               {players.map(p => (
                 <th key={p.id} className={`px-3 py-2 text-center text-xs font-medium truncate ${p.id === currentPlayer.id && !gameOver ? 'text-indigo-600' : 'text-gray-500'}`}>
                   {p.display_name}
@@ -141,7 +144,7 @@ export default function DartsCricket({ players, onScoreUpdate, onComplete, onAba
               const allPlayersClosed = players.every(p => isClosed(p.id, num))
               return (
                 <tr key={String(num)} className={`border-b border-gray-50 ${allPlayersClosed ? 'opacity-40' : ''}`}>
-                  <td className="px-3 py-2 font-bold text-gray-700">{num === 'bull' ? 'Bull' : num}</td>
+                  <td className="px-3 py-2 font-bold text-gray-700">{num === 'bull' ? t.play.bull : num}</td>
                   {players.map(p => {
                     const marks = state[p.id].marks[String(num)]
                     return (
@@ -156,7 +159,7 @@ export default function DartsCricket({ players, onScoreUpdate, onComplete, onAba
               )
             })}
             <tr className="border-t-2 border-gray-200 bg-gray-50">
-              <td className="px-3 py-2 text-xs font-bold text-gray-500">Score</td>
+              <td className="px-3 py-2 text-xs font-bold text-gray-500">{t.scorecard.score}</td>
               {players.map(p => (
                 <td key={p.id} className="px-3 py-2 text-center font-black text-indigo-600">{state[p.id].score}</td>
               ))}
@@ -169,14 +172,14 @@ export default function DartsCricket({ players, onScoreUpdate, onComplete, onAba
         <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center mb-4">
           <p className="text-2xl mb-1">🎯</p>
           <p className="font-bold text-green-800">
-            {players.find(p => allClosed(p.id) && players.every(op => op.id === p.id || state[p.id].score >= state[op.id].score))?.display_name} wins!
+            {tp(t.play.playerWins, { name: players.find(p => allClosed(p.id) && players.every(op => op.id === p.id || state[p.id].score >= state[op.id].score))?.display_name ?? '' })}
           </p>
         </div>
       ) : (
         <div className="bg-white border border-gray-200 rounded-xl p-4 mb-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm font-semibold text-gray-700">{currentPlayer.display_name}&apos;s turn</p>
-            <span className="text-xs text-gray-400">{dartsUsed}/3 darts</span>
+            <p className="text-sm font-semibold text-gray-700">{tp(t.play.playerTurn, { name: currentPlayer.display_name })}</p>
+            <span className="text-xs text-gray-400">{tp(t.play.cricketDarts, { n: dartsUsed })}</span>
           </div>
           <div className="grid grid-cols-4 gap-2 mb-3">
             {NUMBERS.map(num => {
@@ -196,7 +199,7 @@ export default function DartsCricket({ players, onScoreUpdate, onComplete, onAba
                       : 'bg-white border-gray-200 text-gray-700 hover:border-indigo-300'
                   }`}
                 >
-                  <div>{num === 'bull' ? 'Bull' : num}</div>
+                  <div>{num === 'bull' ? t.play.bull : num}</div>
                   {turnCount > 0 && <div className="text-xs">+{turnCount}</div>}
                 </button>
               )
@@ -206,23 +209,23 @@ export default function DartsCricket({ players, onScoreUpdate, onComplete, onAba
             onClick={confirmTurn}
             className="w-full bg-indigo-600 text-white font-bold py-2.5 rounded-xl hover:bg-indigo-700 transition-colors"
           >
-            End Turn
+            {t.play.endTurn}
           </button>
         </div>
       )}
 
       <div className="flex gap-3">
         <button
-          onClick={() => { if (confirm('Abandon game? No ratings will change.')) onAbandon() }}
+          onClick={() => { if (confirm(t.game.abandoning)) onAbandon() }}
           className="border border-gray-300 text-gray-500 text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-gray-50 transition-colors"
         >
-          Abandon
+          {t.play.abandon}
         </button>
         <button
-          onClick={() => { if (confirm('Finish game and record results?')) handleFinish() }}
+          onClick={() => { if (confirm(t.play.finishConfirm)) handleFinish() }}
           className="flex-1 bg-indigo-600 text-white font-bold py-2.5 rounded-xl hover:bg-indigo-700 transition-colors"
         >
-          {gameOver ? 'Complete Game' : 'Finish Early'}
+          {gameOver ? t.game.completeGame : t.game.finishEarly}
         </button>
       </div>
     </div>

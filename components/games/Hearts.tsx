@@ -1,10 +1,13 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 
 interface HeartsState { total: number; rounds: number[] }
 
 export default function Hearts({ players, options, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   const shootTheMoonEnabled = options.shootTheMoon !== false
   const [state, setState] = useState<Record<string, HeartsState>>(() =>
     Object.fromEntries(players.map(p => {
@@ -42,9 +45,9 @@ export default function Hearts({ players, options, onScoreUpdate, onComplete, on
     }
 
     const vals = players.map(p => parseInt(inputs[p.id] || '0'))
-    if (vals.some(v => isNaN(v))) { setError('Enter valid scores for all players'); return }
+    if (vals.some(v => isNaN(v))) { setError(t.play.heartsInvalid); return }
     const total = vals.reduce((a, b) => a + b, 0)
-    if (total !== ROUND_TOTAL) { setError(`Total must be ${ROUND_TOTAL}. Currently: ${total}`); return }
+    if (total !== ROUND_TOTAL) { setError(tp(t.play.heartsTotal, { n: ROUND_TOTAL, x: total })); return }
     setError('')
 
     setState(prev => {
@@ -75,7 +78,7 @@ export default function Hearts({ players, options, onScoreUpdate, onComplete, on
           <div key={p.id} className={`bg-white border rounded-xl p-3 text-center ${state[p.id].total >= GAME_OVER_SCORE ? 'border-red-300 bg-red-50' : 'border-gray-200'}`}>
             <p className="text-xs font-medium text-gray-500 truncate mb-1">{p.display_name}</p>
             <p className={`text-3xl font-black ${state[p.id].total >= GAME_OVER_SCORE ? 'text-red-600' : 'text-gray-900'}`}>{state[p.id].total}</p>
-            <p className="text-xs text-gray-400">{state[p.id].rounds.length} rounds</p>
+            <p className="text-xs text-gray-400">{state[p.id].rounds.length} {t.game.rounds}</p>
           </div>
         ))}
       </div>
@@ -83,11 +86,11 @@ export default function Hearts({ players, options, onScoreUpdate, onComplete, on
       {/* Round input */}
       {!isGameOver && (
         <div className="bg-white border border-gray-200 rounded-xl p-4 mb-4">
-          <h3 className="font-semibold text-gray-800 mb-3">Round {(state[players[0].id].rounds.length) + 1} scores</h3>
+          <h3 className="font-semibold text-gray-800 mb-3">{tp(t.play.roundScores, { n: (state[players[0].id].rounds.length) + 1 })}</h3>
 
           {/* Shoot the moon */}
           {shootTheMoonEnabled && <div className="mb-3">
-            <p className="text-xs text-gray-500 mb-2">Shoot the moon?</p>
+            <p className="text-xs text-gray-500 mb-2">{t.game.shootTheMoon}</p>
             <div className="flex flex-wrap gap-2">
               {players.map(p => (
                 <button
@@ -118,27 +121,27 @@ export default function Hearts({ players, options, onScoreUpdate, onComplete, on
           )}
 
           {error && <p className="text-sm text-red-500 mb-2">{error}</p>}
-          {moonShooter && <p className="text-sm text-indigo-600 mb-3">🌙 {players.find(p=>p.id===moonShooter)?.display_name} shot the moon — everyone else gets 240 pts</p>}
+          {moonShooter && <p className="text-sm text-indigo-600 mb-3">🌙 {tp(t.game.moonShot, { name: players.find(p=>p.id===moonShooter)?.display_name ?? '', pts: 240 })}</p>}
 
           <button onClick={submitRound} className="w-full bg-indigo-600 text-white py-2.5 font-bold rounded-xl hover:bg-indigo-700 transition-colors">
-            Add Round
+            {t.game.addRound}
           </button>
-          <p className="text-xs text-gray-400 mt-2 text-center">Hearts 10pt (ace 20pt), Spar dame 100pt, Ruter knekt −100pt. Total must be 140</p>
+          <p className="text-xs text-gray-400 mt-2 text-center">{t.play.heartsHint}</p>
         </div>
       )}
 
       {isGameOver && (
         <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-4 text-center">
-          <p className="font-bold text-amber-800">Game over! Someone reached {GAME_OVER_SCORE} points.</p>
-          <p className="text-sm text-amber-600 mt-1">Lowest score wins.</p>
+          <p className="font-bold text-amber-800">{tp(t.game.gameOver, { n: GAME_OVER_SCORE })}</p>
+          <p className="text-sm text-amber-600 mt-1">{t.game.lowestWins}</p>
         </div>
       )}
 
       <button
-        onClick={() => { if (!isGameOver) { if (confirm('Abandon game? No ratings will change.')) onAbandon(); return } handleFinish() }}
+        onClick={() => { if (!isGameOver) { if (confirm(t.game.abandoning)) onAbandon(); return } handleFinish() }}
         className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors"
       >
-        {isGameOver ? 'Complete Game' : 'Finish Early'}
+        {isGameOver ? t.game.completeGame : t.game.finishEarly}
       </button>
     </div>
   )

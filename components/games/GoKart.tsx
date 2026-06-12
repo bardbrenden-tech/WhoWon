@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
 
 // Parse a lap time into seconds. Accepts "42.85" (seconds) or "1:02.5" (mm:ss.ms).
 // Returns null if the input can't be understood.
@@ -28,6 +29,7 @@ function formatTime(seconds: number): string {
 }
 
 export default function GoKart({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   const [times, setTimes] = useState<Record<string, string>>(() => {
     const init: Record<string, string> = {}
     for (const p of players) {
@@ -68,8 +70,8 @@ export default function GoKart({ players, onScoreUpdate, onComplete, onAbandon }
     <div className="max-w-sm mx-auto py-8 px-4 flex flex-col items-center gap-6">
       <div className="text-center">
         <div className="text-5xl mb-3">🏎️</div>
-        <h2 className="text-2xl font-black text-gray-900">Gokart</h2>
-        <p className="text-sm text-gray-500 mt-1">Legg inn beste rundetid for hver fører. Raskeste tid vinner.</p>
+        <h2 className="text-2xl font-black text-gray-900">{t.play.goKartTitle}</h2>
+        <p className="text-sm text-gray-500 mt-1">{t.play.goKartSubtitle}</p>
       </div>
 
       {/* Time inputs */}
@@ -92,7 +94,7 @@ export default function GoKart({ players, onScoreUpdate, onComplete, onAbandon }
             </div>
           )
         })}
-        <p className="text-xs text-gray-400">Tid i sekunder (f.eks. 42.85) eller mm:ss (f.eks. 1:02.5).</p>
+        <p className="text-xs text-gray-400">{t.play.goKartHint}</p>
       </div>
 
       {/* Leaderboard preview */}
@@ -115,13 +117,13 @@ export default function GoKart({ players, onScoreUpdate, onComplete, onAbandon }
           disabled={!allFilled}
           className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-lg py-4 rounded-2xl transition-colors disabled:opacity-40"
         >
-          Registrer resultat
+          {t.play.recordResult}
         </button>
         <button
-          onClick={() => { if (confirm('Avbryt spillet?')) onAbandon() }}
+          onClick={() => { if (confirm(t.play.confirmAbandonShort)) onAbandon() }}
           className="w-full text-sm text-gray-400 hover:text-gray-600 py-2"
         >
-          Avbryt
+          {t.game.cancel}
         </button>
       </div>
     </div>

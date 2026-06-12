@@ -1,10 +1,13 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 
 interface RoundEntry { [playerId: string]: number }
 
 export default function GenericScorecard({ players, options, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   const higherIsBetter = (options.higher_is_better as boolean) ?? true
 
   const [rounds, setRounds] = useState<RoundEntry[]>(() => {
@@ -28,7 +31,7 @@ export default function GenericScorecard({ players, options, onScoreUpdate, onCo
     const entry: RoundEntry = {}
     for (const p of players) {
       const val = parseInt(inputs[p.id] ?? '')
-      if (isNaN(val)) { setError(`Missing score for ${p.display_name}`); return }
+      if (isNaN(val)) { setError(tp(t.play.missingScore, { name: p.display_name })); return }
       entry[p.id] = val
     }
     setError('')
@@ -106,7 +109,7 @@ export default function GenericScorecard({ players, options, onScoreUpdate, onCo
       {/* Add round */}
       <div className="bg-white border border-gray-200 rounded-xl p-4 mb-4">
         <p className="text-sm font-semibold text-gray-700 mb-3">
-          {rounds.length === 0 ? 'Enter scores' : `Round ${rounds.length + 1}`}
+          {rounds.length === 0 ? t.play.enterScores : `${t.game.round} ${rounds.length + 1}`}
         </p>
         <div className="space-y-2">
           {players.map((p, idx) => (
@@ -137,28 +140,28 @@ export default function GenericScorecard({ players, options, onScoreUpdate, onCo
         <div className="flex gap-2 mt-3">
           {rounds.length > 0 && (
             <button onClick={undoLast} className="border border-gray-300 text-gray-500 text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-gray-50 transition-colors">
-              Undo last
+              {t.play.undoLast}
             </button>
           )}
           <button onClick={addRound} className="flex-1 bg-indigo-600 text-white font-bold py-2.5 rounded-xl hover:bg-indigo-700 transition-colors">
-            + Add Round
+            + {t.game.addRound}
           </button>
         </div>
       </div>
 
       <div className="flex gap-3">
         <button
-          onClick={() => { if (confirm('Abandon game? No ratings will change.')) onAbandon() }}
+          onClick={() => { if (confirm(t.game.abandoning)) onAbandon() }}
           className="border border-gray-300 text-gray-500 text-sm font-medium px-4 py-2.5 rounded-xl hover:bg-gray-50 transition-colors"
         >
-          Abandon
+          {t.play.abandon}
         </button>
         <button
-          onClick={() => { if (rounds.length === 0 || confirm('Finish game and record results?')) finishGame() }}
+          onClick={() => { if (rounds.length === 0 || confirm(t.play.finishConfirm)) finishGame() }}
           disabled={rounds.length === 0}
           className="flex-1 bg-indigo-600 text-white font-bold py-2.5 rounded-xl hover:bg-indigo-700 transition-colors disabled:opacity-40"
         >
-          Finish Game
+          {t.play.finishGame}
         </button>
       </div>
     </div>

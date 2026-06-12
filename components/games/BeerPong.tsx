@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
 
 const CUP_FORMATIONS: Record<number, number[][]> = {
   10: [[0,1,2,3],[4,5,6],[7,8],[9]],
@@ -17,6 +18,7 @@ interface CupRackProps {
 }
 
 function CupRack({ playerId, label, cups, cupCount, onHit }: CupRackProps) {
+  const { t }     = useLocale()
   const state     = cups[playerId] ?? []
   const rows      = CUP_FORMATIONS[cupCount] ?? CUP_FORMATIONS[10]
   const remaining = state.filter(Boolean).length
@@ -24,7 +26,7 @@ function CupRack({ playerId, label, cups, cupCount, onHit }: CupRackProps) {
   return (
     <div className="flex flex-col items-center gap-2">
       <p className="text-sm font-bold text-gray-700 truncate max-w-[120px] text-center">{label}</p>
-      <p className="text-xs text-gray-400">{remaining}/{cupCount} kopper</p>
+      <p className="text-xs text-gray-400">{remaining}/{cupCount} {t.play.beerPongCups}</p>
       <div className="flex flex-col items-center gap-1.5">
         {rows.map((row, ri) => (
           <div key={ri} className="flex gap-1.5">
@@ -55,6 +57,7 @@ function CupRack({ playerId, label, cups, cupCount, onHit }: CupRackProps) {
 type Phase = 'setup' | 'playing'
 
 export default function BeerPong({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t }                   = useLocale()
   const [phase, setPhase]       = useState<Phase>('setup')
   const [cupCount, setCupCount] = useState(10)
   const [cups, setCups]         = useState<Record<string, boolean[]>>({})
@@ -99,7 +102,7 @@ export default function BeerPong({ players, onScoreUpdate, onComplete, onAbandon
         </div>
 
         <div className="w-full bg-white border border-gray-200 rounded-2xl p-5">
-          <p className="text-sm font-semibold text-gray-700 mb-3">Antall kopper per lag</p>
+          <p className="text-sm font-semibold text-gray-700 mb-3">{t.play.beerPongCupsPerTeam}</p>
           <div className="flex gap-2">
             {[3, 6, 10].map(n => (
               <button
@@ -116,7 +119,7 @@ export default function BeerPong({ players, onScoreUpdate, onComplete, onAbandon
             ))}
           </div>
           <p className="text-xs text-gray-400 mt-2 text-center">
-            {cupCount === 10 ? 'Standard (4-3-2-1)' : cupCount === 6 ? 'Rask runde (3-2-1)' : 'Mini (2-1)'}
+            {cupCount === 10 ? t.play.beerPongStandard : cupCount === 6 ? t.play.beerPongQuick : t.play.beerPongMini}
           </p>
         </div>
 
@@ -124,13 +127,13 @@ export default function BeerPong({ players, onScoreUpdate, onComplete, onAbandon
           onClick={startGame}
           className="w-full bg-amber-400 hover:bg-amber-500 text-white font-black text-lg py-4 rounded-2xl transition-colors"
         >
-          Start spill
+          {t.game.startGame}
         </button>
         <button
-          onClick={() => { if (confirm('Avbryt spillet?')) onAbandon() }}
+          onClick={() => { if (confirm(t.play.confirmAbandonShort)) onAbandon() }}
           className="text-sm text-gray-400 hover:text-gray-600"
         >
-          Avbryt
+          {t.game.cancel}
         </button>
       </div>
     )
@@ -142,17 +145,17 @@ export default function BeerPong({ players, onScoreUpdate, onComplete, onAbandon
         <CupRack playerId={p0.id} label={p0.display_name} cups={cups} cupCount={cupCount} onHit={hitCup} />
         <div className="flex flex-col items-center justify-center pt-8 gap-2">
           <span className="text-2xl font-black text-gray-300">VS</span>
-          <span className="text-xs text-gray-400 text-center">Trykk på en kopp for å markere treff</span>
+          <span className="text-xs text-gray-400 text-center">{t.play.beerPongTapHint}</span>
         </div>
         <CupRack playerId={p1.id} label={p1.display_name} cups={cups} cupCount={cupCount} onHit={hitCup} />
       </div>
 
       <div className="mt-10">
         <button
-          onClick={() => { if (confirm('Avbryt spillet? Ingen resultater lagres.')) onAbandon() }}
+          onClick={() => { if (confirm(t.game.abandoning)) onAbandon() }}
           className="w-full border border-gray-200 text-gray-400 text-sm py-3 rounded-xl hover:bg-gray-50 transition-colors"
         >
-          Avbryt
+          {t.game.cancel}
         </button>
       </div>
     </div>

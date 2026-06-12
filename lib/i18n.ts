@@ -69,6 +69,20 @@ export type Messages = {
     sum: string; bonus: string; total: string
     quit: string; gameOver: string; score: string; rating: string; backToGame: string; home: string; notImplemented: string
   }
+  play: {
+    ok: string; throwing: string; rolling: string; remaining: string
+    playerWins: string; playerTurn: string
+    scoreThisTurn: string; dartsRange: string; bust: string; dartsHint: string
+    finalRound: string; finalRoundCaps: string; finalRoundComplete: string
+    pointsBanked: string; farkleInvalid: string; farkleOpen: string; farkleOpenShort: string
+    enterScores: string; undoLast: string; abandon: string; finishGame: string; missingScore: string; finishConfirm: string
+    heartsInvalid: string; heartsTotal: string; heartsHint: string; roundScores: string
+    cricketNumber: string; bull: string; cricketDarts: string; endTurn: string
+    tennisSets: string; tennisSetN: string; tennisAddSetTitle: string; tennisScorePlaceholder: string; tennisAddSet: string; tennisFinishMatch: string
+    goKartTitle: string; goKartSubtitle: string; goKartHint: string; recordResult: string; confirmAbandonShort: string
+    chessTitle: string; chessWhoWon: string; playerWon: string; chessDraw: string
+    beerPongCups: string; beerPongCupsPerTeam: string; beerPongStandard: string; beerPongQuick: string; beerPongMini: string; beerPongTapHint: string
+  }
   gameDesc: Record<string, string>
 }
 
@@ -134,6 +148,20 @@ const en: Messages = {
     chance: 'Chance', yatzy: 'Yatzy', maxiYatzy: 'Maxi Yatzy',
     sum: 'Sum', bonus: 'Bonus', total: 'Total',
     quit: 'Quit', gameOver: 'Game Over!', score: 'Score', rating: 'rating', backToGame: 'Back to game', home: 'Home', notImplemented: 'Game not yet implemented.',
+  },
+  play: {
+    ok: 'OK', throwing: 'throwing', rolling: 'rolling', remaining: 'remaining',
+    playerWins: '{name} wins!', playerTurn: "{name}'s turn",
+    scoreThisTurn: 'Score this turn...', dartsRange: 'Enter a score between 0 and 180', bust: 'Bust! Score stays the same.', dartsHint: 'Enter the total score for this turn (0–180). Must finish on a double.',
+    finalRound: 'Final round!', finalRoundCaps: 'FINAL ROUND', finalRoundComplete: 'Final round complete!',
+    pointsBanked: 'Points banked (0 = Farkle)', farkleInvalid: 'Enter a valid score (0 for Farkle)', farkleOpen: 'Need at least 1000 points to open your account', farkleOpenShort: 'Need 1000+ to open',
+    enterScores: 'Enter scores', undoLast: 'Undo last', abandon: 'Abandon', finishGame: 'Finish Game', missingScore: 'Missing score for {name}', finishConfirm: 'Finish game and record results?',
+    heartsInvalid: 'Enter valid scores for all players', heartsTotal: 'Total must be {n}. Currently: {x}', heartsHint: 'Hearts 10pt (ace 20pt), Spar dame 100pt, Ruter knekt −100pt. Total must be 140', roundScores: 'Round {n} scores',
+    cricketNumber: 'Number', bull: 'Bull', cricketDarts: '{n}/3 darts', endTurn: 'End Turn',
+    tennisSets: 'sets', tennisSetN: 'Set {n}', tennisAddSetTitle: 'Set {n} — who won?', tennisScorePlaceholder: 'Score, e.g. 6-4 (optional)', tennisAddSet: 'Add set', tennisFinishMatch: 'Finish match',
+    goKartTitle: 'Go-kart', goKartSubtitle: "Enter each driver's best lap time. Fastest time wins.", goKartHint: 'Time in seconds (e.g. 42.85) or mm:ss (e.g. 1:02.5).', recordResult: 'Record result', confirmAbandonShort: 'Abandon the game?',
+    chessTitle: 'Chess', chessWhoWon: 'Who won the game?', playerWon: '{name} won', chessDraw: 'Draw',
+    beerPongCups: 'cups', beerPongCupsPerTeam: 'Cups per team', beerPongStandard: 'Standard (4-3-2-1)', beerPongQuick: 'Quick round (3-2-1)', beerPongMini: 'Mini (2-1)', beerPongTapHint: 'Tap a cup to mark a hit',
   },
   gameDesc: {
     'maxi-yatzy': 'The classic dice game with 6 dice and expanded categories including House, Tower, and Maxi Yatzy bonus.',
@@ -253,6 +281,20 @@ const no: Messages = {
     sum: 'Sum', bonus: 'Bonus', total: 'Total',
     quit: 'Avslutt', gameOver: 'Spillet er over!', score: 'Poeng', rating: 'rating', backToGame: 'Tilbake til spillet', home: 'Hjem', notImplemented: 'Spillet er ikke implementert ennå.',
   },
+  play: {
+    ok: 'OK', throwing: 'kaster', rolling: 'triller', remaining: 'gjenstår',
+    playerWins: '{name} vant!', playerTurn: '{name} sin tur',
+    scoreThisTurn: 'Poeng denne runden...', dartsRange: 'Skriv inn en sum mellom 0 og 180', bust: 'Bust! Summen står stille.', dartsHint: 'Skriv inn total sum for denne runden (0–180). Må avslutte med dobbel.',
+    finalRound: 'Siste runde!', finalRoundCaps: 'SISTE RUNDE', finalRoundComplete: 'Siste runde fullført!',
+    pointsBanked: 'Poeng banket (0 = Farkle)', farkleInvalid: 'Skriv inn en gyldig sum (0 for Farkle)', farkleOpen: 'Trenger minst 1000 poeng for å komme i gang', farkleOpenShort: 'Trenger 1000+ for å åpne',
+    enterScores: 'Skriv inn poeng', undoLast: 'Angre siste', abandon: 'Avbryt', finishGame: 'Fullfør spill', missingScore: 'Mangler poeng for {name}', finishConfirm: 'Fullføre spillet og lagre resultatet?',
+    heartsInvalid: 'Skriv inn gyldige poeng for alle spillere', heartsTotal: 'Summen må være {n}. Nå: {x}', heartsHint: 'Hjerter 10p (ess 20p), Spardam 100p, Ruterknekt −100p. Totalt må bli 140', roundScores: 'Poeng runde {n}',
+    cricketNumber: 'Tall', bull: 'Bull', cricketDarts: '{n}/3 piler', endTurn: 'Avslutt tur',
+    tennisSets: 'sett', tennisSetN: 'Sett {n}', tennisAddSetTitle: 'Sett {n} — hvem vant?', tennisScorePlaceholder: 'Resultat, f.eks. 6-4 (valgfritt)', tennisAddSet: 'Legg til sett', tennisFinishMatch: 'Avslutt kamp',
+    goKartTitle: 'Gokart', goKartSubtitle: 'Legg inn beste rundetid for hver fører. Raskeste tid vinner.', goKartHint: 'Tid i sekunder (f.eks. 42.85) eller mm:ss (f.eks. 1:02.5).', recordResult: 'Registrer resultat', confirmAbandonShort: 'Avbryt spillet?',
+    chessTitle: 'Sjakk', chessWhoWon: 'Hvem vant partiet?', playerWon: '{name} vant', chessDraw: 'Remis (uavgjort)',
+    beerPongCups: 'kopper', beerPongCupsPerTeam: 'Antall kopper per lag', beerPongStandard: 'Standard (4-3-2-1)', beerPongQuick: 'Rask runde (3-2-1)', beerPongMini: 'Mini (2-1)', beerPongTapHint: 'Trykk på en kopp for å markere treff',
+  },
   gameDesc: {
     'maxi-yatzy': 'Det klassiske terningspillet med 6 terninger og utvidede kategorier inkludert Hytte, Tårn og Maxi Yatzy-bonus.',
     'yatzy': 'Den originale 5-terningsversjonen. Poengscor i 15 kategorier og tjen 50 bonuspoeng for 63+ i øvre seksjon.',
@@ -370,6 +412,20 @@ const de: Messages = {
     chance: 'Chance', yatzy: 'Yatzy', maxiYatzy: 'Maxi Yatzy',
     sum: 'Summe', bonus: 'Bonus', total: 'Gesamt',
     quit: 'Beenden', gameOver: 'Spiel vorbei!', score: 'Punkte', rating: 'Wertung', backToGame: 'Zurück zum Spiel', home: 'Startseite', notImplemented: 'Spiel noch nicht verfügbar.',
+  },
+  play: {
+    ok: 'OK', throwing: 'wirft', rolling: 'würfelt', remaining: 'Rest',
+    playerWins: '{name} gewinnt!', playerTurn: '{name} ist dran',
+    scoreThisTurn: 'Punkte diese Runde...', dartsRange: 'Gib eine Punktzahl zwischen 0 und 180 ein', bust: 'Überworfen! Punktzahl bleibt.', dartsHint: 'Gib die Gesamtpunktzahl dieser Runde ein (0–180). Muss auf einem Doppel enden.',
+    finalRound: 'Letzte Runde!', finalRoundCaps: 'LETZTE RUNDE', finalRoundComplete: 'Letzte Runde abgeschlossen!',
+    pointsBanked: 'Gesicherte Punkte (0 = Farkle)', farkleInvalid: 'Gib eine gültige Punktzahl ein (0 für Farkle)', farkleOpen: 'Mindestens 1000 Punkte zum Einsteigen nötig', farkleOpenShort: '1000+ zum Einsteigen',
+    enterScores: 'Punkte eingeben', undoLast: 'Rückgängig', abandon: 'Aufgeben', finishGame: 'Spiel beenden', missingScore: 'Punkte fehlen für {name}', finishConfirm: 'Spiel beenden und Ergebnis speichern?',
+    heartsInvalid: 'Gib gültige Punkte für alle Spieler ein', heartsTotal: 'Summe muss {n} sein. Aktuell: {x}', heartsHint: 'Herz 10 Pkt (Ass 20), Pik-Dame 100, Karo-Bube −100. Summe muss 140 sein', roundScores: 'Punkte Runde {n}',
+    cricketNumber: 'Zahl', bull: 'Bull', cricketDarts: '{n}/3 Darts', endTurn: 'Zug beenden',
+    tennisSets: 'Sätze', tennisSetN: 'Satz {n}', tennisAddSetTitle: 'Satz {n} — wer hat gewonnen?', tennisScorePlaceholder: 'Ergebnis, z.B. 6-4 (optional)', tennisAddSet: 'Satz hinzufügen', tennisFinishMatch: 'Match beenden',
+    goKartTitle: 'Go-Kart', goKartSubtitle: 'Gib die beste Rundenzeit jedes Fahrers ein. Schnellste Zeit gewinnt.', goKartHint: 'Zeit in Sekunden (z.B. 42.85) oder mm:ss (z.B. 1:02.5).', recordResult: 'Ergebnis speichern', confirmAbandonShort: 'Spiel abbrechen?',
+    chessTitle: 'Schach', chessWhoWon: 'Wer hat die Partie gewonnen?', playerWon: '{name} hat gewonnen', chessDraw: 'Remis (unentschieden)',
+    beerPongCups: 'Becher', beerPongCupsPerTeam: 'Becher pro Team', beerPongStandard: 'Standard (4-3-2-1)', beerPongQuick: 'Schnelle Runde (3-2-1)', beerPongMini: 'Mini (2-1)', beerPongTapHint: 'Tippe einen Becher an, um einen Treffer zu markieren',
   },
   gameDesc: {
     'maxi-yatzy': 'Das klassische Würfelspiel mit 6 Würfeln und erweiterten Kategorien wie Haus, Turm und Maxi-Yatzy-Bonus.',
@@ -489,6 +545,20 @@ const fr: Messages = {
     sum: 'Somme', bonus: 'Bonus', total: 'Total',
     quit: 'Quitter', gameOver: 'Partie terminée !', score: 'Score', rating: 'classement', backToGame: 'Retour au jeu', home: 'Accueil', notImplemented: 'Jeu pas encore disponible.',
   },
+  play: {
+    ok: 'OK', throwing: 'lance', rolling: 'lance les dés', remaining: 'restant',
+    playerWins: '{name} gagne !', playerTurn: 'à {name}',
+    scoreThisTurn: 'Score ce tour...', dartsRange: 'Entrez un score entre 0 et 180', bust: 'Dépassé ! Le score reste inchangé.', dartsHint: 'Entrez le score total de ce tour (0–180). Doit finir sur un double.',
+    finalRound: 'Dernier tour !', finalRoundCaps: 'DERNIER TOUR', finalRoundComplete: 'Dernier tour terminé !',
+    pointsBanked: 'Points marqués (0 = Farkle)', farkleInvalid: 'Entrez un score valide (0 pour Farkle)', farkleOpen: 'Au moins 1000 points pour démarrer', farkleOpenShort: '1000+ pour démarrer',
+    enterScores: 'Entrer les scores', undoLast: 'Annuler', abandon: 'Abandonner', finishGame: 'Terminer la partie', missingScore: 'Score manquant pour {name}', finishConfirm: 'Terminer la partie et enregistrer le résultat ?',
+    heartsInvalid: 'Entrez des scores valides pour tous les joueurs', heartsTotal: 'Le total doit être {n}. Actuel : {x}', heartsHint: 'Cœur 10 pts (as 20), Dame de pique 100, Valet de carreau −100. Le total doit faire 140', roundScores: 'Scores manche {n}',
+    cricketNumber: 'Numéro', bull: 'Bull', cricketDarts: '{n}/3 fléchettes', endTurn: 'Fin du tour',
+    tennisSets: 'sets', tennisSetN: 'Set {n}', tennisAddSetTitle: 'Set {n} — qui a gagné ?', tennisScorePlaceholder: 'Score, ex. 6-4 (optionnel)', tennisAddSet: 'Ajouter un set', tennisFinishMatch: 'Terminer le match',
+    goKartTitle: 'Karting', goKartSubtitle: 'Entrez le meilleur tour de chaque pilote. Le temps le plus rapide gagne.', goKartHint: 'Temps en secondes (ex. 42.85) ou mm:ss (ex. 1:02.5).', recordResult: 'Enregistrer le résultat', confirmAbandonShort: 'Abandonner la partie ?',
+    chessTitle: 'Échecs', chessWhoWon: 'Qui a gagné la partie ?', playerWon: '{name} a gagné', chessDraw: 'Nulle (égalité)',
+    beerPongCups: 'gobelets', beerPongCupsPerTeam: 'Gobelets par équipe', beerPongStandard: 'Standard (4-3-2-1)', beerPongQuick: 'Manche rapide (3-2-1)', beerPongMini: 'Mini (2-1)', beerPongTapHint: 'Touchez un gobelet pour marquer un coup',
+  },
   gameDesc: {
     'maxi-yatzy': 'Le jeu de dés classique avec 6 dés et des catégories étendues : Maison, Tour et bonus Maxi Yatzy.',
     'yatzy': 'La version originale à 5 dés. Marquez dans 15 catégories et gagnez 50 points de bonus si la section supérieure atteint 63+.',
@@ -606,6 +676,20 @@ const es: Messages = {
     chance: 'Chance', yatzy: 'Yatzy', maxiYatzy: 'Maxi Yatzy',
     sum: 'Suma', bonus: 'Bonus', total: 'Total',
     quit: 'Salir', gameOver: '¡Juego terminado!', score: 'Puntos', rating: 'clasificación', backToGame: 'Volver al juego', home: 'Inicio', notImplemented: 'Juego aún no disponible.',
+  },
+  play: {
+    ok: 'OK', throwing: 'lanzando', rolling: 'tirando', remaining: 'restante',
+    playerWins: '¡{name} gana!', playerTurn: 'turno de {name}',
+    scoreThisTurn: 'Puntos este turno...', dartsRange: 'Introduce una puntuación entre 0 y 180', bust: '¡Pasado! La puntuación no cambia.', dartsHint: 'Introduce la puntuación total de este turno (0–180). Debe terminar en un doble.',
+    finalRound: '¡Última ronda!', finalRoundCaps: 'ÚLTIMA RONDA', finalRoundComplete: '¡Última ronda completada!',
+    pointsBanked: 'Puntos guardados (0 = Farkle)', farkleInvalid: 'Introduce una puntuación válida (0 para Farkle)', farkleOpen: 'Necesitas al menos 1000 puntos para empezar', farkleOpenShort: '1000+ para empezar',
+    enterScores: 'Introducir puntos', undoLast: 'Deshacer', abandon: 'Abandonar', finishGame: 'Terminar partida', missingScore: 'Falta la puntuación de {name}', finishConfirm: '¿Terminar la partida y guardar el resultado?',
+    heartsInvalid: 'Introduce puntuaciones válidas para todos', heartsTotal: 'El total debe ser {n}. Actual: {x}', heartsHint: 'Corazones 10 pts (as 20), Reina de picas 100, Jota de diamantes −100. El total debe ser 140', roundScores: 'Puntos ronda {n}',
+    cricketNumber: 'Número', bull: 'Bull', cricketDarts: '{n}/3 dardos', endTurn: 'Terminar turno',
+    tennisSets: 'sets', tennisSetN: 'Set {n}', tennisAddSetTitle: 'Set {n} — ¿quién ganó?', tennisScorePlaceholder: 'Resultado, ej. 6-4 (opcional)', tennisAddSet: 'Añadir set', tennisFinishMatch: 'Terminar partido',
+    goKartTitle: 'Karts', goKartSubtitle: 'Introduce la mejor vuelta de cada piloto. El tiempo más rápido gana.', goKartHint: 'Tiempo en segundos (ej. 42.85) o mm:ss (ej. 1:02.5).', recordResult: 'Registrar resultado', confirmAbandonShort: '¿Abandonar la partida?',
+    chessTitle: 'Ajedrez', chessWhoWon: '¿Quién ganó la partida?', playerWon: '{name} ganó', chessDraw: 'Tablas (empate)',
+    beerPongCups: 'vasos', beerPongCupsPerTeam: 'Vasos por equipo', beerPongStandard: 'Estándar (4-3-2-1)', beerPongQuick: 'Ronda rápida (3-2-1)', beerPongMini: 'Mini (2-1)', beerPongTapHint: 'Toca un vaso para marcar un acierto',
   },
   gameDesc: {
     'maxi-yatzy': 'El clásico juego de dados con 6 dados y categorías ampliadas: Casa, Torre y bono Maxi Yatzy.',

@@ -1,12 +1,15 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 
 interface DartsState { score: number; history: number[]; finished: boolean }
 
 const START = 301
 
 export default function Darts301({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   const [state, setState] = useState<Record<string, DartsState>>(() =>
     Object.fromEntries(players.map(p => {
       const saved = p.score_data as Partial<DartsState>
@@ -22,9 +25,9 @@ export default function Darts301({ players, onScoreUpdate, onComplete, onAbandon
 
   function submitTurn() {
     const thrown = parseInt(currentTurnInput)
-    if (isNaN(thrown) || thrown < 0 || thrown > 180) { setError('Enter a score between 0 and 180'); return }
+    if (isNaN(thrown) || thrown < 0 || thrown > 180) { setError(t.play.dartsRange); return }
     const newScore = playerState.score - thrown
-    if (newScore < 0 || newScore === 1) { setError('Bust! Score stays the same.'); return }
+    if (newScore < 0 || newScore === 1) { setError(t.play.bust); return }
     setError('')
 
     const newState = { ...playerState, score: newScore, history: [...playerState.history, thrown], finished: newScore === 0 }
@@ -68,7 +71,7 @@ export default function Darts301({ players, onScoreUpdate, onComplete, onAbandon
               <p className={`text-3xl font-black ${ps.finished ? 'text-green-600' : isCurrent ? 'text-indigo-600' : 'text-gray-900'}`}>
                 {ps.finished ? '✓' : ps.score}
               </p>
-              {isCurrent && !ps.finished && <p className="text-xs text-indigo-400 mt-0.5">throwing</p>}
+              {isCurrent && !ps.finished && <p className="text-xs text-indigo-400 mt-0.5">{t.play.throwing}</p>}
             </div>
           )
         })}
@@ -77,26 +80,26 @@ export default function Darts301({ players, onScoreUpdate, onComplete, onAbandon
       {allDone ? (
         <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-center mb-4">
           <p className="text-2xl mb-1">🎯</p>
-          <p className="font-bold text-green-800">{winner.display_name} wins!</p>
+          <p className="font-bold text-green-800">{tp(t.play.playerWins, { name: winner.display_name })}</p>
         </div>
       ) : (
         <div className="bg-white border border-gray-200 rounded-xl p-4 mb-4">
           <p className="text-sm font-semibold text-gray-700 mb-3">
-            {currentPlayer.display_name} — remaining: <span className="text-indigo-600">{playerState.score}</span>
+            {currentPlayer.display_name} — {t.play.remaining}: <span className="text-indigo-600">{playerState.score}</span>
           </p>
           <div className="flex gap-2 mb-2">
             <input
               type="number" min={0} max={180} value={currentTurnInput}
               onChange={e => setCurrentTurnInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && submitTurn()}
-              placeholder="Score this turn..."
+              placeholder={t.play.scoreThisTurn}
               className="flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-lg font-bold text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
               autoFocus
             />
-            <button onClick={submitTurn} className="bg-indigo-600 text-white font-bold px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">OK</button>
+            <button onClick={submitTurn} className="bg-indigo-600 text-white font-bold px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">{t.play.ok}</button>
           </div>
           {error && <p className="text-sm text-red-500">{error}</p>}
-          <p className="text-xs text-gray-400 mt-2">Enter total score for this turn (0–180). Must finish on a double.</p>
+          <p className="text-xs text-gray-400 mt-2">{t.play.dartsHint}</p>
         </div>
       )}
 
@@ -114,10 +117,10 @@ export default function Darts301({ players, onScoreUpdate, onComplete, onAbandon
       </div>
 
       <button
-        onClick={() => { if (!allDone) { if (confirm('Abandon game? No ratings will change.')) onAbandon(); return } handleFinish() }}
+        onClick={() => { if (!allDone) { if (confirm(t.game.abandoning)) onAbandon(); return } handleFinish() }}
         className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors"
       >
-        {allDone ? 'Complete Game' : 'Finish Early'}
+        {allDone ? t.game.completeGame : t.game.finishEarly}
       </button>
     </div>
   )

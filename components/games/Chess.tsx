@@ -1,8 +1,11 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 
 export default function Chess({ players, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   const [result, setResult] = useState<'p1' | 'draw' | 'p2' | null>(null)
 
   const p1 = players[0]
@@ -35,8 +38,8 @@ export default function Chess({ players, onComplete, onAbandon }: GameComponentP
     <div className="max-w-sm mx-auto py-10 px-4 flex flex-col items-center gap-6">
       <div className="text-center">
         <div className="text-5xl mb-3">♟️</div>
-        <h2 className="text-2xl font-black text-gray-900">Sjakk</h2>
-        <p className="text-sm text-gray-500 mt-1">Hvem vant partiet?</p>
+        <h2 className="text-2xl font-black text-gray-900">{t.play.chessTitle}</h2>
+        <p className="text-sm text-gray-500 mt-1">{t.play.chessWhoWon}</p>
       </div>
 
       {/* VS display */}
@@ -63,7 +66,7 @@ export default function Chess({ players, onComplete, onAbandon }: GameComponentP
           }`}
         >
           <span className="text-2xl">🏆</span>
-          <span>{p1.display_name} vant</span>
+          <span>{tp(t.play.playerWon, { name: p1.display_name })}</span>
         </button>
 
         <button
@@ -75,7 +78,7 @@ export default function Chess({ players, onComplete, onAbandon }: GameComponentP
           }`}
         >
           <span className="text-2xl">🤝</span>
-          <span>Remis (uavgjort)</span>
+          <span>{t.play.chessDraw}</span>
         </button>
 
         <button
@@ -87,7 +90,7 @@ export default function Chess({ players, onComplete, onAbandon }: GameComponentP
           }`}
         >
           <span className="text-2xl">🏆</span>
-          <span>{p2.display_name} vant</span>
+          <span>{tp(t.play.playerWon, { name: p2.display_name })}</span>
         </button>
       </div>
 
@@ -98,13 +101,13 @@ export default function Chess({ players, onComplete, onAbandon }: GameComponentP
           disabled={!result}
           className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-lg py-4 rounded-2xl transition-colors disabled:opacity-40"
         >
-          Registrer resultat
+          {t.play.recordResult}
         </button>
         <button
-          onClick={() => { if (confirm('Avbryt spillet?')) onAbandon() }}
+          onClick={() => { if (confirm(t.play.confirmAbandonShort)) onAbandon() }}
           className="w-full text-sm text-gray-400 hover:text-gray-600 py-2"
         >
-          Avbryt
+          {t.game.cancel}
         </button>
       </div>
     </div>

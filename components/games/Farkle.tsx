@@ -1,12 +1,15 @@
 'use client'
 import { useState } from 'react'
 import type { GameComponentProps } from '@/lib/types'
+import { useLocale } from '@/components/LanguageProvider'
+import { tp } from '@/lib/i18n'
 
 interface FarkleState { total: number; rounds: number[]; inFinalRound: boolean; finishedFinalRound: boolean }
 
 const WIN_SCORE = 10000
 
 export default function Farkle({ players, onScoreUpdate, onComplete, onAbandon }: GameComponentProps) {
+  const { t } = useLocale()
   const [state, setState] = useState<Record<string, FarkleState>>(() =>
     Object.fromEntries(players.map(p => {
       const saved = p.score_data as Partial<FarkleState>
@@ -32,9 +35,9 @@ export default function Farkle({ players, onScoreUpdate, onComplete, onAbandon }
 
   function submitTurn() {
     const points = parseInt(turnInput)
-    if (isNaN(points) || points < 0) { setError('Enter a valid score (0 for Farkle)'); return }
+    if (isNaN(points) || points < 0) { setError(t.play.farkleInvalid); return }
     if (points > 0 && state[currentPlayer.id].total === 0 && points < 1000) {
-      setError('Need at least 1000 points to open your account'); return
+      setError(t.play.farkleOpen); return
     }
     setError('')
 
@@ -93,8 +96,8 @@ export default function Farkle({ players, onScoreUpdate, onComplete, onAbandon }
             <div key={p.id} className={`bg-white border rounded-xl p-3 text-center transition-all ${isCurrent ? 'border-indigo-400 shadow-md' : 'border-gray-200'} ${ps.total >= WIN_SCORE ? 'border-green-300 bg-green-50' : ''}`}>
               <p className="text-xs font-medium text-gray-500 truncate mb-1">{p.display_name}</p>
               <p className={`text-3xl font-black ${ps.total >= WIN_SCORE ? 'text-green-600' : isCurrent ? 'text-indigo-600' : 'text-gray-900'}`}>{ps.total.toLocaleString()}</p>
-              {ps.inFinalRound && !ps.finishedFinalRound && <p className="text-xs text-amber-600 font-medium">Final round!</p>}
-              {isCurrent && <p className="text-xs text-indigo-400 mt-0.5">rolling</p>}
+              {ps.inFinalRound && !ps.finishedFinalRound && <p className="text-xs text-amber-600 font-medium">{t.play.finalRound}</p>}
+              {isCurrent && <p className="text-xs text-indigo-400 mt-0.5">{t.play.rolling}</p>}
             </div>
           )
         })}
@@ -117,38 +120,38 @@ export default function Farkle({ players, onScoreUpdate, onComplete, onAbandon }
       {!isGameOver && (
         <div className="bg-white border border-gray-200 rounded-xl p-4 mb-4">
           <p className="text-sm font-semibold text-gray-700 mb-3">
-            {currentPlayer.display_name}&apos;s turn
-            {state[currentPlayer.id].inFinalRound && <span className="ml-2 text-amber-600 text-xs font-bold">FINAL ROUND</span>}
+            {tp(t.play.playerTurn, { name: currentPlayer.display_name })}
+            {state[currentPlayer.id].inFinalRound && <span className="ml-2 text-amber-600 text-xs font-bold">{t.play.finalRoundCaps}</span>}
           </p>
           <div className="flex gap-2 mb-2">
             <input
               type="number" min={0} value={turnInput}
               onChange={e => setTurnInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && submitTurn()}
-              placeholder="Points banked (0 = Farkle)"
+              placeholder={t.play.pointsBanked}
               className="flex-1 border border-gray-300 rounded-lg px-3 py-2.5 text-lg font-bold text-center focus:outline-none focus:ring-2 focus:ring-indigo-500"
               autoFocus
             />
             <button onClick={submitTurn} className="bg-indigo-600 text-white font-bold px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors">
-              OK
+              {t.play.ok}
             </button>
           </div>
           {error && <p className="text-sm text-red-500">{error}</p>}
-          {state[currentPlayer.id].total === 0 && <p className="text-xs text-gray-400 mt-1">Need 1000+ to open</p>}
+          {state[currentPlayer.id].total === 0 && <p className="text-xs text-gray-400 mt-1">{t.play.farkleOpenShort}</p>}
         </div>
       )}
 
       {isGameOver && (
         <div className="bg-green-50 border border-green-200 rounded-xl p-4 mb-4 text-center">
-          <p className="font-bold text-green-800">Final round complete!</p>
+          <p className="font-bold text-green-800">{t.play.finalRoundComplete}</p>
         </div>
       )}
 
       <button
-        onClick={() => { if (!isGameOver) { if (confirm('Abandon game? No ratings will change.')) onAbandon(); return } handleFinish() }}
+        onClick={() => { if (!isGameOver) { if (confirm(t.game.abandoning)) onAbandon(); return } handleFinish() }}
         className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors"
       >
-        {isGameOver ? 'Complete Game' : 'Finish Early'}
+        {isGameOver ? t.game.completeGame : t.game.finishEarly}
       </button>
     </div>
   )
