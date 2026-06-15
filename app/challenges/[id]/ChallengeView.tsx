@@ -6,6 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/components/LanguageProvider'
 import { generateRound } from '@/lib/tournament'
 import { getPoints } from '@/lib/challenge'
+import TournamentView from '../../tournaments/[id]/TournamentView'
 import type { ChallengePlayer, ChallengeGame, TournamentMatch, TournamentPlayer, Standing } from '@/lib/types'
 import type { GameMeta } from '@/lib/types'
 
@@ -45,11 +46,19 @@ export default function ChallengeView({ challenge, sortedGames, standings, gameN
   const [starting, setStarting] = useState<string | null>(null)
   const [startingAll, setStartingAll] = useState(false)
   const [copied, setCopied] = useState<string | null>(null)
+  const [activeBracket, setActiveBracket] = useState<string | null>(null)
 
   const isCreator = userId === challenge.created_by
   const allDone = sortedGames.length > 0 && sortedGames.every(cg => cg.tournaments?.status === 'completed')
   const champion = allDone && standings.length > 0 ? standings[0] : null
   const unstartedGames = sortedGames.filter(cg => !cg.tournaments)
+  const startedGames = sortedGames.filter(cg => cg.tournaments)
+
+  // The selected bracket, falling back to the first started grener so the panel
+  // always has something to show even after `activeBracket` goes stale.
+  const activeBracketId = startedGames.some(cg => cg.tournaments!.id === activeBracket)
+    ? activeBracket
+    : (startedGames[0]?.tournaments?.id ?? null)
 
   async function createTournamentForGame(cg: GameEntry): Promise<void> {
     if (!userId) return
@@ -179,12 +188,16 @@ export default function ChallengeView({ challenge, sortedGames, standings, gameN
                         >
                           {copied === tourney.id ? '✓' : '🔗'}
                         </button>
-                        <Link
-                          href={`/tournaments/${tourney.id}`}
-                          className="text-sm text-indigo-600 font-medium border border-indigo-200 px-4 py-1.5 rounded-lg hover:bg-indigo-50 transition-colors"
+                        <button
+                          onClick={() => setActiveBracket(tourney.id)}
+                          className={`text-sm font-medium border px-4 py-1.5 rounded-lg transition-colors ${
+                            activeBracketId === tourney.id
+                              ? 'bg-indigo-600 text-white border-indigo-600'
+                              : 'text-indigo-600 border-indigo-200 hover:bg-indigo-50'
+                          }`}
                         >
                           {tc.viewBracket}
-                        </Link>
+                        </button>
                       </>
                     )}
                   </div>
@@ -194,6 +207,54 @@ export default function ChallengeView({ challenge, sortedGames, standings, gameN
           })}
         </div>
       </div>
+
+      {/* Brackets — switched in-page (no navigation, no refetch) */}
+      {startedGames.length > 0 && (
+        <div>
+          {startedGames.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto pb-2 mb-3">
+              {startedGames.map(cg => {
+                const tourney = cg.tournaments!
+                const g = gameNames[cg.game_id]
+                const isActive = activeBracketId === tourney.id
+                return (
+                  <button
+                    key={cg.id}
+                    onClick={() => setActiveBracket(tourney.id)}
+                    className={`shrink-0 text-sm font-medium px-3 py-1.5 rounded-lg border transition-colors ${
+                      isActive
+                        ? 'bg-indigo-600 text-white border-indigo-600'
+                        : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'
+                    }`}
+                  >
+                    {g?.icon} {g?.name ?? cg.game_id}
+                  </button>
+                )
+              })}
+            </div>
+          )}
+
+          {/* All started brackets stay mounted so their optimistic state
+              survives switching tabs; only the active one is shown. */}
+          {startedGames.map(cg => {
+            const tourney = cg.tournaments!
+            return (
+              <div key={cg.id} className={activeBracketId === tourney.id ? '' : 'hidden'}>
+                <TournamentView
+                  tournament={{
+                    id: tourney.id,
+                    game_id: cg.game_id,
+                    status: tourney.status,
+                    tournament_players: tourney.tournament_players,
+                    tournament_matches: tourney.tournament_matches,
+                  }}
+                  userId={userId}
+                />
+              </div>
+            )
+          })}
+        </div>
+      )}
 
       {/* Standings */}
       <div>

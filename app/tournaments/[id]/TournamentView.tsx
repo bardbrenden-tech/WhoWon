@@ -8,9 +8,11 @@ import type { TournamentPlayer, TournamentMatch } from '@/lib/types'
 
 interface TournamentData {
   id: string
-  game_id: string
   status: string
-  created_by: string
+  // Unused in the view itself; optional so this component can be embedded with
+  // the challenge page's already-loaded tournament data (which omits them).
+  game_id?: string
+  created_by?: string
   tournament_players: TournamentPlayer[]
   tournament_matches: TournamentMatch[]
 }
