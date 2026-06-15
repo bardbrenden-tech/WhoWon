@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/components/LanguageProvider'
@@ -25,61 +25,119 @@ export default function TournamentView({ tournament, userId }: Props) {
   const { t } = useLocale()
   const tt = t.tournament
 
+  // Local, optimistic copies of the mutable tournament state. Picking a winner
+  // updates these instantly and the DB write happens in the background, so the
+  // UI never waits on a network round-trip or a full server refetch.
+  const [matches, setMatches] = useState<TournamentMatch[]>(tournament.tournament_matches)
+  const [status, setStatus] = useState(tournament.status)
+
   const [pickingMatch, setPickingMatch] = useState<string | null>(null)
   const [score, setScore] = useState('')
-  const [saving, setSaving] = useState(false)
+  // Guards against a double-click registering the same match twice (which would
+  // otherwise generate the next round twice with different ids).
+  const handled = useRef<Set<string>>(new Set())
 
   const playerMap = Object.fromEntries(tournament.tournament_players.map(p => [p.id, p]))
 
-  const maxRound = tournament.tournament_matches.length > 0
-    ? Math.max(...tournament.tournament_matches.map(m => m.round))
+  const maxRound = matches.length > 0
+    ? Math.max(...matches.map(m => m.round))
     : 1
 
   const totalRounds = estimateTotalRounds(tournament.tournament_players.length)
 
-  const rounds = Array.from(new Set(tournament.tournament_matches.map(m => m.round))).sort((a, b) => a - b)
+  const rounds = Array.from(new Set(matches.map(m => m.round))).sort((a, b) => a - b)
 
   const currentRound = rounds.find(r =>
-    tournament.tournament_matches.filter(m => m.round === r).some(m => m.status === 'pending')
+    matches.filter(m => m.round === r).some(m => m.status === 'pending')
   ) ?? maxRound
 
-  const winner = tournament.status === 'completed'
-    ? tournament.tournament_matches.find(m =>
+  const winner = status === 'completed'
+    ? matches.find(m =>
         m.round === maxRound &&
-        !tournament.tournament_matches.some(m2 => m2.round > m.round)
+        !matches.some(m2 => m2.round > m.round)
       )?.winner_id
     : null
 
-  async function setWinner(matchId: string, winnerId: string) {
-    setSaving(true)
+  async function persist(matchId: string, winnerId: string, scoreVal: string, finalize: boolean, nextMatches: TournamentMatch[]) {
     const supabase = createClient()
+    const { error } = await supabase
+      .from('tournament_matches')
+      .update({ winner_id: winnerId, score: scoreVal || null, status: 'completed' })
+      .eq('id', matchId)
+    // On any failure, fall back to a server refetch so the UI re-syncs to truth.
+    if (error) { router.refresh(); return }
 
-    await supabase.from('tournament_matches').update({ winner_id: winnerId, score: score || null, status: 'completed' }).eq('id', matchId)
+    if (finalize) {
+      const { error: e2 } = await supabase.from('tournaments').update({ status: 'completed' }).eq('id', tournament.id)
+      if (e2) router.refresh()
+    } else if (nextMatches.length > 0) {
+      const { error: e3 } = await supabase.from('tournament_matches').insert(
+        nextMatches.map(m => ({
+          id: m.id,
+          tournament_id: m.tournament_id,
+          round: m.round,
+          match_index: m.match_index,
+          player1_id: m.player1_id,
+          player2_id: m.player2_id,
+          winner_id: m.winner_id,
+          score: m.score,
+          status: m.status,
+        }))
+      )
+      if (e3) router.refresh()
+    }
+  }
+
+  function setWinner(matchId: string, winnerId: string) {
+    if (handled.current.has(matchId)) return
+    handled.current.add(matchId)
+
+    const scoreVal = score
     setScore('')
     setPickingMatch(null)
 
-    const allMatches = [...tournament.tournament_matches]
-    const updated = allMatches.map(m => m.id === matchId ? { ...m, winner_id: winnerId, status: 'completed' as const } : m)
+    const updated = matches.map(m =>
+      m.id === matchId ? { ...m, winner_id: winnerId, score: scoreVal || null, status: 'completed' as const } : m
+    )
+
     const roundMatches = updated.filter(m => m.round === currentRound)
     const allDone = roundMatches.every(m => m.status === 'completed' || m.status === 'bye')
 
+    let nextMatches: TournamentMatch[] = []
+    let newStatus = status
     if (allDone) {
-      const winners = roundMatches.map(m => ({ id: m.winner_id! }))
+      const winners = roundMatches
+        .slice()
+        .sort((a, b) => a.match_index - b.match_index)
+        .map(m => ({ id: m.winner_id! }))
       if (winners.length === 1) {
-        await supabase.from('tournaments').update({ status: 'completed' }).eq('id', tournament.id)
+        newStatus = 'completed'
       } else {
-        const nextRound = generateRound(winners, currentRound + 1).map(m => ({ ...m, tournament_id: tournament.id }))
-        await supabase.from('tournament_matches').insert(nextRound)
+        nextMatches = generateRound(winners, currentRound + 1).map(m => ({
+          id: crypto.randomUUID(),
+          tournament_id: tournament.id,
+          round: m.round,
+          match_index: m.match_index,
+          player1_id: m.player1_id,
+          player2_id: m.player2_id,
+          winner_id: m.winner_id ?? null,
+          score: null,
+          status: m.status,
+        }))
       }
     }
 
-    setSaving(false)
-    router.refresh()
+    // Apply optimistically — the bracket updates immediately.
+    setMatches([...updated, ...nextMatches])
+    if (newStatus !== status) setStatus(newStatus)
+
+    // Persist in the background; we don't await it.
+    void persist(matchId, winnerId, scoreVal, newStatus === 'completed', nextMatches)
   }
 
   return (
     <div className="space-y-6">
-      {tournament.status === 'completed' && winner && (
+      {status === 'completed' && winner && (
         <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6 text-center">
           <div className="text-4xl mb-2">🏆</div>
           <p className="text-sm text-yellow-700 font-medium uppercase tracking-wide mb-1">{tt.complete}</p>
@@ -88,8 +146,8 @@ export default function TournamentView({ tournament, userId }: Props) {
       )}
 
       {rounds.map(round => {
-        const matches = tournament.tournament_matches.filter(m => m.round === round).sort((a, b) => a.match_index - b.match_index)
-        const isActive = round === currentRound && tournament.status === 'active'
+        const roundMatches = matches.filter(m => m.round === round).sort((a, b) => a.match_index - b.match_index)
+        const isActive = round === currentRound && status === 'active'
         const label = getRoundLabel(round, Math.max(maxRound, totalRounds))
 
         return (
@@ -100,7 +158,7 @@ export default function TournamentView({ tournament, userId }: Props) {
             </h2>
 
             <div className="space-y-3">
-              {matches.map(match => {
+              {roundMatches.map(match => {
                 const p1 = match.player1_id ? playerMap[match.player1_id] : null
                 const p2 = match.player2_id ? playerMap[match.player2_id] : null
                 const w = match.winner_id ? playerMap[match.winner_id] : null
@@ -131,8 +189,8 @@ export default function TournamentView({ tournament, userId }: Props) {
                                 <p className="text-xs text-gray-500 font-medium">{tt.yourTurn}:</p>
                                 <div className="flex gap-2">
                                   {[p1, p2].filter(Boolean).map(p => (
-                                    <button key={p!.id} onClick={() => setWinner(match.id, p!.id)} disabled={saving}
-                                      className="flex-1 bg-indigo-600 text-white text-sm font-semibold py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50">
+                                    <button key={p!.id} onClick={() => setWinner(match.id, p!.id)}
+                                      className="flex-1 bg-indigo-600 text-white text-sm font-semibold py-2 rounded-lg hover:bg-indigo-700">
                                       {p!.display_name}
                                     </button>
                                   ))}
