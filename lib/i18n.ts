@@ -41,6 +41,8 @@ export type Messages = {
     bye: string; setWinner: string; winner: string; champion: string; score: string
     confirm: string; players: string; minPlayers: string; vs: string; complete: string
     yourTurn: string; addPlayer: string; startWith: string; starting: string; cancel: string
+    bulkPaste: string; bulkHint: string; bulkPlaceholder: string; bulkFound: string
+    bulkDupes: string; bulkAdd: string
   }
   challenge: {
     newChallenge: string; myChallenges: string; noChallenge: string
@@ -135,6 +137,9 @@ const en: Messages = {
     confirm: 'Confirm', players: 'players', minPlayers: 'Need at least 4 players for a tournament', vs: 'vs',
     complete: 'Tournament complete!', yourTurn: 'Pick winner', addPlayer: 'Add player...', startWith: 'Start tournament ({n} players)',
     starting: 'Creating...', cancel: 'Cancel',
+    bulkPaste: 'Paste a list', bulkHint: 'One name per line — or paste two columns straight from Excel. Commas work too.',
+    bulkPlaceholder: 'Ola Nordmann\nKari Nordmann\nPer Hansen', bulkFound: '{n} names found',
+    bulkDupes: '{n} duplicates skipped', bulkAdd: 'Add {n} players',
   },
   challenge: {
     newChallenge: 'New Challenge', myChallenges: 'Challenges', noChallenge: 'No challenges yet — create one to host a multi-game event!',
@@ -277,6 +282,9 @@ const no: Messages = {
     confirm: 'Bekreft', players: 'spillere', minPlayers: 'Trenger minst 4 spillere til en turnering', vs: 'mot',
     complete: 'Turneringen er ferdig!', yourTurn: 'Velg vinner', addPlayer: 'Legg til spiller...', startWith: 'Start turnering ({n} spillere)',
     starting: 'Oppretter...', cancel: 'Avbryt',
+    bulkPaste: 'Lim inn liste', bulkHint: 'Ett navn per linje — eller lim inn to kolonner rett fra Excel. Komma fungerer også.',
+    bulkPlaceholder: 'Ola Nordmann\nKari Nordmann\nPer Hansen', bulkFound: '{n} navn funnet',
+    bulkDupes: '{n} duplikater hoppes over', bulkAdd: 'Legg til {n} spillere',
   },
   challenge: {
     newChallenge: 'Ny turnering', myChallenges: 'Turneringer', noChallenge: 'Ingen turneringer ennå — lag en for å arrangere en flergrens-turnering!',
@@ -419,6 +427,9 @@ const de: Messages = {
     confirm: 'Bestätigen', players: 'Spieler', minPlayers: 'Mindestens 4 Spieler für ein Turnier', vs: 'gegen',
     complete: 'Turnier beendet!', yourTurn: 'Gewinner wählen', addPlayer: 'Spieler hinzufügen...', startWith: 'Turnier starten ({n} Spieler)',
     starting: 'Wird erstellt...', cancel: 'Abbrechen',
+    bulkPaste: 'Liste einfügen', bulkHint: 'Ein Name pro Zeile — oder zwei Spalten direkt aus Excel einfügen. Kommas gehen auch.',
+    bulkPlaceholder: 'Max Mustermann\nErika Musterfrau\nPeter Schmidt', bulkFound: '{n} Namen gefunden',
+    bulkDupes: '{n} Duplikate übersprungen', bulkAdd: '{n} Spieler hinzufügen',
   },
   challenge: {
     newChallenge: 'Neue Challenge', myChallenges: 'Challenges', noChallenge: 'Noch keine Challenges — erstelle eine für ein Mehrdisziplinen-Event!',
@@ -561,6 +572,9 @@ const fr: Messages = {
     confirm: 'Confirmer', players: 'joueurs', minPlayers: 'Minimum 4 joueurs pour un tournoi', vs: 'contre',
     complete: 'Tournoi terminé !', yourTurn: 'Choisir le gagnant', addPlayer: 'Ajouter un joueur...', startWith: 'Démarrer le tournoi ({n} joueurs)',
     starting: 'Création...', cancel: 'Annuler',
+    bulkPaste: 'Coller une liste', bulkHint: 'Un nom par ligne — ou collez deux colonnes directement depuis Excel. Les virgules fonctionnent aussi.',
+    bulkPlaceholder: 'Jean Dupont\nMarie Martin\nPierre Durand', bulkFound: '{n} noms trouvés',
+    bulkDupes: '{n} doublons ignorés', bulkAdd: 'Ajouter {n} joueurs',
   },
   challenge: {
     newChallenge: 'Nouveau défi', myChallenges: 'Défis', noChallenge: 'Aucun défi encore — créez-en un pour organiser un événement multi-épreuves !',
@@ -703,6 +717,9 @@ const es: Messages = {
     confirm: 'Confirmar', players: 'jugadores', minPlayers: 'Mínimo 4 jugadores para un torneo', vs: 'vs',
     complete: '¡Torneo terminado!', yourTurn: 'Elegir ganador', addPlayer: 'Añadir jugador...', startWith: 'Iniciar torneo ({n} jugadores)',
     starting: 'Creando...', cancel: 'Cancelar',
+    bulkPaste: 'Pegar una lista', bulkHint: 'Un nombre por línea — o pega dos columnas directamente desde Excel. Las comas también funcionan.',
+    bulkPlaceholder: 'Juan Pérez\nMaría García\nPedro López', bulkFound: '{n} nombres encontrados',
+    bulkDupes: '{n} duplicados omitidos', bulkAdd: 'Añadir {n} jugadores',
   },
   challenge: {
     newChallenge: 'Nuevo reto', myChallenges: 'Retos', noChallenge: 'Aún no hay retos — crea uno para organizar un evento multi-disciplina!',

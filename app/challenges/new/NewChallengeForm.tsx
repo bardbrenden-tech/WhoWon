@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/components/LanguageProvider'
+import BulkAddPlayers from '@/components/BulkAddPlayers'
 import { GAMES } from '@/lib/games'
 
 interface PlayerEntry {
@@ -51,6 +52,13 @@ export default function NewChallengeForm({ userId, userName, savedGuests }: Prop
     setNewName('')
   }
 
+  function addMany(names: string[]) {
+    setPlayers(prev => [
+      ...prev,
+      ...names.map(name => ({ id: crypto.randomUUID(), name, type: 'new' as const })),
+    ])
+  }
+
   function removePlayer(id: string) {
     setPlayers(prev => prev.filter(p => p.id !== id))
   }
@@ -61,11 +69,22 @@ export default function NewChallengeForm({ userId, userName, savedGuests }: Prop
     const supabase = createClient()
 
     // Create guest players for "new" entries
+    // One batched insert — creating 40+ guests one round-trip at a time made
+    // starting a large tournament take many seconds.
     const newGuests = players.filter(p => p.type === 'new')
     const guestIds: Record<string, string> = {}
-    for (const ng of newGuests) {
-      const { data } = await supabase.from('guest_players').insert({ owner_id: userId, name: ng.name }).select('id').single()
-      if (data) guestIds[ng.id] = data.id
+    if (newGuests.length > 0) {
+      const { data } = await supabase
+        .from('guest_players')
+        .insert(newGuests.map(ng => ({ owner_id: userId, name: ng.name })))
+        .select('id, name')
+      // Match rows back to entries by name, consuming each row once so
+      // duplicate names still map to distinct guest rows.
+      const pool = [...(data ?? [])]
+      for (const ng of newGuests) {
+        const idx = pool.findIndex(g => g.name === ng.name)
+        if (idx !== -1) guestIds[ng.id] = pool.splice(idx, 1)[0].id
+      }
     }
 
     // Create challenge
@@ -147,7 +166,7 @@ export default function NewChallengeForm({ userId, userName, savedGuests }: Prop
           {players.length < 4 && <span className="ml-2 text-xs text-gray-400 font-normal">{tc.minPlayers}</span>}
         </p>
 
-        <div className="space-y-2 mb-4">
+        <div className="space-y-2 mb-4 max-h-80 overflow-y-auto">
           {players.map(p => (
             <div key={p.id} className="flex items-center gap-3 bg-gray-50 rounded-lg px-3 py-2">
               <div className="w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold flex items-center justify-center shrink-0">
@@ -174,6 +193,10 @@ export default function NewChallengeForm({ userId, userName, savedGuests }: Prop
             </div>
           </div>
         )}
+
+        <div className="mb-3">
+          <BulkAddPlayers existingNames={players.map(p => p.name)} onAdd={addMany} />
+        </div>
 
         <div className="flex gap-2">
           <input
