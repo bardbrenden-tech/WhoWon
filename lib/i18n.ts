@@ -53,6 +53,8 @@ export type Messages = {
     startTournament: string; startAll: string; viewBracket: string; copyLink: string; standings: string
     points: string; minGames: string; minPlayers: string
     backToChallenge: string; champion: string; complete: string
+    editPlayers: string; editPlayersHint: string; saveChanges: string; saving: string
+    savedChanges: string; nameEmpty: string
   }
   login: { subtitle: string; terms: string; error: string }
   feedback: {
@@ -150,6 +152,8 @@ const en: Messages = {
     startTournament: 'Start tournament', startAll: 'Start all events', viewBracket: 'View bracket', copyLink: 'Copy link', standings: 'Standings',
     points: 'pts', minGames: 'Pick at least 2 events', minPlayers: 'Add at least 4 players',
     backToChallenge: '← Back to challenge', champion: '🏆 Challenge Champion!', complete: 'Challenge complete!',
+    editPlayers: 'Edit players', editPlayersHint: 'Rename a player to swap in a stand-in — the new name updates every bracket instantly.',
+    saveChanges: 'Save {n} changes', saving: 'Saving...', savedChanges: 'Saved', nameEmpty: 'A name cannot be empty',
   },
   login: { subtitle: 'Track scores, build your rating, and see who the real champion is.', terms: 'By signing in you agree to our terms of service. Always free.', error: 'Something went wrong. Please try again.' },
   feedback: { button: 'Feedback', title: 'Send feedback', placeholder: "Tell us what's on your mind...", cancel: 'Cancel', send: 'Send', sending: 'Sending...', thanks: 'Thanks for your feedback!', thanksSub: 'We review every submission.', catBug: '🐛 Something is broken', catFeature: '✨ Feature request', catDesign: '🎨 Design / UX', catRules: '📋 Wrong rules', catOther: '💬 Other' },
@@ -295,6 +299,8 @@ const no: Messages = {
     startTournament: 'Start gren', startAll: 'Start alle grener', viewBracket: 'Se bracket', copyLink: 'Kopier lenke', standings: 'Stilling',
     points: 'poeng', minGames: 'Velg minst 2 grener', minPlayers: 'Legg til minst 4 spillere',
     backToChallenge: '← Tilbake til turneringen', champion: '🏆 Turneringsvinner!', complete: 'Turneringen er ferdig!',
+    editPlayers: 'Rediger spillere', editPlayersHint: 'Endre navnet for å bytte inn en erstatter — det nye navnet oppdateres i alle bracketene med én gang.',
+    saveChanges: 'Lagre {n} endringer', saving: 'Lagrer...', savedChanges: 'Lagret', nameEmpty: 'Navnet kan ikke være tomt',
   },
   login: { subtitle: 'Spor poeng, bygg ratingen din og se hvem som er den virkelige mesteren.', terms: 'Ved å logge inn godtar du våre vilkår. Alltid gratis.', error: 'Noe gikk galt. Prøv igjen.' },
   feedback: { button: 'Tilbakemelding', title: 'Send tilbakemelding', placeholder: 'Fortell oss hva du tenker på ...', cancel: 'Avbryt', send: 'Send', sending: 'Sender ...', thanks: 'Takk for tilbakemeldingen!', thanksSub: 'Vi leser gjennom alt som sendes inn.', catBug: '🐛 Noe er ødelagt', catFeature: '✨ Funksjonsønske', catDesign: '🎨 Design / UX', catRules: '📋 Feil regler', catOther: '💬 Annet' },
@@ -440,6 +446,8 @@ const de: Messages = {
     startTournament: 'Turnier starten', startAll: 'Alle Disziplinen starten', viewBracket: 'Turnierbaum', copyLink: 'Link kopieren', standings: 'Rangliste',
     points: 'Pkt', minGames: 'Mindestens 2 Disziplinen wählen', minPlayers: 'Mindestens 4 Spieler hinzufügen',
     backToChallenge: '← Zurück zur Challenge', champion: '🏆 Challenge-Champion!', complete: 'Challenge beendet!',
+    editPlayers: 'Spieler bearbeiten', editPlayersHint: 'Benenne einen Spieler um, um einen Ersatz einzuwechseln — der neue Name erscheint sofort in allen Turnierbäumen.',
+    saveChanges: '{n} Änderungen speichern', saving: 'Wird gespeichert...', savedChanges: 'Gespeichert', nameEmpty: 'Der Name darf nicht leer sein',
   },
   login: { subtitle: 'Verfolge Punkte, baue deine Wertung auf und sieh, wer der wahre Champion ist.', terms: 'Durch die Anmeldung stimmst du unseren Nutzungsbedingungen zu. Immer kostenlos.', error: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.' },
   feedback: { button: 'Feedback', title: 'Feedback senden', placeholder: 'Sag uns, was dir auf dem Herzen liegt ...', cancel: 'Abbrechen', send: 'Senden', sending: 'Wird gesendet ...', thanks: 'Danke für dein Feedback!', thanksSub: 'Wir prüfen jede Einsendung.', catBug: '🐛 Etwas ist kaputt', catFeature: '✨ Funktionswunsch', catDesign: '🎨 Design / UX', catRules: '📋 Falsche Regeln', catOther: '💬 Sonstiges' },
@@ -585,6 +593,8 @@ const fr: Messages = {
     startTournament: 'Démarrer un tournoi', startAll: 'Démarrer toutes les épreuves', viewBracket: 'Voir le tableau', copyLink: 'Copier le lien', standings: 'Classement',
     points: 'pts', minGames: 'Choisir au moins 2 épreuves', minPlayers: 'Ajouter au moins 4 joueurs',
     backToChallenge: '← Retour au défi', champion: '🏆 Champion du défi !', complete: 'Défi terminé !',
+    editPlayers: 'Modifier les joueurs', editPlayersHint: 'Renommez un joueur pour intégrer un remplaçant — le nouveau nom est mis à jour dans tous les tableaux.',
+    saveChanges: 'Enregistrer {n} modifications', saving: 'Enregistrement...', savedChanges: 'Enregistré', nameEmpty: 'Le nom ne peut pas être vide',
   },
   login: { subtitle: 'Suivez les scores, construisez votre classement et voyez qui est le vrai champion.', terms: 'En vous connectant, vous acceptez nos conditions d\'utilisation. Toujours gratuit.', error: 'Quelque chose s\'est mal passé. Veuillez réessayer.' },
   feedback: { button: 'Retour', title: 'Envoyer un retour', placeholder: 'Dites-nous ce que vous avez en tête ...', cancel: 'Annuler', send: 'Envoyer', sending: 'Envoi ...', thanks: 'Merci pour votre retour !', thanksSub: 'Nous lisons chaque message.', catBug: '🐛 Quelque chose ne marche pas', catFeature: '✨ Suggestion de fonction', catDesign: '🎨 Design / UX', catRules: '📋 Règles incorrectes', catOther: '💬 Autre' },
@@ -730,6 +740,8 @@ const es: Messages = {
     startTournament: 'Iniciar torneo', startAll: 'Iniciar todas las disciplinas', viewBracket: 'Ver cuadro', copyLink: 'Copiar enlace', standings: 'Clasificación',
     points: 'pts', minGames: 'Elige al menos 2 disciplinas', minPlayers: 'Añade al menos 4 jugadores',
     backToChallenge: '← Volver al reto', champion: '🏆 ¡Campeón del reto!', complete: '¡Reto completado!',
+    editPlayers: 'Editar jugadores', editPlayersHint: 'Cambia el nombre de un jugador para meter a un suplente — el nuevo nombre se actualiza en todos los cuadros.',
+    saveChanges: 'Guardar {n} cambios', saving: 'Guardando...', savedChanges: 'Guardado', nameEmpty: 'El nombre no puede estar vacío',
   },
   login: { subtitle: 'Sigue los puntos, construye tu clasificación y descubre quién es el verdadero campeón.', terms: 'Al iniciar sesión aceptas nuestros términos de servicio. Siempre gratis.', error: 'Algo salió mal. Por favor, inténtalo de nuevo.' },
   feedback: { button: 'Comentarios', title: 'Enviar comentarios', placeholder: 'Cuéntanos qué piensas ...', cancel: 'Cancelar', send: 'Enviar', sending: 'Enviando ...', thanks: '¡Gracias por tus comentarios!', thanksSub: 'Revisamos cada mensaje.', catBug: '🐛 Algo no funciona', catFeature: '✨ Sugerencia de función', catDesign: '🎨 Diseño / UX', catRules: '📋 Reglas incorrectas', catOther: '💬 Otro' },

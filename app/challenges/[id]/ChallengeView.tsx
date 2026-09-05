@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { useLocale } from '@/components/LanguageProvider'
+import EditChallengePlayers from '@/components/EditChallengePlayers'
 import { generateRound } from '@/lib/tournament'
 import { getPoints } from '@/lib/challenge'
 import TournamentView from '../../tournaments/[id]/TournamentView'
@@ -129,6 +130,13 @@ export default function ChallengeView({ challenge, sortedGames, standings, gameN
           <p className="text-sm text-yellow-700 font-semibold uppercase tracking-wide mb-1">{tc.complete}</p>
           <p className="text-2xl font-black text-gray-900">{champion.displayName}</p>
           <p className="text-sm text-yellow-600 mt-1">{champion.points} {tc.points}</p>
+        </div>
+      )}
+
+      {/* Player roster editing — creator only */}
+      {isCreator && (
+        <div>
+          <EditChallengePlayers players={challenge.challenge_players} />
         </div>
       )}
 
