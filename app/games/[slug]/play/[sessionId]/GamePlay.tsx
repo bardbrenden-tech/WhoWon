@@ -29,6 +29,7 @@ const GAME_COMPONENTS: Record<string, DynamicGameComponent> = {
   'sequence': Generic, 'petanque': Generic, 'croquet': Generic, 'bowling': Generic,
   'kubb': Generic, 'molkky': Generic, 'disc-golf': Generic, 'cornhole': Generic,
   'table-tennis': Generic, 'billiards': Generic, 'badminton': Generic, 'foosball': Generic,
+  'shuffleboard': Generic,
   'everdell': Generic, 'wingspan': Generic, '7-wonders': Generic, 'azul': Generic,
   'splendor': Generic, 'terraforming-mars': Generic, 'pandemic': Generic,
   'qwixx': Generic, 'king-of-tokyo': Generic,

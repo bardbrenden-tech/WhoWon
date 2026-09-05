@@ -662,6 +662,27 @@ export const RULES: Record<string, GameRules> = {
       'SKUNK: If a team reaches 11 and the opponent has 0, the game may be called (optional rule).',
     ],
   },
+  'shuffleboard': {
+    quickStart: [
+      '1v1 or 2v2. Each side has 4 weights (pucks) of one colour.',
+      'Players alternate sliding one weight at a time down the table.',
+      'Zones at the far end score 1, 2 and 3 points — a weight hanging over the edge scores 4.',
+      'CANCELLATION SCORING: only the side with the furthest weight scores, for every weight it has beyond the opponent\'s best.',
+      'First to 15 (or 21 by agreement) wins. A weight must fully pass the foul line to count.',
+    ],
+    full: [
+      'SETUP: The table is sprinkled with shuffleboard wax (sand). Each side takes 4 weights of one colour.',
+      'THROWING: Players alternate, one weight per turn. The player who scored last shoots first in the next round.',
+      'The weight must be released before the foul line and must fully cross the far foul line to be live.',
+      'SCORING ZONES (far end): 1, 2 and 3 points. A weight hanging over the end of the table (a "hanger") scores 4.',
+      'A weight touching a zone line scores the lower value. Weights that fall off or come back short are dead.',
+      'CANCELLATION: After all 8 weights, only one side scores. Find the weight furthest down the table — that side scores for each of its weights that is further than the opponent\'s best weight.',
+      'Example: Red has weights in 3 and 2 that are both beyond Blue\'s best — Red scores 5, Blue scores 0.',
+      'WINNING: First to 15 points is standard; 21 is common for longer matches. Agree before you start.',
+      'KNOCKING: You may knock opponent weights off the table or into another zone — that is part of the game.',
+      'TOURNAMENT PLAY: For brackets, play each match to the agreed target and record who won plus the final score.',
+    ],
+  },
 }
 
 const QUICK_START_NO: Record<string, string[]> = {
@@ -872,6 +893,13 @@ const QUICK_START_NO: Record<string, string[]> = {
     'Lag kaster annenhver pose per runde. Hull = 3 p, på brettet = 1 p.',
     'KANSELLERING: Trekk laveste lags poeng fra høyestes — bare differansen teller.',
     'Første lag til nøyaktig 21 vinner.',
+  ],
+  'shuffleboard': [
+    '1v1 eller 2v2. Hvert lag har 4 pucker i hver sin farge.',
+    'Spillerne skyver annenhver puck nedover bordet.',
+    'Sonene i enden gir 1, 2 og 3 poeng — en puck som henger utenfor kanten gir 4.',
+    'KANSELLERING: Bare laget med pucken lengst ned scorer, for hver puck som ligger lenger enn motstanderens beste.',
+    'Første til 15 (eller 21 etter avtale) vinner. Pucken må passere feillinjen for å telle.',
   ],
 }
 
@@ -1245,6 +1273,18 @@ const FULL_RULES_NO: Record<string, string[]> = {
     'Eksempel: Lag A scorer 7, Lag B scorer 4 → Lag A får 3 p den runden.',
     'VINN: Første lag til nøyaktig 21 poeng vinner.',
     'BUST (husregler): Over 21 nullstilles til 11 eller 15 — avtal på forhånd.',
+  ],
+  'shuffleboard': [
+    'OPPSETT: Bordet strues med shuffleboard-voks (sand). Hvert lag tar 4 pucker i sin farge.',
+    'KASTING: Spillerne skyver annenhver puck, én om gangen. Den som scoret sist starter neste runde.',
+    'Pucken må slippes før feillinjen og passere feillinjen i motsatt ende for å være i spill.',
+    'POENGSONER (enden av bordet): 1, 2 og 3 poeng. Puck som henger utenfor kanten ("hanger") gir 4 poeng.',
+    'Puck som berører en sonelinje teller laveste verdi. Pucker som faller av eller stopper for kort er døde.',
+    'KANSELLERING: Når alle 8 pucker er skjøvet, scorer bare étt lag. Finn pucken som ligger lengst ned — det laget får poeng for hver av sine pucker som ligger lenger enn motstanderens beste.',
+    'Eksempel: Rød har pucker i sone 3 og 2 som begge ligger lenger enn blås beste — rød får 5 poeng, blå får 0.',
+    'VINN: Første til 15 poeng er standard, 21 er vanlig for lengre kamper. Avtal før dere starter.',
+    'BORTSLAG: Du kan slå motstanderens pucker av bordet eller inn i en annen sone — det er en del av spillet.',
+    'TURNERING: I cup-spill spilles hver kamp til avtalt poengsum. Registrer hvem som vant og sluttresultatet.',
   ],
 }
 
