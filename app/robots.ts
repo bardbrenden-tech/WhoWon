@@ -5,7 +5,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/api/', '/profile', '/challenges', '/sessions', '/admin'],
+      // Private/user-generated routes are crawlable on purpose: they carry a
+      // `noindex` meta tag, and Google can only honour that if it may fetch them.
+      disallow: ['/api/', '/admin'],
     },
     sitemap: 'https://who-won.com/sitemap.xml',
   }

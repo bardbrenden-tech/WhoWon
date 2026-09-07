@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getGame } from '@/lib/games'
@@ -5,6 +6,11 @@ import { getServerT } from '@/lib/i18n-server'
 import Link from 'next/link'
 import PageBanner from '@/components/PageBanner'
 import GuestPlayersSection from './GuestPlayersSection'
+
+export const metadata: Metadata = {
+  title: 'Your profile | Who Won?',
+  robots: { index: false, follow: false },
+}
 
 export default async function ProfilePage() {
   const supabase = await createClient()

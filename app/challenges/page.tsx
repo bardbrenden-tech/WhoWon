@@ -1,9 +1,15 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getServerT } from '@/lib/i18n-server'
 import PageBanner from '@/components/PageBanner'
 import DeleteChallengeButton from './DeleteChallengeButton'
+
+export const metadata: Metadata = {
+  title: 'Your challenges | Who Won?',
+  robots: { index: false, follow: false },
+}
 
 export default async function ChallengesPage() {
   const supabase = await createClient()

@@ -1,7 +1,13 @@
+import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import LoginButton from './LoginButton'
+
+export const metadata: Metadata = {
+  title: 'Sign in | Who Won?',
+  robots: { index: false, follow: false },
+}
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const supabase = await createClient()

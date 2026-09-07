@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
@@ -6,6 +7,11 @@ import { getServerT } from '@/lib/i18n-server'
 import PageBanner from '@/components/PageBanner'
 import TournamentView from './TournamentView'
 import type { TournamentPlayer, TournamentMatch } from '@/lib/types'
+
+export const metadata: Metadata = {
+  title: 'Tournament | Who Won?',
+  robots: { index: false, follow: false },
+}
 
 interface Props {
   params: Promise<{ id: string }>

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getServerT } from '@/lib/i18n-server'
@@ -6,6 +7,11 @@ import { computeStandings } from '@/lib/challenge'
 import PageBanner from '@/components/PageBanner'
 import ChallengeView from './ChallengeView'
 import type { ChallengePlayer, ChallengeGame, TournamentMatch, TournamentPlayer } from '@/lib/types'
+
+export const metadata: Metadata = {
+  title: 'Challenge | Who Won?',
+  robots: { index: false, follow: false },
+}
 
 interface Props {
   params: Promise<{ id: string }>

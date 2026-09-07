@@ -1,6 +1,12 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
+
+export const metadata: Metadata = {
+  title: 'Admin | Who Won?',
+  robots: { index: false, follow: false },
+}
 
 const ADMIN_EMAIL = 'bard.brenden@gmail.com'
 

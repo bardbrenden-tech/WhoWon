@@ -1,7 +1,13 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getGame } from '@/lib/games'
 import Link from 'next/link'
+
+export const metadata: Metadata = {
+  title: 'Scorecard | Who Won?',
+  robots: { index: false, follow: false },
+}
 
 interface Props {
   params: Promise<{ id: string }>
