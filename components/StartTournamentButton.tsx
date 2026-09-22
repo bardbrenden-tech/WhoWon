@@ -108,6 +108,12 @@ export default function StartTournamentButton({ game, user }: { game: GameMeta; 
     router.push(`/tournaments/${tournament.id}`)
   }
 
+  const availableGuests = guestPlayers.filter(g => !players.find(p => p.guestPlayerId === g.id))
+  const nameFilter = newName.trim().toLowerCase()
+  const filteredGuests = nameFilter
+    ? availableGuests.filter(g => g.name.toLowerCase().includes(nameFilter))
+    : availableGuests
+
   if (!game.active) return null
 
   return (
@@ -122,7 +128,7 @@ export default function StartTournamentButton({ game, user }: { game: GameMeta; 
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain">
             <h2 className="font-bold text-gray-900 text-lg mb-1">🏆 {tt.startTournament}</h2>
             <p className="text-sm text-gray-500 mb-5">{game.name} · {tt.minPlayers}</p>
 
@@ -140,11 +146,11 @@ export default function StartTournamentButton({ game, user }: { game: GameMeta; 
               ))}
             </div>
 
-            {guestPlayers.filter(g => !players.find(p => p.guestPlayerId === g.id)).length > 0 && (
+            {availableGuests.length > 0 && (
               <div className="mb-4">
                 <p className="text-xs text-gray-500 font-medium mb-2 uppercase tracking-wide">{t.game.yourPlayers}</p>
-                <div className="flex flex-wrap gap-2">
-                  {guestPlayers.filter(g => !players.find(p => p.guestPlayerId === g.id)).map(g => (
+                <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto overscroll-contain pr-1">
+                  {filteredGuests.map(g => (
                     <button key={g.id} onClick={() => addGuest(g)}
                       className="bg-indigo-50 text-indigo-700 text-sm font-medium px-3 py-1 rounded-full hover:bg-indigo-100 transition-colors">
                       + {g.name}

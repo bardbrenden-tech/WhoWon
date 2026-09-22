@@ -101,6 +101,12 @@ export default function StartGameButton({ game, user }: Props) {
     router.push(`/games/${game.id}/play/${session.id}`)
   }
 
+  const availableGuests = guestPlayers.filter(g => !players.find(p => p.guestPlayerId === g.id))
+  const nameFilter = newName.trim().toLowerCase()
+  const filteredGuests = nameFilter
+    ? availableGuests.filter(g => g.name.toLowerCase().includes(nameFilter))
+    : availableGuests
+
   if (!game.active) return null
 
   return (
@@ -115,7 +121,7 @@ export default function StartGameButton({ game, user }: Props) {
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50" onClick={() => setOpen(false)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6">
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain">
             <h2 className="font-bold text-gray-900 text-lg mb-1">Start {game.name}</h2>
             <p className="text-sm text-gray-500 mb-5">{game.min_players}–{game.max_players} {t.game.players}</p>
 
@@ -135,11 +141,11 @@ export default function StartGameButton({ game, user }: Props) {
             </div>
 
             {/* Add saved guests */}
-            {guestPlayers.filter(g => !players.find(p => p.guestPlayerId === g.id)).length > 0 && (
+            {availableGuests.length > 0 && (
               <div className="mb-4">
                 <p className="text-xs text-gray-500 font-medium mb-2 uppercase tracking-wide">{t.game.yourPlayers}</p>
-                <div className="flex flex-wrap gap-2">
-                  {guestPlayers.filter(g => !players.find(p => p.guestPlayerId === g.id)).map(g => (
+                <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto overscroll-contain pr-1">
+                  {filteredGuests.map(g => (
                     <button
                       key={g.id}
                       onClick={() => addGuest(g)}
