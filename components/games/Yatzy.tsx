@@ -82,8 +82,20 @@ export default function Yatzy({ players, onScoreUpdate, onComplete, onAbandon }:
   const minFills = Math.min(...players.map(p=>fillCount(scores[p.id]??EMPTY)))
   const currentPlayerId = players.find(p=>fillCount(scores[p.id]??EMPTY)===minFills)?.id
 
+  const [history, setHistory] = useState<{ playerId: string; key: ScoreKey }[]>([])
+
+  function undoLast() {
+    const last = history[history.length - 1]
+    if (!last) return
+    const updated = { ...(scores[last.playerId] ?? EMPTY), [last.key]: '' }
+    setScores(prev => ({ ...prev, [last.playerId]: updated }))
+    setHistory(h => h.slice(0, -1))
+    onScoreUpdate(last.playerId, updated)
+  }
+
   function updateScore(playerId: string, key: ScoreKey, val: string) {
     if (fillCount(scores[playerId]??EMPTY)!==minFills) return
+    setHistory(h => [...h, { playerId, key }])
     setScores(prev=>{
       const next={...prev,[playerId]:{...prev[playerId],[key]:val}}
       onScoreUpdate(playerId, next[playerId])
@@ -105,15 +117,15 @@ export default function Yatzy({ players, onScoreUpdate, onComplete, onAbandon }:
   const tdL='border border-gray-300 px-2 py-0.5 text-sm whitespace-nowrap'
 
   return (
-    <div className="py-4 px-2">
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+    <div className="py-4 px-2 flex justify-center">
+      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm w-full" style={{maxWidth:`${162+players.length*104}px`}}>
         <div className="overflow-x-auto">
-          <table className="border-collapse w-full" style={{minWidth:`${148+players.length*68}px`}}>
+          <table className="border-collapse w-full table-fixed" style={{minWidth:`${160+players.length*80}px`}}>
             <thead>
               <tr>
-                <th className="border border-gray-300 px-2 py-1 text-left text-xs font-normal bg-gray-50 w-36"></th>
+                <th className="border border-gray-300 px-2 py-1 text-left text-xs font-normal bg-gray-50 w-40"></th>
                 {players.map(p=>(
-                  <th key={p.id} className={`border border-gray-300 px-1 py-1 text-center text-sm font-bold w-16 ${p.id===currentPlayerId?'bg-indigo-50 text-indigo-800':'bg-gray-50'}`}>
+                  <th key={p.id} className={`border border-gray-300 px-1 py-1 text-center text-sm font-bold ${p.id===currentPlayerId?'bg-indigo-50 text-indigo-800':'bg-gray-50'}`}>
                     {p.display_name}
                     {p.id===currentPlayerId&&<div className="text-xs font-normal text-indigo-400">{t.game.yourTurn}</div>}
                   </th>
@@ -166,8 +178,15 @@ export default function Yatzy({ players, onScoreUpdate, onComplete, onAbandon }:
             </tbody>
           </table>
         </div>
-        <div className="p-4 border-t border-gray-200">
-          <button onClick={()=>{ if(!allDone){if(confirm(t.game.abandoning))onAbandon();return} handleFinish()}} className="w-full bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors">
+        <div className="p-4 border-t border-gray-200 flex gap-3">
+          <button
+            onClick={undoLast}
+            disabled={history.length === 0}
+            className="shrink-0 border border-gray-300 text-gray-700 px-4 py-3 font-semibold rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-40"
+          >
+            ↶ {t.play.undoLast}
+          </button>
+          <button onClick={()=>{ if(!allDone){if(confirm(t.game.abandoning))onAbandon();return} handleFinish()}} className="flex-1 bg-indigo-600 text-white py-3 font-bold rounded-xl hover:bg-indigo-700 transition-colors">
             {allDone?t.game.completeGame:t.game.finishEarly}
           </button>
         </div>
